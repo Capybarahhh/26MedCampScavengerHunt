@@ -1,0 +1,84 @@
+html, body { margin: 0; padding: 0; background: #08030f; overflow: hidden; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+::selection { background: #00e5cc; color: #08030f; }
+
+/* --- pressed / focus states (was style-active / style-focus in the DC template) --- */
+button { font-family: 'Share Tech Mono', monospace; }
+.press98:active { transform: scale(0.98); }
+.press97:active { transform: scale(0.97); }
+.press96:active { transform: scale(0.96); }
+.press95:active { transform: scale(0.95); }
+.press94:active { transform: scale(0.94); }
+.key-entry:active { background: #2a0e4a !important; border-color: #c060ff !important; transform: scale(0.98); }
+.key-frag:active { background: #123a35 !important; border-color: var(--accent) !important; transform: scale(0.94); }
+.puzzle-input:focus { box-shadow: inset 0 2px 8px rgba(0,0,0,0.6), 0 0 22px var(--accent-focus) !important; outline: none; }
+
+@keyframes blinkPip {
+  0%, 100% { box-shadow: 0 0 10px 2px rgba(0,229,204,0.9), inset 0 0 12px rgba(0,229,204,0.5); }
+  50% { box-shadow: 0 0 22px 6px rgba(0,229,204,1), inset 0 0 18px rgba(0,229,204,0.8); }
+}
+@keyframes cursorBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes toastIn { from { opacity: 0; transform: translate(-50%, 12px); } to { opacity: 1; transform: translate(-50%, 0); } }
+@keyframes floatParticle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
+@keyframes pulseOpacity { 0%, 100% { opacity: 0.15; } 50% { opacity: 0.6; } }
+@keyframes scanSweep { 0% { transform: translateY(-140px); } 100% { transform: translateY(800px); } }
+@keyframes dashFlow { to { stroke-dashoffset: -100; } }
+@keyframes glitchTop { 0%, 92%, 100% { transform: translate(0,0); opacity: 0; } 93% { transform: translate(-3px,-2px); opacity: 0.65; } 96% { transform: translate(2px,1px); opacity: 0.4; } }
+@keyframes glitchBot { 0%, 90%, 100% { transform: translate(0,0); opacity: 0; } 91% { transform: translate(3px,2px); opacity: 0.55; } 95% { transform: translate(-2px,-1px); opacity: 0.35; } }
+@keyframes fragPop { 0% { transform: scale(0.3); opacity: 0; } 60% { transform: scale(1.08); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+@keyframes fragFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes rainFall { 0% { transform: translateY(0); opacity: 0; } 12% { opacity: 1; } 88% { opacity: 0.7; } 100% { transform: translateY(920px); opacity: 0; } }
+@keyframes bannerSlide { 0% { transform: translate(-50%, -60px); opacity: 0; } 12% { transform: translate(-50%, 0); opacity: 1; } 88% { transform: translate(-50%, 0); opacity: 1; } 100% { transform: translate(-50%, -60px); opacity: 0; } }
+@keyframes screenBoot {
+  0% { transform: scaleY(0.02) scaleX(0.7); opacity: 0; filter: brightness(3); }
+  6% { transform: scaleY(0.02) scaleX(1); opacity: 1; filter: brightness(4); }
+  9% { transform: scaleY(0.7) scaleX(1); filter: brightness(1.6); }
+  14% { transform: scaleY(0.55) scaleX(1); filter: brightness(2.2); }
+  22% { transform: scaleY(1) scaleX(1); filter: brightness(1.4); }
+  30% { filter: brightness(1); }
+  100% { transform: scaleY(1) scaleX(1); opacity: 1; filter: brightness(1); }
+}
+@keyframes screenFlash {
+  0% { opacity: 0.9; } 8% { opacity: 0.1; } 11% { opacity: 0.7; } 15% { opacity: 0; } 100% { opacity: 0; }
+}
+@keyframes scanlineMove { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+@keyframes powerDotPulse { 0%, 100% { opacity: 1; box-shadow: 0 0 6px currentColor; } 50% { opacity: 0.4; box-shadow: 0 0 2px currentColor; } }
+@keyframes pieceCorrectGlow { 0%, 100% { filter: drop-shadow(0 0 6px rgba(0,229,204,0.5)); } 50% { filter: drop-shadow(0 0 18px rgba(0,229,204,0.95)); } }
+@keyframes pieceFloat { 0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); } 50% { transform: translateY(-5px) rotate(var(--r, 0deg)); } }
+@keyframes seamSweep { 0% { transform: translateX(-120%); opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } 100% { transform: translateX(220%); opacity: 0; } }
+@keyframes passLetterIn { 0% { opacity: 0; transform: translateY(12px) scale(0.6); filter: blur(6px); } 100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
+@keyframes burstDot { 0% { transform: translateX(0) scale(1); opacity: 1; } 100% { transform: translateX(var(--dist, 70px)) scale(0.2); opacity: 0; } }
+@keyframes tableDim { from { opacity: 1; } to { opacity: 0.18; } }
+@keyframes slotLockPulse { 0%, 100% { box-shadow: 0 0 0 rgba(0,229,204,0); } 50% { box-shadow: 0 0 22px rgba(0,229,204,0.55); } }
+@keyframes deskGlowPulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 0.9; } }
+@keyframes hiTechScan { 0% { transform: translateX(-10%); } 100% { transform: translateX(110%); } }
+@keyframes hiTechCellGlow { 0%, 100% { box-shadow: inset 0 2px 8px rgba(0,0,0,0.6), 0 0 8px rgba(0,229,204,0.35); } 50% { box-shadow: inset 0 2px 8px rgba(0,0,0,0.6), 0 0 18px rgba(0,229,204,0.75); } }
+@keyframes scannerRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes scannerRotateRev { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+@keyframes scannerCorePulse { 0%, 100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.25); } }
+@keyframes radarPing { 0% { transform: scale(0.4); opacity: 0.8; } 100% { transform: scale(2.4); opacity: 0; } }
+@keyframes signalTravel { 0% { offset-distance: 0%; opacity: 0; } 8% { opacity: 1; } 92% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
+@keyframes mapGridDrift { 0% { background-position: 0 0; } 100% { background-position: 48px 48px; } }
+@keyframes mapGlowPulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+@keyframes glyphDrift { 0%, 100% { transform: translateY(0); opacity: 0.18; } 50% { transform: translateY(-10px); opacity: 0.4; } }
+@keyframes glitchShift { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-4px); } 40% { transform: translateX(3px); } 60% { transform: translateX(-2px); } 80% { transform: translateX(2px); } }
+@keyframes successRipple { 0% { transform: scale(0.9); opacity: 0.8; } 100% { transform: scale(1.6); opacity: 0; } }
+@keyframes recBlink { 0%, 60% { opacity: 1; } 61%, 100% { opacity: 0.15; } }
+@keyframes inputRise { 0% { opacity: 0; transform: translateY(10px) scale(0.97); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes blankPop { 0% { opacity: 0; transform: scale(0.5); } 60% { opacity: 1; transform: scale(1.08); } 100% { opacity: 1; transform: scale(1); } }
+@keyframes endingFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes foodCheckPop { 0% { transform: scale(0.4); opacity: 0; } 55% { transform: scale(1.18); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+@keyframes foodOverlayIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes foodScreenIn { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: scale(1); } }
+@keyframes cordSway { 0%, 100% { transform: rotate(-1.5deg); } 50% { transform: rotate(1.5deg); } }
+@keyframes foodPowerOff {
+  0% { transform: scaleY(1) scaleX(1); opacity: 1; filter: brightness(1); }
+  25% { transform: scaleY(0.9) scaleX(1.02); filter: brightness(2.4); }
+  55% { transform: scaleY(0.08) scaleX(0.85); filter: brightness(3.2); opacity: 1; }
+  100% { transform: scaleY(0.02) scaleX(0.5); opacity: 0; filter: brightness(4); }
+}
+@keyframes foodEmptyPulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.7; } }
+@keyframes licenseCardIn { 0% { opacity: 0; transform: scale(0.7) rotateX(20deg) translateY(20px); } 60% { opacity: 1; } 100% { opacity: 1; transform: scale(1) rotateX(0deg) translateY(0); } }
+@keyframes stampSlam { 0% { opacity: 0; transform: rotate(-14deg) scale(2.4); } 45% { opacity: 1; transform: rotate(-14deg) scale(0.88); } 70% { transform: rotate(-14deg) scale(1.08); } 100% { opacity: 1; transform: rotate(-14deg) scale(1); } }
+@keyframes confettiBurst { 0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); opacity: 1; } 100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(200deg) scale(0.3); opacity: 0; } }
