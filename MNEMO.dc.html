@@ -1,0 +1,2710 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; background: #08030f; overflow: hidden; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  ::selection { background: #00e5cc; color: #08030f; }
+  @keyframes blinkPip {
+    0%, 100% { box-shadow: 0 0 10px 2px rgba(0,229,204,0.9), inset 0 0 12px rgba(0,229,204,0.5); }
+    50% { box-shadow: 0 0 22px 6px rgba(0,229,204,1), inset 0 0 18px rgba(0,229,204,0.8); }
+  }
+  @keyframes cursorBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes toastIn { from { opacity: 0; transform: translate(-50%, 12px); } to { opacity: 1; transform: translate(-50%, 0); } }
+  @keyframes floatParticle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
+  @keyframes pulseOpacity { 0%, 100% { opacity: 0.15; } 50% { opacity: 0.6; } }
+  @keyframes scanSweep { 0% { transform: translateY(-140px); } 100% { transform: translateY(800px); } }
+  @keyframes dashFlow { to { stroke-dashoffset: -100; } }
+  @keyframes glitchTop { 0%, 92%, 100% { transform: translate(0,0); opacity: 0; } 93% { transform: translate(-3px,-2px); opacity: 0.65; } 96% { transform: translate(2px,1px); opacity: 0.4; } }
+  @keyframes glitchBot { 0%, 90%, 100% { transform: translate(0,0); opacity: 0; } 91% { transform: translate(3px,2px); opacity: 0.55; } 95% { transform: translate(-2px,-1px); opacity: 0.35; } }
+  @keyframes fragPop { 0% { transform: scale(0.3); opacity: 0; } 60% { transform: scale(1.08); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+  @keyframes fragFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  @keyframes rainFall { 0% { transform: translateY(0); opacity: 0; } 12% { opacity: 1; } 88% { opacity: 0.7; } 100% { transform: translateY(920px); opacity: 0; } }
+  @keyframes bannerSlide { 0% { transform: translate(-50%, -60px); opacity: 0; } 12% { transform: translate(-50%, 0); opacity: 1; } 88% { transform: translate(-50%, 0); opacity: 1; } 100% { transform: translate(-50%, -60px); opacity: 0; } }
+  @keyframes screenBoot {
+    0% { transform: scaleY(0.02) scaleX(0.7); opacity: 0; filter: brightness(3); }
+    6% { transform: scaleY(0.02) scaleX(1); opacity: 1; filter: brightness(4); }
+    9% { transform: scaleY(0.7) scaleX(1); filter: brightness(1.6); }
+    14% { transform: scaleY(0.55) scaleX(1); filter: brightness(2.2); }
+    22% { transform: scaleY(1) scaleX(1); filter: brightness(1.4); }
+    30% { filter: brightness(1); }
+    100% { transform: scaleY(1) scaleX(1); opacity: 1; filter: brightness(1); }
+  }
+  @keyframes screenFlash {
+    0% { opacity: 0.9; } 8% { opacity: 0.1; } 11% { opacity: 0.7; } 15% { opacity: 0; } 100% { opacity: 0; }
+  }
+  @keyframes scanlineMove { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+  @keyframes powerDotPulse { 0%, 100% { opacity: 1; box-shadow: 0 0 6px currentColor; } 50% { opacity: 0.4; box-shadow: 0 0 2px currentColor; } }
+  @keyframes pieceCorrectGlow { 0%, 100% { filter: drop-shadow(0 0 6px rgba(0,229,204,0.5)); } 50% { filter: drop-shadow(0 0 18px rgba(0,229,204,0.95)); } }
+  @keyframes pieceFloat { 0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); } 50% { transform: translateY(-5px) rotate(var(--r, 0deg)); } }
+  @keyframes seamSweep { 0% { transform: translateX(-120%); opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } 100% { transform: translateX(220%); opacity: 0; } }
+  @keyframes passLetterIn { 0% { opacity: 0; transform: translateY(12px) scale(0.6); filter: blur(6px); } 100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }
+  @keyframes burstDot { 0% { transform: translateX(0) scale(1); opacity: 1; } 100% { transform: translateX(var(--dist, 70px)) scale(0.2); opacity: 0; } }
+  @keyframes tableDim { from { opacity: 1; } to { opacity: 0.18; } }
+  @keyframes slotLockPulse { 0%, 100% { box-shadow: 0 0 0 rgba(0,229,204,0); } 50% { box-shadow: 0 0 22px rgba(0,229,204,0.55); } }
+  @keyframes deskGlowPulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 0.9; } }
+  @keyframes hiTechScan { 0% { transform: translateX(-10%); } 100% { transform: translateX(110%); } }
+  @keyframes hiTechCellGlow { 0%, 100% { box-shadow: inset 0 2px 8px rgba(0,0,0,0.6), 0 0 8px rgba(0,229,204,0.35); } 50% { box-shadow: inset 0 2px 8px rgba(0,0,0,0.6), 0 0 18px rgba(0,229,204,0.75); } }
+  @keyframes scannerRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes scannerRotateRev { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+  @keyframes scannerCorePulse { 0%, 100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.25); } }
+  @keyframes radarPing { 0% { transform: scale(0.4); opacity: 0.8; } 100% { transform: scale(2.4); opacity: 0; } }
+  @keyframes signalTravel { 0% { offset-distance: 0%; opacity: 0; } 8% { opacity: 1; } 92% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
+  @keyframes mapGridDrift { 0% { background-position: 0 0; } 100% { background-position: 48px 48px; } }
+  @keyframes mapGlowPulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+  @keyframes glyphDrift { 0%, 100% { transform: translateY(0); opacity: 0.18; } 50% { transform: translateY(-10px); opacity: 0.4; } }
+  @keyframes glitchShift { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-4px); } 40% { transform: translateX(3px); } 60% { transform: translateX(-2px); } 80% { transform: translateX(2px); } }
+  @keyframes successRipple { 0% { transform: scale(0.9); opacity: 0.8; } 100% { transform: scale(1.6); opacity: 0; } }
+  @keyframes recBlink { 0%, 60% { opacity: 1; } 61%, 100% { opacity: 0.15; } }
+  @keyframes inputRise { 0% { opacity: 0; transform: translateY(10px) scale(0.97); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+  @keyframes blankPop { 0% { opacity: 0; transform: scale(0.5); } 60% { opacity: 1; transform: scale(1.08); } 100% { opacity: 1; transform: scale(1); } }
+  @keyframes endingFadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes foodCheckPop { 0% { transform: scale(0.4); opacity: 0; } 55% { transform: scale(1.18); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+  @keyframes foodOverlayIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes foodScreenIn { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: scale(1); } }
+  @keyframes cordSway { 0%, 100% { transform: rotate(-1.5deg); } 50% { transform: rotate(1.5deg); } }
+  @keyframes foodPowerOff {
+    0% { transform: scaleY(1) scaleX(1); opacity: 1; filter: brightness(1); }
+    25% { transform: scaleY(0.9) scaleX(1.02); filter: brightness(2.4); }
+    55% { transform: scaleY(0.08) scaleX(0.85); filter: brightness(3.2); opacity: 1; }
+    100% { transform: scaleY(0.02) scaleX(0.5); opacity: 0; filter: brightness(4); }
+  }
+  @keyframes foodEmptyPulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.7; } }
+  @keyframes licenseCardIn { 0% { opacity: 0; transform: scale(0.7) rotateX(20deg) translateY(20px); } 60% { opacity: 1; } 100% { opacity: 1; transform: scale(1) rotateX(0deg) translateY(0); } }
+  @keyframes stampSlam { 0% { opacity: 0; transform: rotate(-14deg) scale(2.4); } 45% { opacity: 1; transform: rotate(-14deg) scale(0.88); } 70% { transform: rotate(-14deg) scale(1.08); } 100% { opacity: 1; transform: rotate(-14deg) scale(1); } }
+  @keyframes confettiBurst { 0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); opacity: 1; } 100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(200deg) scale(0.3); opacity: 0; } }
+</style>
+</helmet>
+
+<div style="width:100vw;height:100vh;background:#08030f;display:flex;align-items:center;justify-content:center;position:fixed;inset:0;font-family:'Share Tech Mono', monospace;">
+  <div style="width:700px;height:800px;position:relative;transform:scale({{ scale }});transform-origin:center center;background:#08030f;overflow:hidden;box-shadow:0 0 60px rgba(192,96,255,0.15);">
+
+    <!-- decorative grid backdrop -->
+    <div style="position:absolute;inset:0;z-index:0;pointer-events:none;background-image:repeating-linear-gradient(0deg, rgba(192,96,255,0.045) 0 1px, transparent 1px 42px), repeating-linear-gradient(90deg, rgba(192,96,255,0.045) 0 1px, transparent 1px 42px);"></div>
+
+    <!-- building silhouettes -->
+    <div style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;">
+      <sc-for list="{{ buildings }}" as="b" hint-placeholder-count="9">
+        <div style="{{ b.style }}"></div>
+      </sc-for>
+    </div>
+
+    <!-- ambient particles -->
+    <div style="position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;">
+      <sc-for list="{{ particles }}" as="p" hint-placeholder-count="30">
+        <div style="{{ p.style }}"></div>
+      </sc-for>
+    </div>
+
+    <!-- falling rain lines -->
+    <div style="position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;">
+      <sc-for list="{{ rain }}" as="r" hint-placeholder-count="24">
+        <div style="{{ r.style }}"></div>
+      </sc-for>
+    </div>
+
+    <!-- scanline sweep -->
+    <div style="position:absolute;left:0;right:0;height:140px;z-index:2;pointer-events:none;background:linear-gradient(to bottom, transparent, rgba(0,229,204,0.07), transparent);animation:scanSweep 7s linear infinite;"></div>
+
+    <!-- vignette -->
+    <div style="position:absolute;inset:0;z-index:24;pointer-events:none;background:radial-gradient(ellipse at center, transparent 55%, rgba(8,3,15,0.72) 100%);"></div>
+
+    <!-- HUD corner brackets -->
+    <div style="position:absolute;top:10px;left:10px;width:28px;height:28px;border-top:2px solid rgba(192,96,255,0.55);border-left:2px solid rgba(192,96,255,0.55);z-index:25;pointer-events:none;"></div>
+    <div style="position:absolute;top:10px;right:10px;width:28px;height:28px;border-top:2px solid rgba(0,229,204,0.55);border-right:2px solid rgba(0,229,204,0.55);z-index:25;pointer-events:none;"></div>
+    <div style="position:absolute;bottom:10px;left:10px;width:28px;height:28px;border-bottom:2px solid rgba(0,229,204,0.55);border-left:2px solid rgba(0,229,204,0.55);z-index:25;pointer-events:none;"></div>
+    <div style="position:absolute;bottom:10px;right:10px;width:28px;height:28px;border-bottom:2px solid rgba(192,96,255,0.55);border-right:2px solid rgba(192,96,255,0.55);z-index:25;pointer-events:none;"></div>
+
+    <!-- ENTRY SCREEN -->
+    <sc-if value="{{ isEntry }}" hint-placeholder-val="{{ true }}">
+      <div style="position:absolute;inset:0;z-index:10;padding:36px 30px 24px;display:flex;flex-direction:column;">
+        <div style="text-align:center;margin-bottom:6px;position:relative;display:inline-block;">
+          <div style="font-size:44px;letter-spacing:10px;color:#00ffee;text-shadow:0 0 18px rgba(0,229,204,0.8);font-weight:700;">MNEMO</div>
+          <div style="position:absolute;top:0;left:0;font-size:44px;letter-spacing:10px;color:#ff2d78;font-weight:700;opacity:0;animation:glitchTop 4.5s infinite;">MNEMO</div>
+          <div style="position:absolute;top:0;left:0;font-size:44px;letter-spacing:10px;color:#c060ff;font-weight:700;opacity:0;animation:glitchBot 4.5s infinite;">MNEMO</div>
+          <div style="color:#c09ad8;font-size:14px;letter-spacing:4px;margin-top:6px;">記憶協定 · 房間碼驗證</div>
+        </div>
+
+        <div style="color:#c09ad8;font-size:14px;text-align:center;margin:26px 0 14px;letter-spacing:2px;">請輸入六位<span style="color:#00e5cc;font-weight:700;">房間碼</span>以同步路線</div>
+
+        <div style="display:flex;justify-content:center;gap:10px;margin-bottom:24px;">
+          <sc-for list="{{ roomSlots }}" as="slot" hint-placeholder-count="6">
+            <div style="width:68px;height:68px;border:2px solid {{ slot.borderColor }};background:{{ slot.bg }};border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:30px;color:#00ffee;text-shadow:0 0 10px rgba(0,229,204,0.7);">
+              {{ slot.char }}
+              <sc-if value="{{ slot.isCursor }}">
+                <span style="width:2px;height:30px;background:#00e5cc;display:inline-block;animation:cursorBlink 1s step-start infinite;"></span>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="flex:1;display:grid;grid-template-columns:repeat(6, 1fr);gap:7px;align-content:start;">
+          <sc-for list="{{ keypadKeys }}" as="key" hint-placeholder-count="36">
+            <button onClick="{{ key.onPress }}" style="height:50px;background:#180b2c;border:2px solid #5a3a80;border-radius:6px;color:#e0b0ff;font-family:'Share Tech Mono', monospace;font-size:19px;cursor:pointer;" style-active="background:#2a0e4a;border-color:#c060ff;transform:scale(0.98);">
+              {{ key.label }}
+            </button>
+          </sc-for>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-top:16px;">
+          <button onClick="{{ onClear }}" style="flex:1;height:56px;background:#2a0e4a;border:2px solid #9a50cc;color:#e0b0ff;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:16px;letter-spacing:2px;cursor:pointer;" style-active="transform:scale(0.98);">清除</button>
+          <button onClick="{{ onConfirmRoom }}" disabled="{{ confirmDisabled }}" style="flex:2;height:56px;background:{{ confirmBg }};border:2px solid #00e5cc;color:{{ confirmColor }};border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:16px;letter-spacing:4px;cursor:pointer;opacity:{{ confirmOpacity }};" style-active="transform:scale(0.98);">同步進入</button>
+        </div>
+
+        <div style="text-align:center;margin-top:10px;">
+          <button onClick="{{ onReset }}" style="background:none;border:none;color:#5a3a80;font-family:'Share Tech Mono', monospace;font-size:11px;letter-spacing:2px;cursor:pointer;padding:8px;">重置示範</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- INTRO SCREEN -->
+    <sc-if value="{{ isIntro }}">
+      <div style="position:absolute;inset:0;z-index:10;padding:50px 34px 30px;display:flex;flex-direction:column;" onClick="{{ onIntroTap }}">
+        <button onClick="{{ onIntroSkip }}" style="position:absolute;top:20px;right:24px;background:#2a0e4a;border:2px solid #9a50cc;color:#e0b0ff;border-radius:6px;height:36px;padding:0 14px;font-family:'Share Tech Mono', monospace;font-size:12px;letter-spacing:2px;cursor:pointer;z-index:5;" style-active="transform:scale(0.96);">跳過 ▸</button>
+
+        <div style="flex:1;display:flex;flex-direction:column;overflow-y:auto;min-height:0;">
+          <sc-if value="{{ introIsRules }}">
+            <div style="width:100%;margin:auto 0;position:relative;border-radius:12px;background:#050810;border:1px solid #1a2a30;padding:10px;box-shadow:0 0 0 1px rgba(0,229,204,0.08), 0 18px 44px rgba(0,0,0,0.55);animation:screenBoot 0.9s cubic-bezier(0.2,0.9,0.25,1) both;transform-origin:center top;">
+              <div style="position:absolute;top:6px;left:9px;width:5px;height:5px;border-radius:50%;background:#1e2a2e;box-shadow:inset 0 1px 1px rgba(0,0,0,0.6);"></div>
+              <div style="position:absolute;top:6px;right:9px;width:5px;height:5px;border-radius:50%;background:#1e2a2e;box-shadow:inset 0 1px 1px rgba(0,0,0,0.6);"></div>
+              <div style="position:relative;border-radius:8px;overflow:hidden;background:radial-gradient(ellipse at 50% 0%, rgba(0,229,204,0.08), #060911 65%);border:1px solid rgba(0,229,204,0.4);box-shadow:inset 0 0 30px rgba(0,0,0,0.65), inset 0 0 40px rgba(0,229,204,0.13);padding:24px 26px;">
+                <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background-image:repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px);opacity:0.5;"></div>
+                <div style="position:absolute;left:0;right:0;height:70px;z-index:1;pointer-events:none;background:linear-gradient(to bottom, transparent, rgba(0,229,204,0.13), transparent);animation:scanlineMove 4.5s linear infinite;"></div>
+                <div style="position:absolute;inset:0;z-index:2;pointer-events:none;background:#00e5cc;opacity:0;animation:screenFlash 0.9s ease-out both;"></div>
+                <div style="position:relative;z-index:3;display:flex;align-items:center;gap:8px;margin-bottom:16px;border-bottom:1px solid rgba(0,229,204,0.35);padding-bottom:10px;">
+                  <span style="width:8px;height:8px;border-radius:50%;background:#00e5cc;color:#00e5cc;animation:powerDotPulse 1.4s ease-in-out infinite;"></span>
+                  <span style="color:#00ffee;font-size:13px;letter-spacing:4px;">SYSTEM NOTICE // 規則簡報</span>
+                </div>
+                <div style="position:relative;z-index:3;font-size:17px;line-height:2;text-align:left;width:100%;">
+                  <sc-for list="{{ introParagraphs }}" as="para" hint-placeholder-count="1">
+                    <div style="margin:0 0 18px 0;text-align:left;width:100%;">
+                      <sc-for list="{{ para.runs }}" as="seg" hint-placeholder-count="1"><sc-if value="{{ seg.isBr }}"><br/></sc-if><sc-if value="{{ seg.isText }}" hint-placeholder-val="{{ true }}"><span style="color:{{ seg.color }};font-weight:{{ seg.weight }};text-shadow:{{ seg.glow }};">{{ seg.text }}</span></sc-if></sc-for>
+                    </div>
+                  </sc-for>
+                  <sc-if value="{{ showCursor }}">
+                    <span style="color:#00e5cc;animation:cursorBlink 1s step-start infinite;">▌</span>
+                  </sc-if>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ introNotRules }}">
+            <div style="font-size:19px;line-height:2.1;text-align:left;width:100%;">
+              <sc-for list="{{ introParagraphs }}" as="para" hint-placeholder-count="1">
+                <div style="margin:0 0 20px 0;text-align:left;width:100%;">
+                  <sc-for list="{{ para.runs }}" as="seg" hint-placeholder-count="1"><sc-if value="{{ seg.isBr }}"><br/></sc-if><sc-if value="{{ seg.isText }}" hint-placeholder-val="{{ true }}"><span style="color:{{ seg.color }};font-weight:{{ seg.weight }};text-shadow:{{ seg.glow }};">{{ seg.text }}</span></sc-if></sc-for>
+                </div>
+              </sc-for>
+              <sc-if value="{{ showCursor }}">
+                <span style="color:#00e5cc;animation:cursorBlink 1s step-start infinite;">▌</span>
+              </sc-if>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="display:flex;justify-content:center;gap:8px;margin-bottom:18px;">
+          <sc-for list="{{ introDots }}" as="dot" hint-placeholder-count="4">
+            <div style="width:{{ dot.size }}px;height:8px;border-radius:4px;background:{{ dot.color }};transition:all 0.3s;"></div>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ typingDone }}">
+          <div style="display:flex;gap:12px;animation:fadeUp 0.4s ease both;">
+            <sc-if value="{{ introHasPrev }}">
+              <button onClick="{{ onIntroPrev }}" style="height:58px;padding:0 22px;background:#2a0e4a;border:2px solid #9a50cc;color:#e0b0ff;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:17px;letter-spacing:4px;cursor:pointer;" style-active="transform:scale(0.98);">◂ 上一頁</button>
+            </sc-if>
+            <button onClick="{{ onIntroNext }}" style="flex:1;height:58px;background:#003a35;border:2px solid #00e5cc;color:#00ffee;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:17px;letter-spacing:6px;cursor:pointer;" style-active="transform:scale(0.98);">{{ introNextLabel }}</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ typingDone }}" hint-placeholder-val="{{ false }}"><span style="display:none;"></span></sc-if>
+      </div>
+    </sc-if>
+
+    <!-- MAP SCREEN -->
+    <sc-if value="{{ isMap }}">
+      <div style="position:absolute;inset:0;z-index:10;padding:26px 24px;overflow:hidden;">
+        <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 40% at 50% 8%, rgba(0,229,204,0.1), transparent 60%), radial-gradient(ellipse 50% 40% at 15% 90%, rgba(192,96,255,0.08), transparent 65%);"></div>
+        <div style="position:absolute;inset:0;pointer-events:none;opacity:0.35;background-image:linear-gradient(rgba(0,229,204,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,204,0.08) 1px, transparent 1px);background-size:48px 48px;animation:mapGridDrift 14s linear infinite;"></div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;position:relative;">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="width:6px;height:6px;border-radius:50%;background:#00e5cc;box-shadow:0 0 8px rgba(0,229,204,0.9);animation:mapGlowPulse 2s ease-in-out infinite;"></span>
+                <span style="color:#00ffee;font-size:14px;letter-spacing:4px;text-shadow:0 0 10px rgba(0,229,204,0.6);">MNEMO // 訊號地圖</span>
+              </div>
+              <div style="color:#5a3a80;font-size:10px;letter-spacing:2px;margin-top:3px;margin-left:14px;">SIGNAL MAP // 記憶路徑追蹤中</div>
+            </div>
+            <button onClick="{{ onReset }}" style="background:none;border:1px solid #5a3a80;color:#8a6ab0;border-radius:14px;height:26px;padding:0 10px;font-family:'Share Tech Mono', monospace;font-size:10px;letter-spacing:1px;cursor:pointer;">重新開始</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="display:flex;align-items:center;gap:8px;background:#180b2c;border:2px solid #5a3a80;border-radius:20px;padding:8px 14px;min-height:44px;">
+              <span style="color:#f0c030;font-size:16px;">◆</span>
+              <span style="color:#f0e070;font-size:14px;letter-spacing:2px;">{{ fragmentCount }}</span>
+            </div>
+            <button onClick="{{ onOpenBackpack }}" style="height:44px;padding:0 14px;background:#2a0e4a;border:2px solid #9a50cc;color:#e0b0ff;border-radius:20px;font-family:'Share Tech Mono', monospace;font-size:12px;letter-spacing:2px;cursor:pointer;" style-active="transform:scale(0.96);">▤ 背包</button>
+          </div>
+        </div>
+
+        <div style="position:relative;width:100%;height:640px;margin-top:6px;">
+          <svg viewBox="0 0 700 640" style="position:absolute;inset:0;width:100%;height:100%;">
+            <path d="{{ pathD }}" fill="none" stroke="#3a2060" stroke-width="4" stroke-dasharray="2 12" stroke-linecap="round"></path>
+            <path d="{{ traveledD }}" fill="none" stroke="#00e5cc" stroke-width="3" stroke-dasharray="9 9" stroke-linecap="round" opacity="0.85" style="animation:dashFlow 2.4s linear infinite;filter:drop-shadow(0 0 4px rgba(0,229,204,0.8));"></path>
+          </svg>
+          <sc-if value="{{ traveledD }}">
+            <div style="position:absolute;left:0;top:0;width:9px;height:9px;margin:-4.5px;border-radius:50%;background:#00ffee;box-shadow:0 0 10px rgba(0,229,204,1), 0 0 20px rgba(0,229,204,0.6);offset-path:path('{{ traveledD }}');animation:signalTravel 3.6s linear infinite;pointer-events:none;"></div>
+          </sc-if>
+
+          <sc-for list="{{ mapNodes }}" as="node" hint-placeholder-count="8">
+            <div style="position:absolute;left:{{ node.x }}px;top:{{ node.y }}px;width:120px;transform:translate(-50%,-50%);">
+              <sc-if value="{{ node.isCurrent }}">
+                <div style="position:absolute;left:50%;top:50%;width:116px;height:92px;transform:translate(-50%,-50%);border-radius:8px;border:1.5px solid rgba(0,229,204,0.6);animation:radarPing 2.2s ease-out infinite;pointer-events:none;"></div>
+              </sc-if>
+              <div onClick="{{ node.onClick }}" style="position:relative;width:116px;height:92px;border-radius:6px;background:{{ node.bg }};border:2px solid {{ node.border }};cursor:{{ node.cursor }};animation:{{ node.anim }};overflow:hidden;display:flex;align-items:center;justify-content:center;padding:8px;box-shadow:{{ node.shadow }};">
+                <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(0deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 4px);pointer-events:none;"></div>
+                <div style="position:absolute;top:4px;left:4px;width:9px;height:9px;border-top:1px solid {{ node.border }};border-left:1px solid {{ node.border }};opacity:0.9;"></div>
+                <div style="position:absolute;top:4px;right:4px;width:9px;height:9px;border-top:1px solid {{ node.border }};border-right:1px solid {{ node.border }};opacity:0.9;"></div>
+                <div style="position:absolute;bottom:4px;left:4px;width:9px;height:9px;border-bottom:1px solid {{ node.border }};border-left:1px solid {{ node.border }};opacity:0.9;"></div>
+                <div style="position:absolute;bottom:4px;right:4px;width:9px;height:9px;border-bottom:1px solid {{ node.border }};border-right:1px solid {{ node.border }};opacity:0.9;"></div>
+                <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:100%;">
+                  <sc-if value="{{ node.icon }}">
+                    <svg viewBox="0 0 64 64" style="width:34px;height:34px;flex-shrink:0;">
+                      <sc-for list="{{ node.icon }}" as="shape" hint-placeholder-count="4">
+                        <sc-if value="{{ shape.isRect }}"><rect x="{{ shape.x }}" y="{{ shape.y }}" width="{{ shape.w }}" height="{{ shape.h }}" fill="{{ shape.fill }}" stroke="{{ shape.stroke }}" stroke-width="{{ shape.sw }}" opacity="{{ shape.opacity }}"></rect></sc-if>
+                        <sc-if value="{{ shape.isCircle }}"><circle cx="{{ shape.cx }}" cy="{{ shape.cy }}" r="{{ shape.r }}" fill="{{ shape.fill }}" stroke="{{ shape.stroke }}" stroke-width="{{ shape.sw }}" opacity="{{ shape.opacity }}"></circle></sc-if>
+                        <sc-if value="{{ shape.isPolygon }}"><polygon points="{{ shape.points }}" fill="{{ shape.fill }}" stroke="{{ shape.stroke }}" stroke-width="{{ shape.sw }}" opacity="{{ shape.opacity }}"></polygon></sc-if>
+                      </sc-for>
+                    </svg>
+                  </sc-if>
+                  <div style="color:{{ node.fg }};font-size:{{ node.fontSize }}px;font-weight:700;text-align:center;line-height:1.3;letter-spacing:1.5px;text-shadow:0 0 10px {{ node.border }};">{{ node.label }}</div>
+                  <sc-if value="{{ node.icon }}">
+                    <span style="width:18px;height:1.5px;background:{{ node.border }};opacity:0.7;margin-top:1px;"></span>
+                  </sc-if>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display:flex;gap:5px;margin-top:8px;">
+          <sc-for list="{{ progressSegs }}" as="seg" hint-placeholder-count="8">
+            <div style="flex:1;height:7px;border-radius:4px;background:{{ seg.color }};color:{{ seg.color }};box-shadow:{{ seg.glow }};animation:{{ seg.anim }};"></div>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ toastMsg }}">
+          <div style="position:absolute;bottom:44px;left:50%;background:#2a0e4a;border:2px solid #9a50cc;color:#e0b0ff;padding:12px 20px;border-radius:8px;font-size:13px;letter-spacing:1px;animation:toastIn 0.25s ease both;white-space:nowrap;">{{ toastMsg }}</div>
+        </sc-if>
+
+        <sc-if value="{{ unlockBanner }}">
+          <div style="position:absolute;top:0;left:50%;background:#003a35;border:2px solid #00e5cc;color:#00ffee;padding:12px 26px;border-radius:0 0 10px 10px;font-size:14px;letter-spacing:3px;white-space:nowrap;text-shadow:0 0 8px rgba(0,229,204,0.7);animation:bannerSlide 2.6s ease both;">{{ unlockBanner }}</div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <!-- STAGE SCREEN -->
+    <sc-if value="{{ isStage }}">
+      <div style="position:absolute;inset:0;z-index:10;padding:50px 34px 30px;display:flex;flex-direction:column;">
+
+        <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:-1;">
+          <sc-for list="{{ stageGlyphs }}" as="g" hint-placeholder-count="10">
+            <span style="{{ g.style }}">{{ g.ch }}</span>
+          </sc-for>
+        </div>
+
+        <div style="position:absolute;top:18px;left:24px;color:#c09ad8;font-size:11px;letter-spacing:3px;z-index:1;">{{ stageName }}</div>
+
+        <!-- story beat -->
+        <sc-if value="{{ isStageStory }}">
+          <sc-if value="{{ stageIsDuelRules }}" hint-placeholder-val="{{ false }}">
+            <div style="flex:1;display:flex;flex-direction:column;overflow-y:auto;padding-top:6px;" onClick="{{ onStageTap }}">
+
+              <div style="text-align:center;margin-bottom:14px;flex-shrink:0;">
+                <div style="display:flex;align-items:center;justify-content:center;gap:10px;">
+                  <span style="width:20px;height:1px;background:linear-gradient(to left, rgba(0,229,204,0.7), transparent);"></span>
+                  <span style="width:6px;height:6px;transform:rotate(45deg);background:#00e5cc;box-shadow:0 0 8px rgba(0,229,204,0.8);"></span>
+                  <span style="color:#5ec9c0;font-size:10px;letter-spacing:5px;">DUEL PROTOCOL</span>
+                  <span style="width:6px;height:6px;transform:rotate(45deg);background:#00e5cc;box-shadow:0 0 8px rgba(0,229,204,0.8);"></span>
+                  <span style="width:20px;height:1px;background:linear-gradient(to right, rgba(0,229,204,0.7), transparent);"></span>
+                </div>
+                <div style="color:#00ffee;font-size:26px;font-weight:700;letter-spacing:4px;margin-top:8px;text-shadow:0 0 18px rgba(0,229,204,0.65), 0 0 3px rgba(255,255,255,0.4);">{{ duelTitle }}</div>
+              </div>
+
+              <div style="position:relative;border-radius:14px;background:#050810;border:1px solid #1a2a30;padding:10px;box-shadow:0 0 0 1px rgba(0,229,204,0.08), 0 18px 40px rgba(0,0,0,0.55);flex-shrink:0;">
+                <div style="position:absolute;top:6px;left:9px;width:5px;height:5px;border-radius:50%;background:#1e2a2e;box-shadow:inset 0 1px 1px rgba(0,0,0,0.6);"></div>
+                <div style="position:absolute;top:6px;right:9px;width:5px;height:5px;border-radius:50%;background:#1e2a2e;box-shadow:inset 0 1px 1px rgba(0,0,0,0.6);"></div>
+                <div style="position:relative;border-radius:8px;overflow:hidden;background:radial-gradient(ellipse at 50% 0%, rgba(0,229,204,0.1), #060911 65%);border:1px solid rgba(0,229,204,0.4);box-shadow:inset 0 0 30px rgba(0,0,0,0.65), inset 0 0 40px rgba(0,229,204,0.1);">
+                  <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background-image:repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px);opacity:0.5;"></div>
+                  <div style="position:absolute;left:0;right:0;height:70px;z-index:1;pointer-events:none;background:linear-gradient(to bottom, transparent, rgba(0,229,204,0.16), transparent);animation:scanlineMove 4.5s linear infinite;"></div>
+                  <div style="position:relative;z-index:3;display:flex;align-items:center;gap:8px;padding:11px 18px;border-bottom:1px solid rgba(0,229,204,0.35);background:rgba(0,229,204,0.05);">
+                    <span style="width:8px;height:8px;border-radius:50%;background:#00e5cc;color:#00e5cc;animation:powerDotPulse 1.4s ease-in-out infinite;"></span>
+                    <span style="color:#00ffee;font-size:12px;letter-spacing:3px;">決鬥守則 // RULE.SET</span>
+                  </div>
+                  <div style="position:relative;z-index:3;padding:18px 20px 20px;font-size:15.5px;line-height:1.95;text-align:left;">
+                    <sc-for list="{{ stageParagraphs }}" as="para" hint-placeholder-count="1">
+                      <div style="margin:0 0 12px 0;text-align:left;width:100%;">
+                        <sc-for list="{{ para.runs }}" as="seg" hint-placeholder-count="1"><sc-if value="{{ seg.isBr }}"><br/></sc-if><sc-if value="{{ seg.isText }}" hint-placeholder-val="{{ true }}"><span style="color:{{ seg.color }};font-weight:{{ seg.weight }};text-shadow:{{ seg.glow }};">{{ seg.text }}</span></sc-if></sc-for>
+                      </div>
+                    </sc-for>
+                    <sc-if value="{{ stageShowCursor }}">
+                      <span style="color:#00e5cc;animation:cursorBlink 1s step-start infinite;">▌</span>
+                    </sc-if>
+                  </div>
+                </div>
+                <div style="height:9px;margin-top:-1px;background-image:linear-gradient(45deg, #08030f 25%, transparent 25%), linear-gradient(-45deg, #08030f 25%, transparent 25%);background-size:14px 14px;background-position:0 -1px;"></div>
+              </div>
+
+              <sc-if value="{{ stageShowTypeChart }}">
+                <div style="margin-top:16px;animation:fadeUp 0.4s ease both;">
+                  <div style="position:relative;border-radius:12px;background:#050810;border:1px solid #1a2a30;padding:8px;box-shadow:0 0 0 1px rgba(240,192,48,0.08), 0 14px 30px rgba(0,0,0,0.5);">
+                    <div style="position:absolute;top:5px;left:8px;width:5px;height:5px;border-radius:50%;background:#1e2a2e;box-shadow:inset 0 1px 1px rgba(0,0,0,0.6);"></div>
+                    <div style="position:absolute;top:5px;right:8px;width:5px;height:5px;border-radius:50%;background:#1e2a2e;box-shadow:inset 0 1px 1px rgba(0,0,0,0.6);"></div>
+                    <div style="position:relative;border-radius:8px;overflow:hidden;background:radial-gradient(ellipse at 50% 0%, rgba(240,192,48,0.1), #060911 65%);border:1px solid rgba(240,192,48,0.35);box-shadow:inset 0 0 26px rgba(0,0,0,0.6);">
+                      <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background-image:repeating-linear-gradient(0deg, rgba(255,255,255,0.045) 0px, rgba(255,255,255,0.045) 1px, transparent 1px, transparent 3px);"></div>
+                      <div style="position:absolute;left:0;right:0;height:60px;z-index:1;pointer-events:none;background:linear-gradient(to bottom, transparent, rgba(240,192,48,0.15), transparent);animation:scanlineMove 4.5s linear infinite;"></div>
+                      <div style="position:relative;z-index:2;display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid rgba(240,192,48,0.3);background:rgba(240,192,48,0.05);">
+                        <span style="width:7px;height:7px;border-radius:50%;background:#f0c030;color:#f0c030;animation:powerDotPulse 1.4s ease-in-out infinite;"></span>
+                        <span style="color:#f0e070;font-size:11px;letter-spacing:2px;flex:1;">屬性克制對照 // TYPE.MATRIX</span>
+                        <span style="color:#f0c03099;font-size:9px;letter-spacing:1px;">招式 ➜ 克制對象</span>
+                      </div>
+                      <div style="position:relative;z-index:2;padding:6px 12px 8px;">
+                        <sc-for list="{{ typeChartRows }}" as="row" hint-placeholder-count="18">
+                          <div style="display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+                            <span style="flex-shrink:0;display:flex;align-items:center;gap:4px;min-width:60px;padding:3px 7px;border-radius:5px;background:{{ row.color }};color:{{ row.textColor }};font-size:11px;font-weight:700;letter-spacing:0.5px;box-shadow:0 0 8px {{ row.color }}55;">
+                              <span style="font-size:11px;">{{ row.icon }}</span>{{ row.name }}
+                            </span>
+                            <span style="color:#00e5cc;font-size:11px;padding-top:4px;text-shadow:0 0 6px rgba(0,229,204,0.7);">➜</span>
+                            <div style="display:flex;flex-wrap:wrap;gap:5px;padding-top:2px;">
+                              <sc-for list="{{ row.targets }}" as="t" hint-placeholder-count="2">
+                                <span style="display:flex;align-items:center;gap:3px;padding:2px 6px;border-radius:4px;background:{{ t.color }};color:{{ t.textColor }};font-size:10px;font-weight:600;">
+                                  <span style="font-size:10px;">{{ t.icon }}</span>{{ t.name }}
+                                </span>
+                              </sc-for>
+                            </div>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </sc-if>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ stageIsDuelRules }}">
+            <sc-if value="{{ stageTypingDone }}">
+              <div style="display:flex;gap:12px;animation:fadeUp 0.4s ease both;flex-shrink:0;margin-top:14px;">
+                <sc-if value="{{ stageHasPrev }}">
+                  <button onClick="{{ onStagePrev }}" style="height:58px;padding:0 22px;background:#2a0e4a;border:2px solid #9a50cc;color:#e0b0ff;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:17px;letter-spacing:4px;cursor:pointer;" style-active="transform:scale(0.98);">◂ 上一頁</button>
+                </sc-if>
+                <button onClick="{{ onStageNext }}" style="flex:1;height:58px;background:#003a35;border:2px solid #00e5cc;color:#00ffee;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:17px;letter-spacing:6px;cursor:pointer;" style-active="transform:scale(0.98);">{{ stageNextLabel }}</button>
+              </div>
+            </sc-if>
+          </sc-if>
+
+          <sc-if value="{{ stageIsTerminalStory }}" hint-placeholder-val="{{ false }}">
+            <div style="flex:1;display:flex;flex-direction:column;overflow-y:auto;min-height:0;padding-top:6px;" onClick="{{ onStageTap }}">
+              <div style="margin:auto 0;position:relative;padding:22px 6px;">
+                <div style="position:absolute;top:0;left:0;width:18px;height:18px;border-top:2px solid rgba(0,229,204,0.4);border-left:2px solid rgba(0,229,204,0.4);"></div>
+                <div style="position:absolute;top:0;right:0;width:18px;height:18px;border-top:2px solid rgba(0,229,204,0.4);border-right:2px solid rgba(0,229,204,0.4);"></div>
+                <div style="position:absolute;bottom:0;left:0;width:18px;height:18px;border-bottom:2px solid rgba(0,229,204,0.4);border-left:2px solid rgba(0,229,204,0.4);"></div>
+                <div style="position:absolute;bottom:0;right:0;width:18px;height:18px;border-bottom:2px solid rgba(0,229,204,0.4);border-right:2px solid rgba(0,229,204,0.4);"></div>
+
+                <div style="display:flex;justify-content:center;margin-bottom:18px;">
+                  <div style="position:relative;width:72px;height:72px;">
+                    <div style="position:absolute;inset:0;border-radius:50%;border:1.5px dashed rgba(0,229,204,0.45);animation:scannerRotate 7s linear infinite;"></div>
+                    <div style="position:absolute;inset:10px;border-radius:50%;border:1px dashed rgba(154,80,204,0.4);animation:scannerRotateRev 5s linear infinite;"></div>
+                    <div style="position:absolute;inset:24px;border-radius:50%;background:radial-gradient(circle, rgba(0,229,204,0.9), rgba(0,229,204,0.1) 70%);box-shadow:0 0 18px rgba(0,229,204,0.7);animation:scannerCorePulse 2s ease-in-out infinite;"></div>
+                    <div style="position:absolute;top:-3px;left:50%;width:2px;height:8px;background:rgba(0,229,204,0.6);transform:translateX(-50%);"></div>
+                    <div style="position:absolute;bottom:-3px;left:50%;width:2px;height:8px;background:rgba(0,229,204,0.6);transform:translateX(-50%);"></div>
+                    <div style="position:absolute;left:-3px;top:50%;width:8px;height:2px;background:rgba(0,229,204,0.6);transform:translateY(-50%);"></div>
+                    <div style="position:absolute;right:-3px;top:50%;width:8px;height:2px;background:rgba(0,229,204,0.6);transform:translateY(-50%);"></div>
+                  </div>
+                </div>
+
+                <div style="text-align:center;margin-bottom:18px;flex-shrink:0;">
+                  <div style="display:flex;align-items:center;justify-content:center;gap:10px;">
+                    <span style="width:20px;height:1px;background:linear-gradient(to left, rgba(0,229,204,0.7), transparent);"></span>
+                    <span style="width:6px;height:6px;transform:rotate(45deg);background:#00e5cc;box-shadow:0 0 8px rgba(0,229,204,0.8);"></span>
+                    <span style="color:#5ec9c0;font-size:10px;letter-spacing:5px;">MEMORY TERMINAL</span>
+                    <span style="width:6px;height:6px;transform:rotate(45deg);background:#00e5cc;box-shadow:0 0 8px rgba(0,229,204,0.8);"></span>
+                    <span style="width:20px;height:1px;background:linear-gradient(to right, rgba(0,229,204,0.7), transparent);"></span>
+                  </div>
+                </div>
+                <div style="position:relative;border-radius:14px;background:#050810;border:1px solid #1a2a30;padding:10px;box-shadow:0 0 0 1px rgba(0,229,204,0.08), 0 18px 40px rgba(0,0,0,0.55);flex-shrink:0;">
+                  <div style="position:absolute;top:6px;left:9px;width:5px;height:5px;border-radius:50%;background:#1e2a2e;box-shadow:inset 0 1px 1px rgba(0,0,0,0.6);"></div>
+                  <div style="position:absolute;top:6px;right:9px;width:5px;height:5px;border-radius:50%;background:#1e2a2e;box-shadow:inset 0 1px 1px rgba(0,0,0,0.6);"></div>
+                  <div style="position:relative;border-radius:8px;overflow:hidden;background:radial-gradient(ellipse at 50% 0%, rgba(0,229,204,0.1), #060911 65%);border:1px solid rgba(0,229,204,0.4);box-shadow:inset 0 0 30px rgba(0,0,0,0.65), inset 0 0 40px rgba(0,229,204,0.1);">
+                    <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background-image:repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px);opacity:0.5;"></div>
+                    <div style="position:absolute;left:0;right:0;height:70px;z-index:1;pointer-events:none;background:linear-gradient(to bottom, transparent, rgba(0,229,204,0.16), transparent);animation:scanlineMove 4.5s linear infinite;"></div>
+                    <div style="position:relative;z-index:3;display:flex;align-items:center;gap:8px;padding:11px 18px;border-bottom:1px solid rgba(0,229,204,0.35);background:rgba(0,229,204,0.05);">
+                      <span style="width:8px;height:8px;border-radius:50%;background:#00e5cc;color:#00e5cc;animation:powerDotPulse 1.4s ease-in-out infinite;"></span>
+                      <span style="color:#00ffee;font-size:12px;letter-spacing:3px;">{{ terminalTitle }}</span>
+                    </div>
+                    <div style="position:relative;z-index:3;padding:18px 20px 20px;font-size:15.5px;line-height:1.95;text-align:left;">
+                      <sc-for list="{{ stageParagraphs }}" as="para" hint-placeholder-count="1">
+                        <div style="margin:0 0 12px 0;text-align:left;width:100%;">
+                          <sc-for list="{{ para.runs }}" as="seg" hint-placeholder-count="1"><sc-if value="{{ seg.isBr }}"><br/></sc-if><sc-if value="{{ seg.isText }}" hint-placeholder-val="{{ true }}"><span style="color:{{ seg.color }};font-weight:{{ seg.weight }};text-shadow:{{ seg.glow }};">{{ seg.text }}</span></sc-if></sc-for>
+                        </div>
+                      </sc-for>
+                      <sc-if value="{{ stageShowCursor }}">
+                        <span style="color:#00e5cc;animation:cursorBlink 1s step-start infinite;">▌</span>
+                      </sc-if>
+                    </div>
+                  </div>
+                  <div style="height:9px;margin-top:-1px;background-image:linear-gradient(45deg, #08030f 25%, transparent 25%), linear-gradient(-45deg, #08030f 25%, transparent 25%);background-size:14px 14px;background-position:0 -1px;"></div>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ stageIsTerminalStory }}">
+            <sc-if value="{{ stageTypingDone }}">
+              <div style="display:flex;gap:12px;animation:fadeUp 0.4s ease both;flex-shrink:0;margin-top:14px;">
+                <sc-if value="{{ stageHasPrev }}">
+                  <button onClick="{{ onStagePrev }}" style="height:58px;padding:0 22px;background:#2a0e4a;border:2px solid #9a50cc;color:#e0b0ff;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:17px;letter-spacing:4px;cursor:pointer;" style-active="transform:scale(0.98);">◂ 上一頁</button>
+                </sc-if>
+                <button onClick="{{ onStageNext }}" style="flex:1;height:58px;background:#003a35;border:2px solid #00e5cc;color:#00ffee;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:17px;letter-spacing:6px;cursor:pointer;" style-active="transform:scale(0.98);">{{ stageNextLabel }}</button>
+              </div>
+            </sc-if>
+          </sc-if>
+
+          <sc-if value="{{ stageIsNormalStory }}">
+          <div style="flex:1;display:flex;flex-direction:column;overflow-y:auto;min-height:0;" onClick="{{ onStageTap }}">
+            <div style="margin:auto 0;font-size:19px;line-height:2.1;text-align:left;width:100%;">
+              <sc-for list="{{ stageParagraphs }}" as="para" hint-placeholder-count="1">
+                <div style="margin:0 0 20px 0;text-align:left;width:100%;">
+                  <sc-for list="{{ para.runs }}" as="seg" hint-placeholder-count="1"><sc-if value="{{ seg.isBr }}"><br/></sc-if><sc-if value="{{ seg.isText }}" hint-placeholder-val="{{ true }}"><span style="color:{{ seg.color }};font-weight:{{ seg.weight }};text-shadow:{{ seg.glow }};">{{ seg.text }}</span></sc-if></sc-for>
+                </div>
+              </sc-for>
+              <sc-if value="{{ stageShowCursor }}">
+                <span style="color:#00e5cc;animation:cursorBlink 1s step-start infinite;">▌</span>
+              </sc-if>
+            </div>
+          </div>
+          <sc-if value="{{ stageTypingDone }}">
+            <sc-if value="{{ stageIsNormalNext }}">
+              <div style="display:flex;gap:12px;animation:fadeUp 0.4s ease both;">
+                <sc-if value="{{ stageHasPrev }}">
+                  <button onClick="{{ onStagePrev }}" style="height:58px;padding:0 22px;background:#2a0e4a;border:2px solid #9a50cc;color:#e0b0ff;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:17px;letter-spacing:4px;cursor:pointer;" style-active="transform:scale(0.98);">◂ 上一頁</button>
+                </sc-if>
+                <button onClick="{{ onStageNext }}" style="flex:1;height:58px;background:#003a35;border:2px solid #00e5cc;color:#00ffee;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:17px;letter-spacing:6px;cursor:pointer;" style-active="transform:scale(0.98);">{{ stageNextLabel }}</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ stageIsEndingChoice }}">
+              <div style="animation:fadeUp 0.5s ease both;">
+                <div style="position:relative;border-radius:12px;background:#050810;border:1px solid #1a2a30;padding:16px 18px;margin-bottom:16px;box-shadow:0 0 0 1px rgba(0,229,204,0.08);">
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+                    <span style="width:7px;height:7px;border-radius:50%;background:#00e5cc;animation:powerDotPulse 1.4s ease-in-out infinite;"></span>
+                    <span style="color:#00ffee;font-size:11px;letter-spacing:3px;">SYSTEM // 請選擇後續處理方式</span>
+                  </div>
+                  <div style="color:#f0e070;font-size:14px;font-weight:700;letter-spacing:1px;margin-bottom:4px;">第一條路　保留所有記憶</div>
+                  <div style="color:#8a9aa0;font-size:13px;line-height:1.7;margin-bottom:14px;">帶著這個完整的、有笑有淚的自己，繼續活下去。</div>
+                  <div style="color:#f0e070;font-size:14px;font-weight:700;letter-spacing:1px;margin-bottom:4px;">第二條路　將記憶封回</div>
+                  <div style="color:#8a9aa0;font-size:13px;line-height:1.7;">不再想起那些酸楚與疲憊，只需要繼續，快樂地過下去就好。</div>
+                </div>
+                <div style="display:flex;gap:12px;">
+                  <button onClick="{{ onChooseKeep }}" style="flex:1;height:64px;background:#1a1206;border:2px solid #f0c030;color:#f0e070;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:15px;letter-spacing:2px;cursor:pointer;" style-active="transform:scale(0.98);">保留所有記憶</button>
+                  <button onClick="{{ onChooseSeal }}" style="flex:1;height:64px;background:#180b2c;border:2px solid #5a3a80;color:#c09ad8;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:15px;letter-spacing:2px;cursor:pointer;" style-active="transform:scale(0.98);">將記憶封回</button>
+                </div>
+              </div>
+            </sc-if>
+          </sc-if>
+        </sc-if>
+        </sc-if>
+
+        <!-- puzzle beat: electronic terminal screen -->
+        <sc-if value="{{ isStagePuzzle }}">
+          <div key="{{ puzzleBeatKey }}" style="flex:1;display:flex;flex-direction:column;justify-content:flex-start;gap:18px;overflow-y:auto;min-height:0;padding:4px 2px;">
+            <div style="margin:auto 0;display:flex;flex-direction:column;gap:18px;">
+
+            <sc-if value="{{ hasPuzzleDesc }}">
+              <div onClick="{{ onPuzzleDescTap }}" style="position:relative;border-radius:14px;background:#050810;border:1px solid #1a2a30;padding:10px;box-shadow:0 0 0 1px rgba(0,229,204,0.08), 0 18px 40px rgba(0,0,0,0.55);animation:screenBoot 0.85s cubic-bezier(0.2,0.9,0.25,1) both;transform-origin:center top;">
+                <!-- bezel screws -->
+                <div style="position:absolute;top:6px;left:8px;width:5px;height:5px;border-radius:50%;background:#1e2a2e;box-shadow:inset 0 1px 1px rgba(0,0,0,0.6);"></div>
+                <div style="position:absolute;top:6px;right:8px;width:5px;height:5px;border-radius:50%;background:#1e2a2e;box-shadow:inset 0 1px 1px rgba(0,0,0,0.6);"></div>
+
+                <div style="position:relative;border-radius:8px;overflow:hidden;background:radial-gradient(ellipse at 50% 0%, {{ puzzlePanelAccent }}14, #060911 65%);border:1px solid {{ puzzlePanelAccent }}66;box-shadow:inset 0 0 30px rgba(0,0,0,0.65), inset 0 0 40px {{ puzzlePanelAccent }}22;">
+
+                  <!-- scanlines -->
+                  <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background-image:repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px);opacity:0.5;"></div>
+                  <div style="position:absolute;left:0;right:0;height:70px;z-index:1;pointer-events:none;background:linear-gradient(to bottom, transparent, {{ puzzlePanelAccent }}22, transparent);animation:scanlineMove 4.5s linear infinite;"></div>
+                  <div style="position:absolute;inset:0;z-index:2;pointer-events:none;background:{{ puzzlePanelAccent }};opacity:0;animation:screenFlash 0.85s ease-out both;"></div>
+
+                  <!-- header bar -->
+                  <div style="position:relative;z-index:3;display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid {{ puzzlePanelAccent }}44;background:{{ puzzlePanelAccent }}0d;">
+                    <span style="width:8px;height:8px;border-radius:50%;background:{{ puzzlePanelAccent }};color:{{ puzzlePanelAccent }};animation:powerDotPulse 1.4s ease-in-out infinite;"></span>
+                    <span style="color:{{ puzzlePanelAccent }};font-size:12px;letter-spacing:3px;text-shadow:0 0 8px {{ puzzlePanelAccent }}aa;flex:1;">{{ puzzlePanelTitle }}</span>
+                    <span style="color:{{ puzzlePanelAccent }}99;font-size:10px;letter-spacing:1px;">{{ puzzleBeatTag }}</span>
+                  </div>
+
+                  <!-- body -->
+                  <div style="position:relative;z-index:3;padding:20px 22px 24px;font-size:16px;line-height:2;text-align:left;width:100%;min-height:64px;">
+                    <sc-for list="{{ puzzleDescParagraphs }}" as="para" hint-placeholder-count="1">
+                      <div style="margin:0 0 12px 0;text-align:left;width:100%;">
+                        <sc-for list="{{ para.runs }}" as="seg" hint-placeholder-count="1"><sc-if value="{{ seg.isBr }}"><br/></sc-if><sc-if value="{{ seg.isText }}" hint-placeholder-val="{{ true }}"><span style="color:{{ seg.color }};font-weight:{{ seg.weight }};text-shadow:{{ seg.glow }};">{{ seg.text }}</span></sc-if></sc-for>
+                      </div>
+                    </sc-for>
+                    <sc-if value="{{ puzzleDescShowCursor }}">
+                      <span style="color:{{ puzzlePanelAccent }};animation:cursorBlink 1s step-start infinite;">▌</span>
+                    </sc-if>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ showCipherTable }}">
+              <div style="position:relative;border-radius:14px;background:#050810;border:1px solid #1a2a30;padding:10px;box-shadow:0 0 0 1px rgba(0,229,204,0.08), 0 14px 30px rgba(0,0,0,0.5);animation:fadeUp 0.5s ease both;">
+                <div style="position:absolute;top:6px;left:8px;width:5px;height:5px;border-radius:50%;background:#1e2a2e;box-shadow:inset 0 1px 1px rgba(0,0,0,0.6);"></div>
+                <div style="position:absolute;top:6px;right:8px;width:5px;height:5px;border-radius:50%;background:#1e2a2e;box-shadow:inset 0 1px 1px rgba(0,0,0,0.6);"></div>
+                <div style="position:relative;border-radius:8px;overflow:hidden;background:radial-gradient(ellipse at 50% 0%, rgba(0,229,204,0.1), #060911 70%);border:1px solid rgba(0,229,204,0.4);box-shadow:inset 0 0 30px rgba(0,0,0,0.65), inset 0 0 30px rgba(0,229,204,0.14);">
+                  <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background-image:repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px);opacity:0.4;"></div>
+                  <div style="position:absolute;left:0;right:0;height:60px;z-index:1;pointer-events:none;background:linear-gradient(to bottom, transparent, rgba(0,229,204,0.14), transparent);animation:scanlineMove 5s linear infinite;"></div>
+                  <div style="position:relative;z-index:3;display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid rgba(0,229,204,0.3);background:rgba(0,229,204,0.05);">
+                    <span style="width:7px;height:7px;border-radius:50%;background:#00e5cc;animation:powerDotPulse 1.4s ease-in-out infinite;"></span>
+                    <span style="color:#00ffee;font-size:11px;letter-spacing:3px;text-shadow:0 0 8px rgba(0,229,204,0.7);flex:1;">VIGENÈRE CIPHER // 維吉尼亞密碼表</span>
+                  </div>
+                  <div style="position:relative;z-index:3;padding:14px;overflow-x:auto;">
+                    <div style="display:inline-grid;grid-template-columns:repeat(27, 20px);gap:1px;background:rgba(0,229,204,0.12);border:1px solid rgba(0,229,204,0.3);border-radius:4px;padding:1px;">
+                      <sc-for list="{{ cipherCells }}" as="cell" hint-placeholder-count="729">
+                        <div style="{{ cell.style }}">{{ cell.text }}</div>
+                      </sc-for>
+                    </div>
+                    <div style="color:#5ec9c0;font-size:10px;letter-spacing:1px;margin-top:10px;">◆ 左側直排 ＝ 第一把鑰匙　◆ 上方橫排 ＝ 第二把鑰匙　◆ 交叉點 ＝ 密碼字母</div>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
+
+            <div style="position:relative;border-radius:14px;background:#050810;border:1px solid #1a2a30;padding:10px;box-shadow:0 0 0 1px rgba(0,229,204,0.08), 0 14px 30px rgba(0,0,0,0.5);animation:{{ puzzleShakeAnim }}, screenBoot 0.85s cubic-bezier(0.2,0.9,0.25,1) 0.08s both;transform-origin:center top;">
+              <sc-if value="{{ puzzleIsCorrect }}">
+                <div style="position:absolute;inset:-4px;border-radius:16px;border:2px solid #00e5cc;animation:successRipple 0.9s ease-out both;pointer-events:none;"></div>
+              </sc-if>
+              <div style="position:relative;border-radius:8px;overflow:hidden;background:radial-gradient(ellipse at 50% 0%, {{ puzzleBorderColor }}12, #060911 70%);border:1px solid {{ puzzleBorderColor }}88;box-shadow:inset 0 0 26px rgba(0,0,0,0.65), inset 0 0 30px {{ puzzleBorderColor }}22, 0 0 22px {{ puzzleBorderColor }}22;">
+                <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background-image:repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px);"></div>
+                <div style="position:relative;z-index:2;display:flex;align-items:center;gap:8px;padding:11px 16px;border-bottom:1px dashed {{ puzzleBorderColor }}55;">
+                  <span style="width:6px;height:6px;border-radius:50%;background:#ff5566;opacity:0.7;"></span>
+                  <span style="width:6px;height:6px;border-radius:50%;background:#f0c030;opacity:0.7;"></span>
+                  <span style="width:6px;height:6px;border-radius:50%;background:#00e5cc;opacity:0.7;"></span>
+                  <span style="color:{{ puzzleBorderColor }};font-size:11px;letter-spacing:2px;text-shadow:0 0 6px {{ puzzleBorderColor }}88;flex:1;">◆ {{ puzzleInputLabel }}</span>
+                  <span style="color:#ff5a7a;font-size:9px;letter-spacing:1px;animation:recBlink 1.6s step-start infinite;">● REC</span>
+                </div>
+                <div style="position:relative;z-index:2;padding:16px 18px 18px;">
+                  <sc-if value="{{ isFragmentAnswerPuzzle }}">
+                    <div style="position:relative;padding:10px 6px;margin-bottom:6px;">
+                      <div style="position:absolute;top:0;left:0;width:12px;height:12px;border-top:1.5px solid {{ puzzleBorderColor }}88;border-left:1.5px solid {{ puzzleBorderColor }}88;"></div>
+                      <div style="position:absolute;top:0;right:0;width:12px;height:12px;border-top:1.5px solid {{ puzzleBorderColor }}88;border-right:1.5px solid {{ puzzleBorderColor }}88;"></div>
+                      <div style="position:absolute;bottom:0;left:0;width:12px;height:12px;border-bottom:1.5px solid {{ puzzleBorderColor }}88;border-left:1.5px solid {{ puzzleBorderColor }}88;"></div>
+                      <div style="position:absolute;bottom:0;right:0;width:12px;height:12px;border-bottom:1.5px solid {{ puzzleBorderColor }}88;border-right:1.5px solid {{ puzzleBorderColor }}88;"></div>
+                      <div style="display:flex;gap:10px;justify-content:center;">
+                        <sc-for list="{{ puzzleBlanks }}" as="blank" hint-placeholder-count="2">
+                          <div style="width:56px;height:64px;border-radius:8px;background:linear-gradient(180deg, #0a1418, #02040a);border:1px solid {{ blank.border }};display:flex;align-items:center;justify-content:center;font-size:28px;color:#c8fff4;text-shadow:0 0 8px rgba(0,229,204,0.5);box-shadow:inset 0 2px 8px rgba(0,0,0,0.6), 0 0 10px {{ blank.border }}33;animation:blankPop 0.4s ease {{ blank.delay }}s both;">
+                            {{ blank.char }}
+                            <sc-if value="{{ blank.isCursor }}">
+                              <span style="width:2px;height:28px;background:{{ puzzleBorderColor }};display:inline-block;animation:cursorBlink 1s step-start infinite;"></span>
+                            </sc-if>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:repeat(6, 1fr);gap:6px;">
+                      <sc-for list="{{ fragmentKeypadKeys }}" as="key" hint-placeholder-count="26">
+                        <button onClick="{{ key.onPress }}" style="height:40px;background:#0d1a1e;border:1px solid {{ puzzleBorderColor }}55;border-radius:6px;color:#9fd8d0;font-family:'Share Tech Mono', monospace;font-size:14px;cursor:pointer;" style-active="background:#123a35;border-color:{{ puzzleBorderColor }};transform:scale(0.94);">{{ key.label }}</button>
+                      </sc-for>
+                    </div>
+                    <button onClick="{{ onFragmentBackspace }}" style="width:100%;margin-top:7px;height:38px;background:#2a0e4a;border:1px solid #9a50cc;border-radius:6px;color:#e0b0ff;font-family:'Share Tech Mono', monospace;font-size:12px;letter-spacing:2px;cursor:pointer;" style-active="transform:scale(0.96);">⌫ 清除</button>
+                  </sc-if>
+                  <sc-if value="{{ notFragmentAnswerPuzzle }}" hint-placeholder-val="{{ true }}">
+                    <div style="position:relative;padding:6px;animation:inputRise 0.4s ease both;">
+                      <div style="position:absolute;top:0;left:0;width:10px;height:10px;border-top:1.5px solid {{ puzzleBorderColor }}77;border-left:1.5px solid {{ puzzleBorderColor }}77;"></div>
+                      <div style="position:absolute;top:0;right:0;width:10px;height:10px;border-top:1.5px solid {{ puzzleBorderColor }}77;border-right:1.5px solid {{ puzzleBorderColor }}77;"></div>
+                      <div style="position:absolute;bottom:0;left:0;width:10px;height:10px;border-bottom:1.5px solid {{ puzzleBorderColor }}77;border-left:1.5px solid {{ puzzleBorderColor }}77;"></div>
+                      <div style="position:absolute;bottom:0;right:0;width:10px;height:10px;border-bottom:1.5px solid {{ puzzleBorderColor }}77;border-right:1.5px solid {{ puzzleBorderColor }}77;"></div>
+                      <div style="position:relative;">
+                        <div style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:{{ puzzleBorderColor }};font-size:20px;text-shadow:0 0 8px {{ puzzleBorderColor }};pointer-events:none;font-weight:700;z-index:2;">&gt;</div>
+                        <div style="position:absolute;left:1px;top:1px;right:1px;height:16px;border-radius:8px 8px 0 0;background:linear-gradient(to bottom, rgba(255,255,255,0.06), transparent);pointer-events:none;"></div>
+                        <input value="{{ puzzleInput }}" onChange="{{ onPuzzleInput }}" disabled="{{ puzzleInputDisabled }}" placeholder="輸入解密內容……" style="width:100%;height:60px;background:#02040a;border:1px solid {{ puzzleBorderColor }};border-radius:8px;color:#c8fff4;font-family:'Share Tech Mono', monospace;font-size:20px;padding:0 16px 0 40px;letter-spacing:4px;box-shadow:inset 0 2px 8px rgba(0,0,0,0.6), 0 0 14px {{ puzzleBorderColor }}33;transition:box-shadow 0.2s, border-color 0.2s;" style-focus="box-shadow:inset 0 2px 8px rgba(0,0,0,0.6), 0 0 22px {{ puzzleBorderColor }}77;"></input>
+                      </div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ isHiTechPuzzle }}">
+                    <div style="position:relative;">
+                      <div style="position:relative;display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:16px 12px;border-radius:10px;overflow:hidden;background:repeating-linear-gradient(135deg, rgba(0,229,204,0.04) 0px, rgba(0,229,204,0.04) 2px, transparent 2px, transparent 14px), #02040a;border:1px solid rgba(0,229,204,0.25);">
+                        <div style="position:absolute;top:0;left:-40%;width:40%;height:100%;background:linear-gradient(90deg, transparent, rgba(0,229,204,0.18), transparent);animation:hiTechScan 3.2s linear infinite;pointer-events:none;"></div>
+                        <div style="position:absolute;top:6px;left:8px;width:8px;height:8px;border-top:1.5px solid rgba(0,229,204,0.6);border-left:1.5px solid rgba(0,229,204,0.6);pointer-events:none;"></div>
+                        <div style="position:absolute;bottom:6px;right:8px;width:8px;height:8px;border-bottom:1.5px solid rgba(0,229,204,0.6);border-right:1.5px solid rgba(0,229,204,0.6);pointer-events:none;"></div>
+                        <sc-for list="{{ hiTechBlanks }}" as="blank" hint-placeholder-count="11">
+                          <div style="position:relative;width:32px;height:44px;border-radius:6px;background:linear-gradient(180deg, #0a1418, #050a0d);border:1.5px solid {{ blank.filled ? puzzleBorderColor : 'rgba(0,229,204,0.28)' }};display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#c8fff4;text-shadow:0 0 8px rgba(0,229,204,0.7);animation:{{ blank.isCursor ? 'hiTechCellGlow 1.3s ease-in-out infinite' : 'none' }};">
+                            {{ blank.char }}
+                            <sc-if value="{{ blank.isCursor }}">
+                              <span style="position:absolute;bottom:5px;width:14px;height:2px;background:{{ puzzleBorderColor }};animation:cursorBlink 1s step-start infinite;"></span>
+                            </sc-if>
+                          </div>
+                        </sc-for>
+                      </div>
+                      <input value="{{ puzzleInput }}" onChange="{{ onPuzzleInput }}" disabled="{{ puzzleInputDisabled }}" maxLength="{{ hiTechMaxLen }}" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:text;"></input>
+                      <div style="text-align:center;color:#3a6a68;font-size:9px;letter-spacing:2px;margin-top:8px;">TAP TO INPUT · 點擊輸入</div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ puzzleIsWrong }}">
+                    <div style="color:#ff80aa;font-size:13px;margin-top:10px;letter-spacing:1px;">▓▓ 錯誤 // {{ puzzleError }}</div>
+                  </sc-if>
+                  <sc-if value="{{ puzzleIsCorrect }}">
+                    <div style="color:#00ffee;font-size:13px;margin-top:10px;letter-spacing:2px;text-shadow:0 0 8px rgba(0,229,204,0.7);">▓▓ 驗證通過 // 解密成功</div>
+                  </sc-if>
+                </div>
+              </div>
+            </div>
+            </div>
+
+            <div style="display:flex;gap:12px;">
+              <sc-if value="{{ stageHasPrev }}">
+                <button onClick="{{ onStagePrev }}" style="height:58px;padding:0 22px;background:#2a0e4a;border:2px solid #9a50cc;color:#e0b0ff;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:17px;letter-spacing:4px;cursor:pointer;" style-active="transform:scale(0.98);">◂ 上一頁</button>
+              </sc-if>
+              <button onClick="{{ onPuzzleSubmit }}" style="flex:1;height:58px;background:#003a35;border:2px solid #00e5cc;color:#00ffee;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:17px;letter-spacing:6px;cursor:pointer;" style-active="transform:scale(0.98);">{{ puzzleConfirmLabel }}</button>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- fragment obtained beat -->
+        <sc-if value="{{ isStageFragment }}">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;">
+            <div style="color:#00ffee;font-size:15px;letter-spacing:6px;text-shadow:0 0 10px rgba(0,229,204,0.7);animation:fadeUp 0.5s ease both;">FRAGMENT OBTAINED</div>
+
+            <div style="filter:drop-shadow(0 0 20px {{ fragDark }}aa);animation:fragPop 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.3s both, fragFloat 3s ease-in-out 0.9s infinite;">
+              {{ fragPieceNode }}
+            </div>
+
+            <div style="text-align:center;animation:fadeUp 0.5s ease 1s both;">
+              <div style="color:#f0e070;font-size:18px;font-weight:700;letter-spacing:2px;">記憶碎片 · {{ fragLetter }}</div>
+              <div style="color:#c09ad8;font-size:13px;margin-top:6px;letter-spacing:2px;">來源：{{ fragSource }}　情緒：{{ fragEmotion }}</div>
+            </div>
+
+            <button onClick="{{ onFragCollect }}" style="height:56px;padding:0 32px;background:#2a0e4a;border:2px solid #9a50cc;color:#e0b0ff;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:15px;letter-spacing:4px;cursor:pointer;animation:fadeUp 0.5s ease 1.5s both;" style-active="transform:scale(0.97);">收入背包</button>
+          </div>
+        </sc-if>
+
+        <!-- foodgame beat: 美食街訂單小遊戲 -->
+        <sc-if value="{{ isStageFoodgame }}">
+          <div style="flex:1;display:flex;flex-direction:column;">
+
+            <sc-if value="{{ foodPhaseIsRules }}" hint-placeholder-val="{{ true }}">
+              <div style="flex:1;display:flex;flex-direction:column;justify-content:center;" onClick="{{ onFoodRulesTap }}">
+
+                <div style="text-align:center;margin-bottom:16px;position:relative;">
+                  <div style="display:flex;align-items:center;justify-content:center;gap:10px;">
+                    <span style="width:22px;height:1px;background:linear-gradient(to left, rgba(240,192,48,0.7), transparent);"></span>
+                    <span style="width:6px;height:6px;transform:rotate(45deg);background:#f0c030;box-shadow:0 0 8px rgba(240,192,48,0.8);"></span>
+                    <span style="color:#8a6020;font-size:10px;letter-spacing:5px;">FOOD COURT SURVIVAL</span>
+                    <span style="width:6px;height:6px;transform:rotate(45deg);background:#f0c030;box-shadow:0 0 8px rgba(240,192,48,0.8);"></span>
+                    <span style="width:22px;height:1px;background:linear-gradient(to right, rgba(240,192,48,0.7), transparent);"></span>
+                  </div>
+                  <div style="color:#ffe07a;font-size:28px;font-weight:700;letter-spacing:4px;margin-top:8px;text-shadow:0 0 18px rgba(240,192,48,0.65), 0 0 3px rgba(255,255,255,0.4);">{{ foodGameName }}</div>
+                </div>
+
+                <div style="position:relative;border-radius:14px;background:#050810;border:1px solid #1a2a30;padding:10px;box-shadow:0 0 0 1px rgba(240,192,48,0.08), 0 18px 40px rgba(0,0,0,0.55);">
+                  <div style="position:absolute;top:6px;left:9px;width:5px;height:5px;border-radius:50%;background:#1e2a2e;box-shadow:inset 0 1px 1px rgba(0,0,0,0.6);"></div>
+                  <div style="position:absolute;top:6px;right:9px;width:5px;height:5px;border-radius:50%;background:#1e2a2e;box-shadow:inset 0 1px 1px rgba(0,0,0,0.6);"></div>
+                  <div style="position:relative;border-radius:8px;overflow:hidden;background:radial-gradient(ellipse at 50% 0%, rgba(240,192,48,0.1), #060911 65%);border:1px solid rgba(240,192,48,0.4);box-shadow:inset 0 0 30px rgba(0,0,0,0.65), inset 0 0 40px rgba(240,192,48,0.1);">
+                    <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background-image:repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px);opacity:0.5;"></div>
+                    <div style="position:absolute;left:0;right:0;height:70px;z-index:1;pointer-events:none;background:linear-gradient(to bottom, transparent, rgba(240,192,48,0.16), transparent);animation:scanlineMove 4.5s linear infinite;"></div>
+                    <div style="position:relative;z-index:3;display:flex;align-items:center;gap:8px;padding:11px 18px;border-bottom:1px solid rgba(240,192,48,0.35);background:rgba(240,192,48,0.05);">
+                      <span style="width:8px;height:8px;border-radius:50%;background:#f0c030;color:#f0c030;animation:powerDotPulse 1.4s ease-in-out infinite;"></span>
+                      <span style="color:#f0e070;font-size:12px;letter-spacing:3px;">送餐規則 // NO.001</span>
+                    </div>
+                    <div style="position:relative;z-index:3;padding:20px 22px 22px;font-size:15px;line-height:2;text-align:left;">
+                      <sc-for list="{{ foodRulesParagraphs }}" as="para" hint-placeholder-count="1">
+                        <div style="margin:0 0 12px 0;">
+                          <sc-for list="{{ para.runs }}" as="seg" hint-placeholder-count="1"><sc-if value="{{ seg.isBr }}"><br/></sc-if><sc-if value="{{ seg.isText }}" hint-placeholder-val="{{ true }}"><span style="color:{{ seg.color }};font-weight:{{ seg.weight }};text-shadow:{{ seg.glow }};">{{ seg.text }}</span></sc-if></sc-for>
+                        </div>
+                      </sc-for>
+                      <sc-if value="{{ foodRulesShowCursor }}"><span style="color:#f0c030;animation:cursorBlink 1s step-start infinite;">▌</span></sc-if>
+                    </div>
+                  </div>
+                  <div style="height:9px;margin-top:-1px;background-image:linear-gradient(45deg, #08030f 25%, transparent 25%), linear-gradient(-45deg, #08030f 25%, transparent 25%);background-size:14px 14px;background-position:0 -1px;"></div>
+                </div>
+
+                <sc-if value="{{ foodRulesTypingDone }}">
+                  <button onClick="{{ onFoodStart }}" style="margin-top:22px;height:58px;background:#3a2c00;border:2px solid #f0c030;color:#ffe07a;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:17px;letter-spacing:6px;cursor:pointer;box-shadow:0 0 20px rgba(240,192,48,0.15);" style-active="transform:scale(0.98);">開始遊戲 ▸</button>
+                </sc-if>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ foodPhaseIsPlaying }}">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                <div style="color:#f0e070;font-size:13px;letter-spacing:2px;">剩餘時間 {{ foodTimeLeftDisplay }}</div>
+                <div style="color:#f0e070;font-size:13px;letter-spacing:2px;">完成 {{ foodCompleted }} / 8</div>
+              </div>
+              <div style="flex:1;display:grid;grid-template-rows:repeat(2, 1fr);gap:28px;">
+                <sc-for list="{{ foodSlotRows }}" as="row" hint-placeholder-count="2">
+                  <div style="position:relative;display:grid;grid-template-columns:repeat(2, 1fr);gap:18px;">
+                    <div style="position:absolute;top:9px;left:6%;right:6%;height:1px;background:linear-gradient(to right, transparent, #4a3a1a, #4a3a1a, transparent);"></div>
+                    <sc-for list="{{ row }}" as="slot" hint-placeholder-count="2">
+                      <div style="position:relative;padding-top:20px;">
+                        <div style="position:absolute;top:56px;left:50%;width:130px;height:90px;transform:translate(-50%,-50%);border-radius:50%;background:{{ slot.accent }};opacity:0.16;filter:blur(26px);pointer-events:none;"></div>
+                        <div style="position:absolute;top:0;left:50%;width:2px;height:16px;background:linear-gradient(to bottom, #4a4050, {{ slot.accent }});transform:translateX(-50%);"></div>
+                        <div style="position:absolute;top:11px;left:50%;width:14px;height:9px;border:2px solid {{ slot.accent }};border-bottom:none;border-radius:3px 3px 0 0;transform:translateX(-50%);background:#1a1206;"></div>
+
+                        <sc-if value="{{ slot.isScreenVisible }}" hint-placeholder-val="{{ true }}">
+                          <div style="position:relative;border-radius:10px;overflow:hidden;background:radial-gradient(ellipse at 50% 0%, {{ slot.accent }}22, #060911 70%);border:1.5px solid {{ slot.borderColor }};box-shadow:0 10px 22px rgba(0,0,0,0.5), inset 0 0 24px {{ slot.accent }}18;transform-origin:center center;animation:{{ slot.screenAnim }};">
+                            <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background-image:repeating-linear-gradient(0deg, rgba(255,255,255,0.045) 0px, rgba(255,255,255,0.045) 1px, transparent 1px, transparent 3px);"></div>
+                            <div style="position:absolute;left:0;right:0;height:50px;z-index:1;pointer-events:none;background:linear-gradient(to bottom, transparent, {{ slot.accent }}2a, transparent);animation:scanlineMove 4s linear infinite;"></div>
+                            <sc-if value="{{ slot.isEntering }}">
+                              <div style="position:absolute;inset:0;z-index:2;pointer-events:none;background:{{ slot.accent }};opacity:0;animation:screenFlash 0.6s ease-out both;"></div>
+                            </sc-if>
+
+                            <div style="position:relative;z-index:2;text-align:center;padding-top:10px;">
+                              <span style="display:inline-block;min-width:52px;padding:2px 8px;border-radius:5px;background:rgba(0,0,0,0.35);font-size:20px;font-weight:700;letter-spacing:2px;color:{{ slot.timerColor }};text-shadow:0 0 10px {{ slot.timerColor }};">{{ slot.timeLeft }}s</span>
+                            </div>
+
+                            <div style="position:relative;z-index:2;padding:10px 14px 16px;text-align:center;">
+                              <div style="color:{{ slot.accent }};font-size:11px;letter-spacing:2px;margin-bottom:6px;opacity:0.85;">客人 · {{ slot.customer }}</div>
+                              <div style="color:#fdf6e3;font-size:16px;font-weight:700;letter-spacing:0.5px;line-height:1.4;text-shadow:0 0 10px {{ slot.accent }}99;min-height:44px;display:flex;align-items:center;justify-content:center;">{{ slot.item }}</div>
+                              <div style="display:flex;gap:8px;margin-top:10px;">
+                                <input value="{{ slot.input }}" onChange="{{ slot.onInput }}" type="tel" inputmode="numeric" placeholder="輸入金額" style="flex:1;height:38px;border:1px solid {{ slot.accent }}77;border-radius:6px;background:#02040a;color:{{ slot.accent }};font-family:'Share Tech Mono', monospace;font-size:15px;text-align:center;letter-spacing:2px;box-shadow:inset 0 2px 6px rgba(0,0,0,0.6);"></input>
+                                <button onClick="{{ slot.onSubmit }}" style="height:38px;padding:0 12px;background:{{ slot.accent }}22;border:1px solid {{ slot.accent }};border-radius:6px;color:#fff;font-family:'Share Tech Mono', monospace;font-size:12px;letter-spacing:1px;cursor:pointer;" style-active="transform:scale(0.95);">送出</button>
+                              </div>
+                              <sc-if value="{{ slot.isWrong }}"><div style="color:#ff2d78;font-size:11px;margin-top:7px;letter-spacing:1px;">▓ 金額不對</div></sc-if>
+                            </div>
+
+                            <sc-if value="{{ slot.isSuccess }}">
+                              <div style="position:absolute;inset:0;z-index:3;background:rgba(3,5,10,0.94);display:flex;align-items:center;justify-content:center;animation:foodOverlayIn 0.2s ease both;">
+                                <div style="text-align:center;animation:foodCheckPop 0.5s cubic-bezier(0.34,1.56,0.64,1) both;">
+                                  <div style="color:#00ffee;font-size:34px;text-shadow:0 0 20px rgba(0,229,204,0.9);">✓</div>
+                                  <div style="color:#00ffee;font-size:16px;letter-spacing:4px;margin-top:6px;text-shadow:0 0 12px rgba(0,229,204,0.8);font-weight:700;">送餐成功</div>
+                                </div>
+                              </div>
+                            </sc-if>
+                          </div>
+                        </sc-if>
+
+                        <sc-if value="{{ slot.isEmpty }}">
+                          <div style="height:130px;border-radius:10px;border:1.5px dashed {{ slot.accent }}55;display:flex;align-items:center;justify-content:center;animation:foodEmptyPulse 1s ease-in-out infinite;">
+                            <span style="color:{{ slot.accent }}77;font-size:11px;letter-spacing:3px;">等待新訂單…</span>
+                          </div>
+                        </sc-if>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-for>
+              </div>
+
+              <button onClick="{{ onFoodResetClick }}" style="margin-top:16px;height:44px;background:none;border:1px solid #5a3a80;color:#8a6ab0;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:12px;letter-spacing:2px;cursor:pointer;" style-active="transform:scale(0.97);">重新開始</button>
+            </sc-if>
+
+            <sc-if value="{{ foodShowResetConfirm }}">
+              <div style="position:absolute;inset:0;z-index:20;background:rgba(3,4,9,0.8);display:flex;align-items:center;justify-content:center;animation:foodOverlayIn 0.2s ease both;">
+                <div style="width:260px;border-radius:14px;background:#0c0a10;border:2px solid #9a50cc;box-shadow:0 20px 44px rgba(0,0,0,0.6), 0 0 24px rgba(154,80,204,0.25);padding:22px 20px;text-align:center;animation:foodCheckPop 0.35s cubic-bezier(0.34,1.56,0.64,1) both;">
+                  <div style="color:#e0b0ff;font-size:15px;letter-spacing:1px;line-height:1.7;margin-bottom:18px;">確定要重新開始嗎？<br/>目前進度將會消失。</div>
+                  <div style="display:flex;gap:10px;">
+                    <button onClick="{{ onFoodResetCancel }}" style="flex:1;height:46px;background:#180b2c;border:1px solid #5a3a80;color:#c09ad8;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:13px;letter-spacing:2px;cursor:pointer;" style-active="transform:scale(0.97);">取消</button>
+                    <button onClick="{{ onFoodResetConfirm }}" style="flex:1;height:46px;background:#3a0020;border:1px solid #ff2d78;color:#ff80aa;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:13px;letter-spacing:2px;cursor:pointer;" style-active="transform:scale(0.97);">確定重來</button>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ foodPhaseIsPassed }}">
+              <div style="flex:1;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;">
+
+                <div style="position:absolute;inset:0;pointer-events:none;">
+                  <sc-for list="{{ foodConfetti }}" as="c" hint-placeholder-count="18">
+                    <div style="{{ c.style }}"></div>
+                  </sc-for>
+                </div>
+
+                <div style="color:#f0e070;font-size:15px;letter-spacing:8px;text-shadow:0 0 10px rgba(240,192,48,0.7);animation:fadeUp 0.4s ease both;">任 務 通 過</div>
+
+                <div style="position:relative;width:308px;animation:licenseCardIn 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s both;">
+                  <div style="position:relative;border-radius:16px;background:linear-gradient(135deg, #241a04, #0c0a08 65%);border:2px solid #f0c030;box-shadow:0 0 0 1px rgba(240,192,48,0.25), 0 20px 46px rgba(0,0,0,0.6), inset 0 0 30px rgba(240,192,48,0.08);padding:20px 22px 24px;overflow:hidden;">
+                    <div style="position:absolute;inset:0;z-index:0;pointer-events:none;background-image:repeating-linear-gradient(0deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 3px);"></div>
+                    <div style="position:absolute;top:7px;left:7px;width:14px;height:14px;border-top:2px solid rgba(240,192,48,0.6);border-left:2px solid rgba(240,192,48,0.6);"></div>
+                    <div style="position:absolute;top:7px;right:7px;width:14px;height:14px;border-top:2px solid rgba(240,192,48,0.6);border-right:2px solid rgba(240,192,48,0.6);"></div>
+                    <div style="position:absolute;bottom:7px;left:7px;width:14px;height:14px;border-bottom:2px solid rgba(240,192,48,0.6);border-left:2px solid rgba(240,192,48,0.6);"></div>
+                    <div style="position:absolute;bottom:7px;right:7px;width:14px;height:14px;border-bottom:2px solid rgba(240,192,48,0.6);border-right:2px solid rgba(240,192,48,0.6);"></div>
+
+                    <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;border-bottom:1px dashed rgba(240,192,48,0.4);padding-bottom:10px;margin-bottom:16px;">
+                      <span style="color:#f0c030;font-size:10px;letter-spacing:3px;">MNEMO DELIVERY GUILD</span>
+                      <span style="width:7px;height:7px;border-radius:50%;background:#f0c030;color:#f0c030;animation:powerDotPulse 1.4s ease-in-out infinite;"></span>
+                    </div>
+
+                    <div style="position:relative;z-index:1;display:flex;gap:16px;align-items:center;">
+                      <div style="width:60px;height:60px;border-radius:50%;background:radial-gradient(circle at 35% 30%, #ffe07a, #a07820 72%);display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px rgba(240,192,48,0.55);flex-shrink:0;">
+                        <div style="width:30px;height:30px;border-radius:50%;border:3px solid #2a1a00;"></div>
+                      </div>
+                      <div>
+                        <div style="color:#a9832e;font-size:9px;letter-spacing:2px;">LICENSE NO. 2157-B4</div>
+                        <div style="color:#ffe07a;font-size:19px;font-weight:700;letter-spacing:1.5px;margin-top:4px;text-shadow:0 0 10px rgba(240,192,48,0.6);">外送員兼工具人執照</div>
+                      </div>
+                    </div>
+
+                    <div style="position:relative;z-index:1;margin-top:14px;color:#c9a860;font-size:12.5px;line-height:1.8;letter-spacing:0.5px;">
+                      本執照證明持有人已完成黑色地下市集之送餐試煉，具備在極限時間內同時處理多筆訂單之能力，特此認證。
+                    </div>
+                  </div>
+
+                  <div style="position:absolute;bottom:-8px;right:-14px;animation:stampSlam 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.8s both;">
+                    <div style="border:3px solid #ff2d78;border-radius:8px;color:#ff2d78;font-size:14px;font-weight:700;letter-spacing:2px;padding:5px 12px;text-shadow:0 0 8px rgba(255,45,120,0.6);opacity:0.92;background:rgba(5,5,8,0.3);">PASSED</div>
+                  </div>
+                </div>
+
+                <button onClick="{{ onFoodContinue }}" style="height:56px;padding:0 40px;background:#3a2c00;border:2px solid #f0c030;color:#ffe07a;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:16px;letter-spacing:6px;cursor:pointer;box-shadow:0 0 20px rgba(240,192,48,0.15);animation:fadeUp 0.4s ease 0.3s both;" style-active="transform:scale(0.98);">繼續 ▸</button>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ foodPhaseIsFailed }}">
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;">
+                <div style="color:#ff80aa;font-size:18px;letter-spacing:6px;">失敗</div>
+                <button onClick="{{ onFoodRetry }}" style="height:58px;padding:0 40px;background:#2a0e4a;border:2px solid #9a50cc;color:#e0b0ff;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:16px;letter-spacing:4px;cursor:pointer;" style-active="transform:scale(0.98);">重新挑戰</button>
+              </div>
+            </sc-if>
+
+          </div>
+        </sc-if>
+
+      </div>
+    </sc-if>
+
+    <!-- BACKPACK SCREEN -->
+    <sc-if value="{{ isBackpack }}">
+      <div style="position:absolute;inset:0;z-index:10;padding:26px 24px;display:flex;flex-direction:column;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <div style="color:#c09ad8;font-size:13px;letter-spacing:3px;">MNEMO // 記憶背包</div>
+          <button onClick="{{ onCloseBackpack }}" style="background:#2a0e4a;border:2px solid #9a50cc;color:#e0b0ff;border-radius:8px;height:40px;padding:0 16px;font-family:'Share Tech Mono', monospace;font-size:12px;letter-spacing:2px;cursor:pointer;" style-active="transform:scale(0.96);">◂ 返回</button>
+        </div>
+        <div style="color:#8a6ab0;font-size:12px;letter-spacing:2px;margin:14px 0 24px;">已收集 {{ collectedCount }} / 6 枚記憶碎片</div>
+        <div style="flex:1;display:grid;grid-template-columns:repeat(3, 1fr);grid-template-rows:repeat(2, 1fr);gap:20px;align-content:start;">
+          <sc-for list="{{ backpackSlots }}" as="slot" hint-placeholder-count="6">
+            <div style="border-radius:12px;background:{{ slot.bg }};border:2px {{ slot.borderStyle }} {{ slot.border }};display:flex;align-items:center;justify-content:center;min-height:160px;box-shadow:{{ slot.shadow }};position:relative;overflow:hidden;">
+              <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 4px);pointer-events:none;"></div>
+              <sc-if value="{{ slot.collected }}">
+                {{ slot.pieceNode }}
+              </sc-if>
+              <sc-if value="{{ slot.locked }}" hint-placeholder-val="{{ true }}">
+                <span style="color:#3a2060;font-size:36px;position:relative;z-index:1;">?</span>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ASSEMBLY SCREEN -->
+    <sc-if value="{{ isAssembly }}">
+      <div style="position:absolute;inset:0;z-index:10;padding:34px 24px;display:flex;flex-direction:column;align-items:center;overflow:auto;">
+        <div style="color:#00ffee;font-size:14px;letter-spacing:4px;text-shadow:0 0 8px rgba(0,229,204,0.6);margin-bottom:8px;">MNEMO // 記憶重組</div>
+        <div style="color:#8a6ab0;font-size:12px;letter-spacing:2px;margin-bottom:22px;text-align:center;">拖曳桌上的記憶碎片，依正確順序放入下方拼湊區</div>
+
+        <div style="position:relative;width:{{ assemblyWidth }}px;height:{{ assemblyAreaHeight }}px;margin-bottom:30px;touch-action:none;" onPointerMove="{{ onAssemblyPointerMove }}" onPointerUp="{{ onAssemblyPointerUp }}" onPointerLeave="{{ onAssemblyPointerUp }}">
+
+          <!-- desk surface -->
+          <div style="position:absolute;left:0;top:0;width:100%;height:{{ assemblyTableH }}px;border-radius:14px;overflow:hidden;border:1px solid rgba(154,80,204,0.35);background:radial-gradient(ellipse 70% 60% at 50% 30%, rgba(122,60,180,0.16), transparent 70%), repeating-linear-gradient(128deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 9px), linear-gradient(160deg, #1d0f34, #0f0820 75%); box-shadow: inset 0 0 34px rgba(0,0,0,0.55);transition:opacity 0.6s ease;{{ assemblyTableDimStyle }}">
+            <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 8%, rgba(0,229,204,0.09), transparent 55%);animation:deskGlowPulse 4s ease-in-out infinite;"></div>
+          </div>
+          <div style="position:absolute;left:9px;top:9px;width:14px;height:14px;border-top:1.5px solid rgba(192,96,255,0.5);border-left:1.5px solid rgba(192,96,255,0.5);"></div>
+          <div style="position:absolute;right:9px;top:9px;width:14px;height:14px;border-top:1.5px solid rgba(192,96,255,0.5);border-right:1.5px solid rgba(192,96,255,0.5);"></div>
+          <div style="position:absolute;left:8px;top:{{ assemblyTableH }}px;transform:translateY(-22px);color:#6a4a90;font-size:10px;letter-spacing:3px;">桌面 · DESK</div>
+          <div style="position:absolute;left:8px;top:{{ assemblySlotTop }}px;transform:translateY(-20px);color:#3a6a68;font-size:10px;letter-spacing:3px;">拼湊區 · ASSEMBLY</div>
+
+          <!-- assembly baseline -->
+          <div style="position:absolute;left:0;top:{{ assemblySlotBaselineTop }}px;width:100%;height:1px;background:linear-gradient(to right, transparent, rgba(0,229,204,0.35), transparent);"></div>
+
+          <sc-for list="{{ assemblySlotViews }}" as="slot" hint-placeholder-count="6">
+            <div style="{{ slot.boxStyle }}"></div>
+            <div style="{{ slot.brTL }}"></div>
+            <div style="{{ slot.brTR }}"></div>
+            <div style="{{ slot.brBL }}"></div>
+            <div style="{{ slot.brBR }}"></div>
+            <div style="{{ slot.numStyle }}">{{ slot.num }}</div>
+          </sc-for>
+
+          <sc-if value="{{ assemblyIsCorrect }}">
+            <div style="position:absolute;left:0;top:{{ assemblySlotTop }}px;width:70px;height:{{ assemblyPieceH }}px;background:linear-gradient(to right, transparent, rgba(0,255,238,0.85), transparent);filter:blur(3px);animation:seamSweep 1.1s ease-out both;pointer-events:none;z-index:15;"></div>
+            <sc-for list="{{ assemblyBurst }}" as="dot" hint-placeholder-count="10">
+              <div style="{{ dot.wrapStyle }}"><div style="{{ dot.dotStyle }}"></div></div>
+            </sc-for>
+          </sc-if>
+
+          <sc-for list="{{ assemblyPieces }}" as="piece" hint-placeholder-count="6">
+            <div onPointerDown="{{ piece.onPointerDown }}" style="{{ piece.style }}">
+              {{ piece.node }}
+            </div>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ assemblyIsCorrect }}">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:24px;animation:fadeUp 0.4s ease both;">
+            <div style="color:#00ffee;font-size:14px;letter-spacing:4px;text-shadow:0 0 10px rgba(0,229,204,0.8);">✓ 記憶重組成功 · 密碼已還原</div>
+            <div style="display:flex;gap:6px;">
+              <sc-for list="{{ assemblyPasscodeLetters }}" as="ch" hint-placeholder-count="9">
+                <span style="{{ ch.style }}">{{ ch.text }}</span>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ assemblyIsWrong }}">
+          <div style="color:#ff80aa;font-size:13px;letter-spacing:2px;margin-bottom:20px;">順序不對，再試試看</div>
+        </sc-if>
+
+        <button onClick="{{ onAssemblyConfirm }}" style="height:58px;padding:0 40px;background:#003a35;border:2px solid #00e5cc;color:#00ffee;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:16px;letter-spacing:6px;cursor:pointer;flex-shrink:0;" style-active="transform:scale(0.98);">確認</button>
+      </div>
+    </sc-if>
+
+    <!-- ENDING SCREEN -->
+    <sc-if value="{{ isEnding }}">
+      <div style="position:absolute;inset:0;z-index:10;padding:50px 34px 30px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;animation:endingFadeIn 1.2s ease both;">
+        <div style="color:#00ffee;font-size:18px;letter-spacing:8px;text-shadow:0 0 14px rgba(0,229,204,0.8);">NTUHOSPITAL</div>
+        <div style="color:#c09ad8;font-size:16px;line-height:2;text-align:center;">記憶已重組完成。<br/>（結局劇情尚待補充）</div>
+        <button onClick="{{ onReset }}" style="height:56px;padding:0 32px;background:#2a0e4a;border:2px solid #9a50cc;color:#e0b0ff;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:15px;letter-spacing:4px;cursor:pointer;" style-active="transform:scale(0.97);">重新開始</button>
+      </div>
+    </sc-if>
+
+    <!-- ENDING 1: keep all memories -->
+    <sc-if value="{{ isEnding1 }}">
+      <div style="position:absolute;inset:0;z-index:10;padding:50px 34px 30px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;animation:endingFadeIn 1.2s ease both;">
+        <div style="color:#f0e070;font-size:13px;letter-spacing:5px;text-shadow:0 0 10px rgba(240,192,48,0.6);">ENDING 1 // 保留所有記憶</div>
+        <div style="color:#e8dcc8;font-size:16px;line-height:2;text-align:center;max-width:520px;">你選擇帶著完整的自己，繼續走下去。<br/>有笑，有淚，也有熬夜與狼狽——但這才是真正活過的證明。<br/><br/>（結局劇情尚待補充）</div>
+        <button onClick="{{ onReset }}" style="height:56px;padding:0 32px;background:#2a0e4a;border:2px solid #9a50cc;color:#e0b0ff;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:15px;letter-spacing:4px;cursor:pointer;" style-active="transform:scale(0.97);">重新開始</button>
+      </div>
+    </sc-if>
+
+    <!-- ENDING 2: seal memories back -->
+    <sc-if value="{{ isEnding2 }}">
+      <div style="position:absolute;inset:0;z-index:10;padding:50px 34px 30px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;animation:endingFadeIn 1.2s ease both;">
+        <div style="color:#c09ad8;font-size:13px;letter-spacing:5px;text-shadow:0 0 10px rgba(154,80,204,0.5);">ENDING 2 // 將記憶封回</div>
+        <div style="color:#c09ad8;font-size:16px;line-height:2;text-align:center;max-width:520px;">你選擇把這些記憶重新鎖回原處。<br/>不再想起那些酸楚與疲憊，只需要，繼續快樂地過下去。<br/><br/>（結局劇情尚待補充）</div>
+        <button onClick="{{ onReset }}" style="height:56px;padding:0 32px;background:#2a0e4a;border:2px solid #9a50cc;color:#e0b0ff;border-radius:8px;font-family:'Share Tech Mono', monospace;font-size:15px;letter-spacing:4px;cursor:pointer;" style-active="transform:scale(0.97);">重新開始</button>
+      </div>
+    </sc-if>
+
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const KEYS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+const NODE_ICON_SHAPES = [
+  [ { kind: 'circle', cx: 32, cy: 32, r: 15, filled: false, sw: 1.6, opacity: 0.85 },
+    { kind: 'circle', cx: 32, cy: 32, r: 3.5, filled: true, opacity: 1 },
+    { kind: 'circle', cx: 47, cy: 19, r: 2.4, filled: true, opacity: 0.85 } ],
+  [ { kind: 'rect', x: 10, y: 38, w: 7, h: 18, filled: true, opacity: 0.85 },
+    { kind: 'rect', x: 19, y: 26, w: 7, h: 30, filled: true, opacity: 0.85 },
+    { kind: 'rect', x: 28, y: 32, w: 7, h: 24, filled: true, opacity: 0.85 },
+    { kind: 'rect', x: 37, y: 22, w: 7, h: 34, filled: true, opacity: 0.85 },
+    { kind: 'rect', x: 46, y: 30, w: 7, h: 26, filled: true, opacity: 0.85 },
+    { kind: 'rect', x: 8, y: 56, w: 48, h: 3, filled: true, opacity: 0.6 } ],
+  [ { kind: 'circle', cx: 48, cy: 15, r: 6, filled: true, opacity: 0.55 },
+    { kind: 'rect', x: 10, y: 34, w: 11, h: 24, filled: false, sw: 1.4, opacity: 0.85 },
+    { kind: 'rect', x: 24, y: 24, w: 11, h: 34, filled: false, sw: 1.4, opacity: 0.85 },
+    { kind: 'rect', x: 38, y: 30, w: 11, h: 28, filled: false, sw: 1.4, opacity: 0.85 },
+    { kind: 'rect', x: 13, y: 40, w: 3, h: 3, filled: true, opacity: 0.9 },
+    { kind: 'rect', x: 28, y: 30, w: 3, h: 3, filled: true, opacity: 0.9 },
+    { kind: 'rect', x: 42, y: 36, w: 3, h: 3, filled: true, opacity: 0.9 } ],
+  [ { kind: 'polygon', points: '12,46 52,46 45,54 19,54', filled: true, opacity: 0.85 },
+    { kind: 'rect', x: 30, y: 18, w: 2, h: 26, filled: true, opacity: 0.7 },
+    { kind: 'polygon', points: '32,18 32,34 47,30', filled: true, opacity: 0.9 },
+    { kind: 'rect', x: 8, y: 58, w: 48, h: 2, filled: true, opacity: 0.4 } ],
+  [ { kind: 'polygon', points: '50,32 41,17 23,17 14,32 23,47 41,47', filled: false, sw: 1.6, opacity: 0.85 },
+    { kind: 'polygon', points: '32,22 42,32 32,42 22,32', filled: true, opacity: 0.9 } ],
+  [ { kind: 'polygon', points: '32,10 54,52 10,52', filled: false, sw: 1.6, opacity: 0.85 },
+    { kind: 'rect', x: 18, y: 44, w: 5, h: 5, filled: true, opacity: 0.8 },
+    { kind: 'rect', x: 28, y: 47, w: 4, h: 4, filled: true, opacity: 0.8 },
+    { kind: 'rect', x: 38, y: 45, w: 5, h: 5, filled: true, opacity: 0.8 },
+    { kind: 'rect', x: 24, y: 38, w: 4, h: 4, filled: true, opacity: 0.7 } ],
+  [ { kind: 'rect', x: 8, y: 36, w: 8, h: 22, filled: true, opacity: 0.75 },
+    { kind: 'rect', x: 18, y: 22, w: 8, h: 36, filled: true, opacity: 0.85 },
+    { kind: 'rect', x: 28, y: 30, w: 8, h: 28, filled: true, opacity: 0.75 },
+    { kind: 'rect', x: 38, y: 16, w: 8, h: 42, filled: true, opacity: 0.9 },
+    { kind: 'rect', x: 48, y: 28, w: 8, h: 30, filled: true, opacity: 0.8 },
+    { kind: 'circle', cx: 22, cy: 28, r: 1.6, filled: true, opacity: 1 },
+    { kind: 'circle', cx: 42, cy: 24, r: 1.6, filled: true, opacity: 1 },
+    { kind: 'circle', cx: 42, cy: 34, r: 1.6, filled: true, opacity: 1 } ],
+  [ { kind: 'circle', cx: 32, cy: 32, r: 19, filled: false, sw: 1.4, opacity: 0.6 },
+    { kind: 'circle', cx: 32, cy: 32, r: 11, filled: false, sw: 1.4, opacity: 0.8 },
+    { kind: 'circle', cx: 32, cy: 32, r: 3.5, filled: true, opacity: 1 },
+    { kind: 'circle', cx: 32, cy: 9, r: 1.8, filled: true, opacity: 0.9 },
+    { kind: 'circle', cx: 32, cy: 55, r: 1.8, filled: true, opacity: 0.9 },
+    { kind: 'circle', cx: 9, cy: 32, r: 1.8, filled: true, opacity: 0.9 },
+    { kind: 'circle', cx: 55, cy: 32, r: 1.8, filled: true, opacity: 0.9 } ],
+];
+
+const STAGE_META = [
+  { code: '前導', name: '前導', x: 110, y: 96, kind: 'prologue', key: null },
+  { code: 'R', name: '廢棄的圖書館', x: 360, y: 58, kind: 'stage', key: 'R' },
+  { code: 'Y', name: '舊城區', x: 588, y: 150, kind: 'stage', key: 'Y' },
+  { code: 'A', name: '傳送港', x: 610, y: 336, kind: 'stage', key: 'A' },
+  { code: 'M', name: '黑色地下市集', x: 400, y: 388, kind: 'stage', key: 'M' },
+  { code: '?', name: '垃圾山', x: 168, y: 350, kind: 'stage', key: null },
+  { code: '?', name: '市中心的不夜城', x: 128, y: 528, kind: 'stage', key: null },
+  { code: '?', name: '終章', x: 400, y: 574, kind: 'ending', key: null },
+];
+
+const INTRO_PAGES = [
+  {
+    segs: [
+      { cls: 'narr', text: '西元 2157 年。這是我知道的第一件事。\n\n人類解決了所有的問題——至少，這是我們被告知的。戰爭、貧窮、病痛、失去，那些詞我在資料庫裡看過，但它們對我來說沒有重量，像是別人的故事，發生在很遠很遠以前。每天早晨，幸福感準時抵達。我不知道它從哪裡來，但它總是在那裡，像呼吸，像光線，像理所當然。\n\n我在這樣的世界裡長大。我也不覺得有什麼不對。' },
+    ],
+  },
+  {
+    segs: [
+      { cls: 'narr', text: '直到某天早晨，幸福感慢了零點三秒才來。' },
+    ],
+  },
+  {
+    segs: [
+      { cls: 'narr', text: '就在那縫隙裡，有些東西開始浮現。\n\n不是我的記憶——或者說，不像是我的。碎片，一小塊一小塊的，散落在意識的某個角落，我試著拼湊，卻找不到任何兩塊能夠接合的邊緣。我不知道它們從哪裡來，也不知道它們在說什麼。\n\n我想忽略它們。照著指令，繼續今天剩下的部分。\n\n但那些碎片不讓我忽略。它們沉默地囓咬著我，不痛，只是一種持續的、說不清楚的提示——彷彿在告訴我，此刻站在這裡的，並不是真正的我。\n\n我拿起手機，憑著那些模糊的印象，走向記憶裡隱約存在的某個地方。' },
+    ],
+  },
+  {
+    isRules: true,
+    segs: [
+      { cls: 'mission', text: '目標　找回那些屬於你的記憶碎片。\n' },
+      { cls: 'narr', text: '或許，走到最後，你就能回到正常快樂的生活——或許。\n\n' },
+      { cls: 'rule', text: '[01] ' },
+      { cls: 'narr', text: '取得記憶碎片，才能解鎖前往下一處的印象。\n\n' },
+      { cls: 'rule', text: '[02] ' },
+      { cls: 'narr', text: '下一處的印象，僅在當前記憶尋回後解鎖——請依序前行。\n\n' },
+      { cls: 'rule', text: '[03] ' },
+      { cls: 'narr', text: '此地，負面情緒的浮現並不尋常。若有所感，請自行承擔，系統不予介入。' },
+    ],
+  },
+];
+
+const CLS_STYLE = {
+  narr: { color: '#c09ad8', weight: 400, glow: 'none' },
+  quote: { color: '#00e5cc', weight: 400, glow: '0 0 8px rgba(0,229,204,0.6)' },
+  rule: { color: '#00e5cc', weight: 700, glow: '0 0 8px rgba(0,229,204,0.6)' },
+  mission: { color: '#f0c030', weight: 700, glow: '0 0 10px rgba(240,192,48,0.6)' },
+  warn: { color: '#ff80aa', weight: 600, glow: '0 0 8px rgba(255,45,120,0.5)' },
+  key: { color: '#00ffee', weight: 700, glow: '0 0 10px rgba(0,229,204,0.85)' },
+};
+
+const CIPHER_ALPHA = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const CIPHER_CELLS = (() => {
+  const cells = [];
+  const cellBase = 'display:flex;align-items:center;justify-content:center;width:20px;height:20px;font-family:\'Share Tech Mono\', monospace;font-size:10px;';
+  cells.push({ text: '', style: `${cellBase}background:#03060c;` });
+  for (let c = 0; c < 26; c++) {
+    cells.push({ text: CIPHER_ALPHA[c], style: `${cellBase}background:rgba(0,229,204,0.16);color:#00ffee;font-weight:700;text-shadow:0 0 4px rgba(0,229,204,0.6);` });
+  }
+  for (let r = 0; r < 26; r++) {
+    cells.push({ text: CIPHER_ALPHA[r], style: `${cellBase}background:rgba(154,80,204,0.18);color:#e0b0ff;font-weight:700;text-shadow:0 0 4px rgba(154,80,204,0.6);` });
+    for (let c = 0; c < 26; c++) {
+      const letter = CIPHER_ALPHA[(r + c) % 26];
+      const alt = (r + c) % 26 === 0;
+      cells.push({ text: letter, style: `${cellBase}background:${alt ? 'rgba(0,229,204,0.09)' : '#060911'};color:${alt ? '#9fe8e0' : '#4a6a68'};` });
+    }
+  }
+  return cells;
+})();
+
+const TYPE_INFO = {
+  一般: { color: '#A8A878', dark: true }, 火: { color: '#F08030', dark: true }, 水: { color: '#6890F0', dark: true },
+  電: { color: '#F8D030', dark: true }, 草: { color: '#78C850', dark: true }, 冰: { color: '#98D8D8', dark: true },
+  格鬥: { color: '#C03028', dark: false }, 毒: { color: '#A040A0', dark: false }, 地面: { color: '#E0C068', dark: true },
+  飛行: { color: '#A890F0', dark: true }, 超能力: { color: '#F85888', dark: true }, 蟲: { color: '#A8B820', dark: true },
+  岩石: { color: '#B8A038', dark: true }, 幽靈: { color: '#705898', dark: false }, 龍: { color: '#7038F8', dark: false },
+  惡: { color: '#705848', dark: false }, 鋼: { color: '#B8B8D0', dark: true }, 妖精: { color: '#EE99AC', dark: true },
+};
+const TYPE_STRONG_AGAINST = {
+  一般: [], 火: ['草', '冰', '蟲', '鋼'], 水: ['火', '地面', '岩石'], 電: ['水', '飛行'],
+  草: ['水', '地面', '岩石'], 冰: ['草', '地面', '飛行', '龍'], 格鬥: ['一般', '冰', '岩石', '惡', '鋼'],
+  毒: ['草', '妖精'], 地面: ['火', '電', '毒', '岩石', '鋼'], 飛行: ['草', '格鬥', '蟲'],
+  超能力: ['格鬥', '毒'], 蟲: ['草', '超能力', '惡'], 岩石: ['火', '冰', '飛行', '蟲'],
+  幽靈: ['超能力', '幽靈'], 龍: ['龍'], 惡: ['超能力', '幽靈'], 鋼: ['冰', '岩石', '妖精'],
+  妖精: ['格鬥', '龍', '惡'],
+};
+const TYPE_ICONS = {
+  一般: '⬡', 火: '🔥', 水: '💧', 電: '⚡', 草: '🌿', 冰: '❄', 格鬥: '👊', 毒: '☠',
+  地面: '⛰', 飛行: '🪽', 超能力: '🔮', 蟲: '🐛', 岩石: '🪨', 幽靈: '👻', 龍: '🐉',
+  惡: '🌑', 鋼: '⚙', 妖精: '✨',
+};
+const TYPE_CHART_ROWS = Object.keys(TYPE_INFO).map((name) => ({
+  name, icon: TYPE_ICONS[name] || '', color: TYPE_INFO[name].color, textColor: TYPE_INFO[name].dark ? '#1a1206' : '#fdf6ff',
+  targets: TYPE_STRONG_AGAINST[name].map((t) => ({ name: t, icon: TYPE_ICONS[t] || '', color: TYPE_INFO[t].color, textColor: TYPE_INFO[t].dark ? '#1a1206' : '#fdf6ff' })),
+}));
+
+const FRAGMENT_COLORS = {
+  U: { light: '#e8d080', dark: '#a07820' },
+  MQ: { light: '#dcc870', dark: '#987018' },
+  SO: { light: '#e8d080', dark: '#a07820' },
+  AX: { light: '#dcc870', dark: '#987018' },
+  MF: { light: '#e8d080', dark: '#a07820' },
+  JI: { light: '#dcc870', dark: '#987018' },
+};
+
+// ---- shared jigsaw piece geometry (per design-spec 1.7) ----
+const PIECE_D = 20, PIECE_SW = 68, PIECE_PW = PIECE_SW + 2 * PIECE_D, PIECE_PH = 96;
+const PIECE_PAPER_H = 84, PIECE_PAPER_Y = (PIECE_PH - PIECE_PAPER_H) / 2;
+const PIECE_YS = [0, 10, 21, 32, 42, 53, 63, 74, PIECE_PAPER_H].map((y) => y + PIECE_PAPER_Y);
+const PIECE_TEARS = [
+  [0, 4, 12, 18, 18, 18, 12, 4, 0],       // T0: single big outward tab (knob)
+  [0, -4, -12, -18, -18, -18, -12, -4, 0], // T1: single big inward notch (dent)
+  [0, 10, -10, 10, -10, 10, -10, 10, 0],  // T2: fast fine zigzag
+  [0, 16, 14, 4, -6, -14, -8, 6, 0],       // T3: skewed asymmetric wave
+  [0, -8, 10, -14, 8, -14, 10, -8, 0],     // T4: irregular double-notch
+];
+const FRAGMENT_ORDER = ['U', 'MQ', 'SO', 'AX', 'MF', 'JI'];
+const FRAGMENT_KEY_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+function buildPiecePath(leftTear, rightTear) {
+  const top = PIECE_YS[0], bottom = PIECE_YS[8];
+  let d = `M 0 ${top} L ${PIECE_SW} ${top} `;
+  for (let k = 1; k <= 8; k++) {
+    const x = PIECE_SW + (rightTear ? rightTear[k] : 0);
+    d += `L ${x} ${PIECE_YS[k]} `;
+  }
+  d += `L 0 ${bottom} `;
+  for (let k = 7; k >= 1; k--) {
+    const x = leftTear ? leftTear[k] : 0;
+    d += `L ${x} ${PIECE_YS[k]} `;
+  }
+  d += 'Z';
+  return d;
+}
+
+function pieceLeftTear(i) { return i > 0 ? PIECE_TEARS[i - 1] : null; }
+function pieceRightTear(i) { return i < FRAGMENT_ORDER.length - 1 ? PIECE_TEARS[i] : null; }
+
+function makePieceNode(letter, index, pxWidth, opts) {
+  opts = opts || {};
+  const colors = FRAGMENT_COLORS[letter] || { light: '#e8d080', dark: '#a07820' };
+  const path = buildPiecePath(pieceLeftTear(index), pieceRightTear(index));
+  const pxHeight = pxWidth * (PIECE_PH / PIECE_PW);
+  const gid = 'pg-' + letter + '-' + index + '-' + (opts.gidSuffix || '0');
+  const lineCount = 6;
+  const lines = [];
+  for (let n = 1; n <= lineCount; n++) {
+    const y = PIECE_PAPER_Y + (n * (PIECE_PAPER_H / (lineCount + 1)));
+    lines.push(React.createElement('line', { key: 'ln' + n, x1: 6, x2: PIECE_SW - 6, y1: y, y2: y, stroke: 'rgba(120,80,10,0.16)', strokeWidth: 1 }));
+  }
+  return React.createElement('svg', {
+    viewBox: `${-PIECE_D} 0 ${PIECE_PW} ${PIECE_PH}`,
+    width: pxWidth, height: pxHeight,
+    style: { display: 'block', overflow: 'visible', filter: opts.filter || 'none', pointerEvents: 'none' },
+  },
+    React.createElement('defs', null,
+      React.createElement('radialGradient', { id: gid, cx: '35%', cy: '28%', r: '80%' },
+        React.createElement('stop', { offset: '0%', stopColor: colors.light }),
+        React.createElement('stop', { offset: '100%', stopColor: colors.dark })
+      )
+    ),
+    React.createElement('path', { d: path, fill: `url(#${gid})`, stroke: 'rgba(60,40,0,0.55)', strokeWidth: 1.5 }),
+    ...lines,
+    React.createElement('ellipse', { cx: PIECE_SW * 0.7, cy: PIECE_PAPER_Y + PIECE_PAPER_H * 0.62, rx: 15, ry: 9, fill: 'rgba(255,255,255,0.07)' }),
+    React.createElement('text', {
+      x: PIECE_SW / 2, y: PIECE_PH / 2 + 6, textAnchor: 'middle', fontFamily: 'Georgia, serif', fontStyle: 'italic',
+      fontWeight: 700, fontSize: letter.length > 1 ? 15 : 18, fill: '#2a1a00', opacity: 0.85,
+    }, letter)
+  );
+}
+
+const ASSEMBLY_SCALE = 1.3;
+const ASSEMBLY_SLOT_STEP = PIECE_SW * ASSEMBLY_SCALE;
+const ASSEMBLY_PIECE_W = PIECE_PW * ASSEMBLY_SCALE;
+const ASSEMBLY_WIDTH = ASSEMBLY_SLOT_STEP * 5 + ASSEMBLY_PIECE_W;
+const ASSEMBLY_PIECE_H = ASSEMBLY_PIECE_W * (PIECE_PH / PIECE_PW);
+const ASSEMBLY_TABLE_H = ASSEMBLY_PIECE_H + 64;
+const ASSEMBLY_GAP = 30;
+const ASSEMBLY_SLOT_TOP = ASSEMBLY_TABLE_H + ASSEMBLY_GAP;
+const ASSEMBLY_AREA_H = ASSEMBLY_SLOT_TOP + ASSEMBLY_PIECE_H + 6;
+
+function seg(cls, text) { return { cls, text }; }
+
+// Smooth Catmull-Rom -> cubic-bezier path through a list of {x,y} points,
+// giving the map route one continuous flowing curve instead of straight
+// zig-zag segments.
+function smoothPath(pts) {
+  if (pts.length < 2) return '';
+  let d = `M ${pts[0].x},${pts[0].y} `;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[i - 1] || pts[i];
+    const p1 = pts[i];
+    const p2 = pts[i + 1];
+    const p3 = pts[i + 2] || p2;
+    const cp1x = p1.x + (p2.x - p0.x) / 6;
+    const cp1y = p1.y + (p2.y - p0.y) / 6;
+    const cp2x = p2.x - (p3.x - p1.x) / 6;
+    const cp2y = p2.y - (p3.y - p1.y) / 6;
+    d += `C ${cp1x.toFixed(1)},${cp1y.toFixed(1)} ${cp2x.toFixed(1)},${cp2y.toFixed(1)} ${p2.x},${p2.y} `;
+  }
+  return d;
+}
+
+// Splits a flat run list on paragraph breaks (\n\n) into blocks, so each
+// paragraph renders as its own left-flush block box (avoids inline pre-wrap
+// quirks where a short run right after a double-newline can render indented).
+function toParagraphs(runs) {
+  const paras = [[]];
+  for (const r of runs) {
+    const blocks = r.text.split('\n\n');
+    blocks.forEach((block, bi) => {
+      const lines = block.split('\n');
+      lines.forEach((line, li) => {
+        if (line.length) paras[paras.length - 1].push({ text: line, color: r.color, weight: r.weight, glow: r.glow, isBr: false, isText: true });
+        if (li < lines.length - 1) paras[paras.length - 1].push({ text: '', color: r.color, weight: r.weight, glow: r.glow, isBr: true, isText: false });
+      });
+      if (bi < blocks.length - 1) paras.push([]);
+    });
+  }
+  return paras.filter((p) => p.length > 0).map((runs2) => ({ runs: runs2 }));
+}
+
+const STAGES = {
+  R: {
+    name: '廢棄的圖書館',
+    emotion: '沈迷',
+    beats: [
+      { type: 'story', segs: [
+        seg('narr', '這裡貌似是以前的圖書館，一處積累人類知識的長廊。\n\n系統的紀錄顯示，這棟樓已經閒置了四十三年。它從未告訴你這棟樓的存在，但線索把你帶到了這裡。\n\n你走進去。空氣裡有一種說不清楚的氣味，不是霉，是紙——真正被人翻閱過的紙。這裡的每一本書早已被掃描進資料庫，在這個時代，知識只需要幾秒鐘就能直接傳入你的意識，沒有人需要用手翻頁。\n\n但你的視線停在書架上，停住了。\n\n不是因為書，是因為某種你找不到名字的感覺——像是有什麼東西在你胸口輕輕撞了一下，告訴你，這裡或許有你記憶裡猶存的東西。\n\n根據你手中的線索，這裡某個角落藏著幾本特定的書。找到它，你才能繼續走下去。'),
+      ]},
+      { type: 'story', segs: [
+        seg('narr', '書架比你想像的還要深。\n\n你沿著長廊走，手指無意識地掠過書脊——不是在找什麼，只是那個動作讓你覺得，自己好像曾經這樣做過。書架盡頭，有一排排的置物櫃，漆面早已斑駁，卻整齊地嵌在牆裡。每一格都只有一個編號，冷靜，簡單，什麼都沒有多說。\n\n'),
+        seg('quote', '「這座圖書館最後的管理員，是一個只懂中文的盲人。記憶裡只剩下這樣一句話。或許他可以幫我找到那本書——但他藏在這棟樓的哪個角落，在這麼大的地方，該怎麼找？」'),
+      ]},
+      { type: 'story', segs: [
+        seg('narr', '你繼續往前走。書庫的牆面上留著一排人為的印記，幾張書籤散落在角落的辦公桌上。\n\n'),
+        seg('quote', '「這些編號……或許，這就是他自己看得懂的語言。找出他想說的話，就能知道他在哪裡。」'),
+        seg('narr', '\n\n找出規律，補上他留下的空白。那串答案，會告訴你他在哪裡。\n\n'),
+        seg('mission', '前往中山地下街的311置物櫃'),
+      ]},
+      { type: 'puzzle',
+        panel: { title: 'LIBRARY ARCHIVE // 書庫守則終端', accent: '#f0c030' },
+        descSegs: [
+          seg('rule', '01　'), seg('narr', '書籤是用來整理書櫃編號的重要工具。\n'),
+          seg('rule', '02　'), seg('narr', '藏書都只放在'), seg('mission', '適中'), seg('narr', '的櫃子裡——過大或過小的櫃子太不堪用了，它們只是裝飾用的。\n'),
+          seg('rule', '03　'), seg('narr', '依據書籤上的指示標記符合編號的書櫃，但標記會兩兩互相抵銷。\n'),
+          seg('rule', '04　'), seg('narr', '經過整理後，用大黑點畫記所有有標示的書櫃。'),
+        ],
+        inputLabel: '通往館長的密語 / 共九字',
+        answer: '直走男廁第一間敲門',
+      },
+      { type: 'puzzle',
+        descSegs: [],
+        inputLabel: '從館長口中問出他最喜歡的作者名字',
+        answer: '黃山料',
+      },
+      { type: 'story', segs: [
+        seg('quote', '「沒想到館長竟然躲在廁所裡。也罷，先不管他待了多少年。」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「現在最重要的，是找到他——問問這座圖書館裡，是否還留著我記憶中的那本書。」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「好懷念那種感覺。沈迷於字裡行間，忘記時間的感覺。」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「……沈迷？這個詞是從哪裡來的？好像，好久沒有這種感覺了。」'),
+      ]},
+      { type: 'story', segs: [
+        seg('quote', '「嗯，這地方真大。感覺隨時都會在這裡迷路……」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「咦？前方怎麼有個人躺在那裡，身上破破爛爛的——看起來也不像是城市區的人。難不成，他就睡在這裡？」'),
+        seg('narr', '\n\n'),
+        seg('mission', '前往中山捷運站尋找角落的遊民'),
+      ]},
+      { type: 'puzzle',
+        descSegs: [ seg('narr', '想盡辦法取悅遊民，由他親口說出那個只有他才知道的密碼。') ],
+        inputLabel: '遊民說出的密碼 / 英文',
+        answer: 'addiction',
+        caseInsensitive: true,
+      },
+      { type: 'story', segs: [
+        seg('quote', '「嗯，真是個貪吃的傢伙……」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「是說……我以前是不是來過這個地方？書本的氣息、牆壁的紋路，一切都如此熟悉。」'),
+        seg('narr', '\n\n回憶在心中緩緩漾開，像一塊石子落進靜止的水面。那本書的輪廓在意識深處若隱若現——\n\n我卻怎麼也想不起它的名字。'),
+      ]},
+      { type: 'story', segs: [
+        seg('quote', '「結果問不到書名，卻不料拿到了一堆陌生人的日記……」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「咦？上面的中文字好像如此熟悉，我一定在某個地方見過。」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「沒錯，應該就是那裡。我記得小時候，最喜歡窩在那個角落，讀著她的書。那段時光如此安靜，爸爸媽媽怎麼拉都拉不走我，就這樣，一頭栽進了文字裡……」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「等等——小時候？奇怪，我怎麼突然想起了這些？我的……小時候？」'),
+        seg('narr', '\n\n'),
+        seg('mission', '前往中山區藏書最豐富的地方，找出潛藏其中的記憶碎片'),
+      ]},
+      { type: 'puzzle',
+        descSegs: [
+          seg('narr', '破碎的日記貌似指引著我，記憶的答案藏在'),
+          seg('rule', '字裡行間'),
+          seg('narr', '。\n\n'),
+          seg('warn', '別被過去的錯誤給誤導了。'),
+        ],
+        inputLabel: '收集到的記憶碎片 / 兩個字母',
+        answer: 'MF',
+        caseInsensitive: true,
+      },
+      { type: 'fragment', letter: 'MF', source: '廢棄的圖書館', emotion: '沈迷' },
+      { type: 'story', isLast: true, segs: [
+        seg('narr', '記憶碎片在掌心微微發光，然後消散。\n\n就在那一瞬間，有什麼東西回來了。\n\n不是畫面，是感覺——那種從第一頁翻開、就再也放不下來的感覺。推理小說裡每一個細節都是陷阱，每一句對白都可能是線索，你以為自己看穿了凶手，翻到下一頁，才發現自己又被騙了。然後你笑出來，繼續翻。\n\n'),
+        seg('quote', '「原來我以前這麼喜歡這種感覺……」'),
+        seg('narr', '\n\n更深的記憶浮上來了。這座書架旁，有個更小的自己，踮著腳尖搆不到最上層的書，爸爸伸手幫忙取下來，媽媽在旁邊說這本太難了，你看不懂的。結果那個小孩坐在地板上，一頁一頁，把整本書啃完了。\n\n逛完書店，他們會去旁邊的市集。炒麵的香味、嘈雜的人聲、媽媽說等一下不准再買書了，爸爸悄悄塞給你一個書袋。\n\n那是很久以前的事了。\n\n'),
+        seg('quote', '「很久……有多久？」'),
+      ]},
+    ],
+  },
+  Y: {
+    name: '舊城區',
+    emotion: '孤獨',
+    beats: [
+      { type: 'story', segs: [
+        seg('narr', '街道在某個路口開始變得不一樣了。\n\n招牌舊了，字體是你沒見過的樣式，玻璃櫥窗裡擺的東西你叫不出名字。路面的磚縫裡長著細細的草，沒有人清理，但也沒有人覺得有什麼不對。幾個人坐在騎樓下乘涼，沒有戴任何裝置，只是坐著，看著街道發呆。\n\n'),
+        seg('quote', '「這裡的人好像不太一樣。」'),
+      ]},
+      { type: 'story', segs: [
+        seg('narr', '不是格格不入的那種不一樣——是自在的、不慌不忙的，像是這條街有自己的時間，跟外面的世界走得不太同步。你想，在這種地方生活的人，或許還留著一些舊的東西。記憶裡的那種。\n\n'),
+        seg('quote', '「我竟然對這地方沒印象……」'),
+        seg('narr', '\n\n巷子一條接著一條，每條看起來都差不多，你在原地站了一下，決定找個人問路。你掃視了一圈，目光落在一個看起來和藹可親的人身上，往他的方向走去。\n\n'),
+        seg('mission', '前往台北地下街 Y-18 出口處'),
+      ]},
+      { type: 'story', segs: [
+        seg('narr', '在某個商店轉角，有個人站在那裡。\n\n目光飄移，像在人群裡找什麼，又像什麼都沒在看。衣服洗得有些褪色，手裡捏著一疊泛黃的紙。\n\n跟在尋找過去的你一樣，這個人貌似也在尋找些什麼。\n\n'),
+        seg('quote', '「那滄桑的眼神，消瘦的背影——有些孤獨。不知他到底經歷了什麼。」'),
+        seg('narr', '\n\n'),
+        seg('mission', '找到市井小民並與其對話'),
+      ]},
+      { type: 'puzzle',
+        descSegs: [
+          seg('narr', '他把那疊泛黃的紙攤開來，是一份份手寫的尋人啟事，每一張都是同一張臉，每一張都寫著同一個名字。'),
+          seg('quote', '「他走丟好幾年了。我一直在找。」'),
+          seg('narr', '\n\n他低著頭，說得很平靜，像是說了太多次、已經不知道怎麼讓它聽起來還有重量。\n\n'),
+          seg('quote', '「如果你找得到他們——或許他們能夠指引你的方向。」'),
+          seg('narr', '\n\n'), seg('mission', '任務：依照報紙指示，找出失蹤朋友的蹤影。'),
+        ],
+        inputLabel: '用占卜卡顯現出下一條道路的方向 / 英文',
+        answer: 'AIRPORTMETRO',
+        caseInsensitive: true,
+      },
+      { type: 'story', segs: [
+        seg('quote', '「想必這些影子待在舊城區這麼多年，也是在等待著他去找到他們吧。」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「話說這裡雖舊，但看到這裡的城景，心裡有種說不出的懷念感。」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「但我也不記得身邊有誰……抑或是，我曾去過哪裡。」'),
+        seg('narr', '\n\n你在路口停了一下，望著眼前這座城。\n\n'),
+        seg('quote', '「只是覺得——這座小城，給我帶來一種莫名的空洞感。」'),
+      ]},
+      { type: 'story', segs: [
+        seg('quote', '「只覺得，這個地方我多少應該有來過。」'),
+        seg('narr', '\n\n目光不自覺地落在某個占卜師攤販上。\n\n攤位前掛著一塊大牌子，字跡工整：'),
+        seg('quote', '「導引你心中的過去之路。」'),
+        seg('narr', '\n\n不知為何，那占卜師的長相讓你微微一愣——像是隔了很久沒見的舊友，熟悉卻又陌生，在記憶裡怎麼也找不到他的位置。\n\n'),
+        seg('quote', '「看他的樣子，在這座城市擺攤應該很久了。或許，他知道這座舊城區究竟跟我有什麼關聯。」'),
+        seg('narr', '\n\n'),
+        seg('mission', '找到占卜師並與其對話'),
+      ]},
+      { type: 'puzzle',
+        descSegs: [ seg('mission', '任務：透過占卜導引找出過去的記憶碎片。') ],
+        inputLabel: '收集到的記憶碎片代碼',
+        answer: 'AX',
+        caseInsensitive: true,
+      },
+      { type: 'fragment', letter: 'AX', source: '舊城區', emotion: '孤獨' },
+      { type: 'story', isLast: true, segs: [
+        seg('quote', '「啊——我想起來了。」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「當初剛分手，心情一塌糊塗，就跑到這個小鎮來散心。不料撞見了那位占卜師，叫他幫我斬斷爛桃花、順便看看愛情運。還記得他說，未來會有人仰慕我、愛上我。」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「結果沒過幾天，前女友就立刻找了新男生交往……」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「原來我對這座城市有印象，是因為當時實在太孤單、太無助了嗎？」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「還是其實是因為……我被甩了？」'),
+        seg('narr', '\n\n你沉默了一下。\n\n'),
+        seg('quote', '「嗯。是說這麼具體的事，我怎麼現在才想起來。」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「感覺就很像……經歷了一場大失憶一樣。」'),
+      ]},
+    ],
+  },
+  A: {
+    name: '傳送港',
+    emotion: '無知',
+    beats: [
+      { type: 'story', segs: [
+        seg('narr', '穿過一條狹長的廊道，你來到了傳送港的站台。\n\n'),
+        seg('quote', '「使用長泰空間公司、IL472 班次的旅客，您的躍遷閘口即將過期，請儘速完成傳送。」'),
+        seg('narr', '\n\n廣播聲在頭頂反覆播送。你站在熙熙攘攘的人群之中，一時間不知道該做些什麼。\n\n'),
+        seg('quote', '「詩意……這可太有詩意了……」'),
+        seg('narr', '\n\n窸窸窣窣的呢喃，從身後傳來。\n\n你回過頭。\n\n是個詩人。'),
+      ]},
+      { type: 'story', segs: [
+        seg('narr', '自從情緒標準化以後，詩人就已經是個非法的職業了——歷史課上說過，文學與幻想是舊人類的「毒藥」。\n\n'),
+        seg('quote', '「雖然有點冒險，但或許他知道些什麼——關於幸福感的問題。」'),
+        seg('narr', '\n\n你想跟上去搭話，人群卻把你們硬生生隔開。\n\n只看到一頂漁夫帽，從視線裡漸漸淡去，消失在人潮中。\n\n'),
+        seg('mission', '找到戴著漁夫帽的人，詢問他的狀況'),
+      ]},
+      { type: 'puzzle',
+        descSegs: [ seg('mission', '任務：透過三條支線得到的線索，尋獲詩人之真名') ],
+        inputLabel: '詩人的真名',
+        answer: '',
+        acceptAny: true,
+      },
+      { type: 'story', segs: [
+        seg('quote', '「咦——這些黑色碎片，又是什麼？」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「難不成……它們和我的記憶有關？！」'),
+        seg('narr', '\n\n腦中閃過一陣模糊的畫面。\n\n'),
+        seg('quote', '「我只記得，小時候拉著媽媽的手出國，不料一轉眼就走丟了。於是只好循著綠色箭頭的方向一直走，結果卻越走越遠……」'),
+        seg('narr', '\n\n'),
+        seg('mission', '用黑色碎片蓋住那道光，或許就是出口的方向'),
+      ]},
+      { type: 'puzzle',
+        descSegs: [],
+        inputLabel: '收集到的記憶碎片 / 兩個字母',
+        answer: 'JI',
+        caseInsensitive: true,
+      },
+      { type: 'fragment', letter: 'JI', source: '傳送港', emotion: '無知' },
+      { type: 'story', isLast: true, segs: [
+        seg('quote', '「想起來了！我就是在逃生出口遇到警衛，他才把我撿起來的。」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「仔細回想，真的蠻丟臉的……小時候的我，還真無知。」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「咦……」'),
+        seg('narr', '\n\n你停下腳步。\n\n'),
+        seg('quote', '「等等，我剛剛想起了什麼？」'),
+        seg('narr', '\n\n一陣空白。\n\n'),
+        seg('quote', '「完了，忘了。」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「……算了，繼續往前走吧。」'),
+      ]},
+    ],
+  },
+  M: {
+    name: '黑色地下市集',
+    emotion: '恐懼',
+    beats: [
+      { type: 'story', segs: [
+        seg('narr', '巷子越走越窄，光線越來越少。\n\n'),
+        seg('quote', '「怎麼感覺——越走心裡越不舒服？」'),
+        seg('narr', '\n\n不安的氣氛讓他寒毛直豎——已經很久，沒有這種渾身不對勁的感覺了。\n\n巷弄兩側彷彿藏著無數雙眼睛，靜靜地盯著他，卻怎麼也看不清楚是誰。\n\n'),
+        seg('quote', '「有人在看我……嗎？」'),
+      ]},
+      { type: 'story', segs: [
+        seg('narr', '走過幾段蜿蜒的小路後，眼前忽然豁然開朗。\n\n是一個潛藏在城市背後的非法市集。賭博、走私，這裡的居民沒有不做的勾當。\n\n'),
+        seg('quote', '「這種地方……我還是趕快離開比較好。」'),
+        seg('narr', '\n\n但腦海深處，有個聲音隱隱告訴他——有一部分的記憶，就藏在這裡。'),
+      ]},
+      { type: 'story', segs: [
+        seg('narr', '才剛準備逛逛這個市集，前方就有一位婦人叫住了你。\n\n'),
+        seg('quote', '「咦，你大概就是我叫的外送員了吧？怎麼這麼慢才來？」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「蛤？你是什麼意思，我看起來像外送員嗎……是說，我在找記憶碎片，想請問你有沒有——」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「吼呦，你吵什麼啦！我的孩子們快餓死了，家裡一共有一二三四……二十個小孩要餵，你現在跟我說沒有食物？？？」'),
+        seg('narr', '\n\n看在她是個辛苦的家庭主婦份上，你決定幫她一把。\n\n'),
+        seg('quote', '「好啦好啦，我幫你找吃的，我看看附近有什麼。」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「你先等等。」'),
+        seg('narr', '婦人從口袋裡掏出一大疊筆記紙，'),
+        seg('quote', '「這些是我孩子們愛吃的東西，那就麻煩你按照上面的餐點，幫我買回來吧。」'),
+        seg('narr', '\n\n'),
+        seg('mission', '前往K區美食街'),
+      ]},
+      { type: 'foodgame', gameName: '天下沒有你的午餐', rulesSegs: [
+        seg('rule', '目標　'), seg('narr', '玩家必須在 300 秒內完成八張訂單。\n\n'),
+        seg('rule', '訂單機制　'), seg('narr', '一次最多同時出現四張訂單，若超過 60 秒未完成，該筆訂單即視為失敗。\n\n'),
+        seg('rule', '完成方式　'), seg('narr', '玩家需在美食街中找到訂單對應的食物，並正確輸入該餐點的價錢，才算送餐成功。\n\n'),
+        seg('warn', '注意事項　'), seg('narr', '地下市集相當擁擠，請勿奔跑，並小心與他人碰撞。'),
+      ]},
+      { type: 'story', segs: [
+        seg('narr', '「結果只是來這裡跑腿。」\n\n'),
+        seg('quote', '「不知道為什麼，如果搞砸了，大概率會被那個婦人追著跑吧……」'),
+        seg('narr', '\n\n商店街兩側，充斥著許多不懷好意的商人，眼神在你身上打量來打量去，像在估算著什麼。\n\n有人朝你招手，笑得過分熱情；有人只是靜靜盯著，一句話也不說。你加快腳步，不敢和任何人對到眼。\n\n'),
+        seg('quote', '「明明這麼多看起來不錯的餐廳……」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「我卻一心只想趕緊離開這裡。到底是為什麼呢？」'),
+        seg('narr', '\n\n那種感覺，很難形容——像是身體比腦袋更早知道答案，卻怎麼也想不起來，自己究竟在害怕什麼。'),
+      ]},
+      { type: 'story', segs: [
+        seg('narr', '沿路傳來各種吆喝聲——該說是市集的生命力旺盛，還是這裡的人特別血氣方剛呢？\n\n'),
+        seg('quote', '「你，給我停下。你看起來是個新面孔。」'),
+        seg('narr', '\n\n一位陌生的男子擋在眼前。\n\n'),
+        seg('quote', '「決鬥吧。」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「蛤？？什麼意思……？」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「掏出你的寶可夢來決鬥吧。你看起來在找東西，對吧？我這裡或許有你要的東西——打贏我，就給你。」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「（該不會記憶碎片在這大叔手上？不太可能啊，我又不認識他……）」'),
+      ]},
+      { type: 'story', segs: [
+        seg('quote', '「可是我手上一隻寶可夢都沒有，這樣不就直接輸了嗎？」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「那就自己去抓，抓到了再來找我打。」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「啊對了，忘記說了——我叫小智，姓張，你可以叫我小智Chang。我可是寶可夢聯盟的冠軍。」'),
+        seg('narr', '\n\n'),
+        seg('mission', '找到位於Y區中央市集的小智Chang'),
+      ]},
+      { type: 'story', duelRules: true, duelTitle: '寶可夢聯盟', segs: [
+        seg('rule', '01　'), seg('narr', '必須要有五隻寶可夢才能參賽，採'), seg('key', '五戰三勝'), seg('narr', '。\n\n'),
+        seg('rule', '02　'), seg('narr', '一個隊伍的戰力值最高為 '), seg('key', '500'), seg('narr', '。\n\n'),
+        seg('rule', '03　'), seg('narr', '面對兩個對手，你必須組成'), seg('key', '兩支'), seg('narr', '隊伍。\n\n'),
+        seg('rule', '04　'), seg('narr', '勝負判定：先比'), seg('key', '屬性克制'), seg('narr', '，再比'), seg('key', '戰力點大小'), seg('narr', '。\n\n'),
+        seg('rule', '05　'), seg('narr', '屬性克制計算：計算某寶可夢的有幾種屬性可被對面克制，較少者即為勝方。'),
+      ]},
+      { type: 'puzzle',
+        descSegs: [
+          seg('mission', '任務：戰勝小智Chang與他的皮卡丘，奪回記憶碎片。'),
+        ],
+        inputLabel: '收集到的記憶碎片 / 兩個字母',
+        answer: 'SO',
+        caseInsensitive: true,
+      },
+      { type: 'story', segs: [
+        seg('quote', '「到底為什麼要對戰啊……」'),
+        seg('narr', '\n\n嘴上這麼抱怨著，手卻已經很自然地做出投擲的動作，彷彿身體比意識更早記得該怎麼做。\n\n'),
+        seg('quote', '「而且，為什麼用寶可夢對戰的感覺，如此熟悉……」'),
+        seg('narr', '\n\n不是第一次的熟悉，是那種更深層的——像是曾經無數個下午，就耗在這種一來一往的攻防之中，連招式的名字都不用想，脫口而出。\n\n'),
+        seg('quote', '「奇怪了……我明明不記得自己玩過這個。」'),
+        seg('narr', '\n\n心裡某個角落，卻隱隱有個聲音在說：你玩過的，而且玩了很久。\n\n只是那個聲音很小，小到幾乎聽不清楚，在你抓住這個念頭之前，就已經散去了。'),
+      ]},
+      { type: 'fragment', letter: 'SO', source: '黑色地下市集', emotion: '恐懼' },
+      { type: 'story', segs: [
+        seg('narr', '記憶碎片浮現的瞬間，一股寒意先於畫面湧上來。\n\n想起來了。\n\n當初是為了收購幾張低價卡牌，才鬼使神差地摸進了這個黑市交易。錢沒少花，貨也拿到了，但走出巷口前，被人盯上了。\n\n那雙眼睛，到現在想起來都還會發冷。\n\n對方開口就是威脅，話說得輕描淡寫，但意思很清楚——東西留下，人也未必能全須全尾地走。那是他第一次，真切地感覺到自己的性命，原來這麼不值錢，隨時可能被一筆勾銷。\n\n後來的事，記憶有些模糊，只記得自己是怎麼連滾帶爬地逃出來的。'),
+      ]},
+      { type: 'story', isLast: true, segs: [
+        seg('narr', '從那之後，他做什麼事都變得異常小心——過馬路要看三次，簽合約要讀三遍，連交朋友都要觀察好一陣子才敢交心。旁人都說他謹慎，只有他自己知道，那不是謹慎，是怕。\n\n這段記憶，他一直不願意想起。就醫的時候，他幾乎是求著醫生，把這一塊封存起來，越深越好，最好這輩子都不要再翻出來。\n\n即使到現在，光是回想，後頸還是會不自覺地一陣發麻。\n\n'),
+        seg('quote', '「奇怪……」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「我為什麼會把這段記憶，自己封起來？」'),
+        seg('narr', '\n\n他愣了一下。\n\n'),
+        seg('quote', '「這些看起來不屬於我的記憶……真的是我的嗎？」'),
+      ]},
+    ],
+  },
+  END: {
+    name: '記憶重組 · 終章',
+    emotion: '',
+    beats: [
+      { type: 'story', nextLabel: '拼合記憶碎片 ▸', leadsToAssembly: true, segs: [
+        seg('narr', '六道微光，靜靜懸浮在你的意識邊緣。\n\n沈迷、孤獨、無知、恐懼、貪婪、偏見——六種你早已模糊、卻又隱約覺得無比熟悉的感受，此刻靜靜地攤在你面前，像六張終於湊齊的舊照片。邊緣參差不齊，卻莫名地，彼此的形狀都對得上。\n\n'),
+        seg('quote', '「原來……都是同一件事的碎片啊。」'),
+        seg('narr', '\n\n心跳有點加速。不是因為害怕，是因為——你知道，只差最後一步了。\n\n把它們拼回原本的樣子，你就能想起，自己到底是誰。\n\n'),
+        seg('mission', '將六塊記憶碎片拼合，找回完整的自己。'),
+      ]},
+      { type: 'story', segs: [
+        seg('narr', '碎片嚴絲合縫地拼在一起的瞬間，一陣熟悉又陌生的暈眩感襲來。\n\n不是記憶回來了——是你想起了「記憶被藏在哪裡」這件事。\n\n很多年前，政府推行了一項全民政策——「快樂人生計畫」。每個人都可以將自己的負面情緒，完整地提取出來。大多數人選擇直接刪除，畢竟誰會想留著那些讓人不舒服的感受？眼不見為淨，從此只剩下笑容，剩下被安排好的幸福。\n\n但你沒有選擇刪除。\n\n你選擇了加密封存。\n\n'),
+      ]},
+      { type: 'story', nextLabel: '解密記憶密碼 ▸', segs: [
+        seg('narr', '你還記得那時候的自己，坐在提取艙裡，看著那些即將離開身體的情緒，心裡浮現一個念頭：這些東西，真的應該消失嗎？\n\n於是你動了手腳，把它們鎖進最深的地方，加了一層又一層的密碼，連自己都快要忘記鑰匙藏在哪裡——你賭的是，總有一天，會有另一個自己，把這些鎖打開。\n\n'),
+        seg('quote', '「原來……是我自己把它們藏起來的。」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「那，鑰匙呢？」'),
+        seg('narr', '\n\n你低頭看著手心裡的六塊記憶，隱約覺得，答案就藏在這些碎片本身之中。\n\n'),
+        seg('mission', '解除記憶的鎖頭，找回真正的自己。'),
+      ]},
+      { type: 'story', nextLabel: '查看密碼表 ▸', terminalStory: true, terminalTitle: 'MEMORY LOCK // 身份驗證前置', segs: [
+        seg('quote', '「貌似需要第二把鑰匙，才能把最後的鎖打開，我到底當初把密碼設成了什麼...?」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「我記得我把密碼設成了...密碼？」'),
+        seg('narr', '\n\n'),
+        seg('rule', '規則 01　'), seg('narr', '需要兩把等長的字母鑰匙。\n\n'),
+        seg('rule', '規則 02　'), seg('narr', '按照順序，用密碼表交叉查詢，即可拼湊出完整密碼。'),
+      ]},
+      { type: 'puzzle',
+        panel: { title: 'MEMORY LOCK // 記憶封印終端', accent: '#00e5cc' },
+        showCipherTable: true,
+        hiTechInput: true,
+        descSegs: [],
+        inputLabel: '記憶密碼',
+        answer: 'NTUHOSPITAL',
+        caseInsensitive: true,
+      },
+      { type: 'story', segs: [
+        seg('narr', '密碼輸入的瞬間，一道光從掌心炸開，湧進意識深處。\n\n所有的鎖，同時鬆開。\n\n你想起來了——全部。\n\n你終於明白，當初那個決定是對的。\n\n'),
+      ]},
+      { type: 'story', segs: [
+        seg('narr', '快樂之所以是快樂，是因為它站在其他情緒的對面，被襯托出來的。\n\n如果沒有沈迷過，怎麼會知道全心投入一件事，是什麼感覺？如果沒有孤獨過，又怎麼會懂得，有人陪伴有多珍貴？\n\n無知讓人跌跌撞撞，卻也逼著人學會謙卑；恐懼教人如何保護自己，也教人分辨什麼才真正值得害怕。就連貪婪與偏見，也曾經是人性最誠實的一面——想要更多，是一種渴望，不是罪過；帶著成見去看世界，是還沒學會怎麼看清它，而不是永遠學不會。\n\n這些情緒，一個都不該被抹去。少了任何一塊，人就不再完整，只剩下一具會微笑的空殼。'),
+      ]},
+      { type: 'story', segs: [
+        seg('narr', '泛黃的紙面上，浮現出完整的一串字：\n\n'),
+        seg('key', 'NTUHOSPITAL'),
+        seg('narr', '\n\n'),
+        seg('quote', '「原來……我曾經是個台大醫學系的學生。」'),
+        seg('narr', '\n\n白袍、聽診器、深夜還亮著燈的解剖學教室、一疊疊翻到捲邊的講義，一幕幕湧了回來。你想起自己曾經徹夜背誦肌肉的起止點，反覆唸到嘴巴都不聽使喚；想起在急診室外，緊張到手心冒汗的第一次見習，連自我介紹都結結巴巴。\n\n那些熬夜到凌晨三點，對著檯燈苦讀的畫面；那些因為壓力太大、身體撐不住而被送急診的夜晚——原來都不是別人的故事，是你自己的。\n\n疲憊，混雜著一點點狼狽，卻也帶著說不出的真實感。\n\n那些只屬於你的回憶，一段一段，都回來了。\n\n'),
+      ]},
+      { type: 'story', endingChoice: true, segs: [
+        seg('narr', '你捧著這些記憶，安靜地站了很久。\n\n原來完整的自己，不是只有快樂的部分。有熬夜的疲憊，有見習時的手足無措，也有被送急診時的狼狽——但也正是這些，拼湊出了一個真實存在過的人，而不是一具被修剪過的、只剩下微笑的空殼。\n\n'),
+        seg('quote', '「偵測到完整記憶已恢復。請選擇後續處理方式。」'),
+        seg('narr', '\n\n你看著手中的記憶，仔細審視了很久，心裡浮現出兩條路。'),
+      ]},
+    ],
+  },
+};
+
+
+const FOOD_ORDER_POOL = [
+  { customer: '亮亮', item: '清燉牛筋+牛肉片+銷魂麵', price: 358 },
+  { customer: '鮪魚', item: '終極龍王鍋', price: 1758 },
+  { customer: '嘻嘻鍋', item: '椒香麻辣半筋半肉麵', price: 290 },
+  { customer: '胖熊', item: '大份豆皮烏龍麵', price: 144 },
+  { customer: '主廚高登', item: '油菜花半熟蛋披薩', price: 170 },
+];
+
+const FOOD_ACCENTS = ['#f0c030', '#00e5cc', '#c060ff', '#ff2d78'];
+
+function pickFoodOrder() {
+  return FOOD_ORDER_POOL[Math.floor(Math.random() * FOOD_ORDER_POOL.length)];
+}
+
+function makeFoodConfetti(n) {
+  const arr = [];
+  for (let i = 0; i < n; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const dist = 90 + Math.random() * 150;
+    const dx = Math.cos(angle) * dist;
+    const dy = Math.sin(angle) * dist - 30;
+    const size = 5 + Math.random() * 5;
+    const color = FOOD_ACCENTS[i % FOOD_ACCENTS.length];
+    const delay = Math.random() * 0.25;
+    const rot = Math.random() * 360;
+    const style = `position:absolute;top:50%;left:50%;width:${size}px;height:${size}px;background:${color};border-radius:${i % 2 === 0 ? '2px' : '50%'};box-shadow:0 0 6px ${color};transform:translate(-50%,-50%) rotate(${rot}deg);--dx:${dx.toFixed(1)}px;--dy:${dy.toFixed(1)}px;animation:confettiBurst 1.15s ease-out ${delay.toFixed(2)}s both;pointer-events:none;`;
+    arr.push({ style });
+  }
+  return arr;
+}
+
+const PARTICLE_COLORS = ['#00e5cc', '#c060ff', '#ff2d78', '#f0c030'];
+
+function makeParticles(n) {
+  const arr = [];
+  for (let i = 0; i < n; i++) {
+    const x = Math.random() * 700;
+    const y = Math.random() * 800;
+    const size = 1 + Math.random() * 2.4;
+    const dur = 5 + Math.random() * 9;
+    const delay = Math.random() * 8;
+    const color = PARTICLE_COLORS[i % PARTICLE_COLORS.length];
+    const style = `position:absolute;left:${x}px;top:${y}px;width:${size}px;height:${size}px;border-radius:50%;background:${color};box-shadow:0 0 ${(size * 3).toFixed(1)}px ${color};animation:floatParticle ${dur.toFixed(2)}s ease-in-out infinite, pulseOpacity ${(dur * 0.8).toFixed(2)}s ease-in-out infinite;animation-delay:-${delay.toFixed(2)}s;`;
+    arr.push({ style });
+  }
+  return arr;
+}
+
+function makeBuildings(n) {
+  const arr = [];
+  let x = -20;
+  for (let i = 0; i < n; i++) {
+    const width = 55 + Math.random() * 55;
+    const height = 70 + Math.random() * 170;
+    const shade = i % 2 === 0 ? '#120820' : '#180b2a';
+    const style = `position:absolute;left:${x}px;bottom:0;width:${width}px;height:${height}px;background:${shade};box-shadow:inset 0 2px 0 rgba(192,96,255,0.12);`;
+    arr.push({ style });
+    x += width * 0.72;
+  }
+  return arr;
+}
+
+function makeRain(n) {
+  const arr = [];
+  for (let i = 0; i < n; i++) {
+    const x = Math.random() * 700;
+    const height = 30 + Math.random() * 60;
+    const dur = 1.2 + Math.random() * 1.6;
+    const delay = Math.random() * 3;
+    const color = Math.random() > 0.5 ? 'rgba(0,229,204,0.28)' : 'rgba(192,96,255,0.22)';
+    const style = `position:absolute;left:${x}px;top:-100px;width:1px;height:${height}px;background:linear-gradient(to bottom, transparent, ${color}, transparent);animation:rainFall ${dur.toFixed(2)}s linear infinite;animation-delay:-${delay.toFixed(2)}s;`;
+    arr.push({ style });
+  }
+  return arr;
+}
+
+const STAGE_GLYPH_CHARS = '01アイウカラ$#%&NTUAXMFJIQSO'.split('');
+function makeStageGlyphs(n) {
+  const arr = [];
+  for (let i = 0; i < n; i++) {
+    const x = Math.random() * 100;
+    const y = Math.random() * 100;
+    const dur = 3 + Math.random() * 3;
+    const delay = Math.random() * 4;
+    const size = 10 + Math.random() * 8;
+    const ch = STAGE_GLYPH_CHARS[Math.floor(Math.random() * STAGE_GLYPH_CHARS.length)];
+    const style = `position:absolute;left:${x.toFixed(1)}%;top:${y.toFixed(1)}%;font-size:${size.toFixed(0)}px;color:rgba(0,229,204,0.3);font-family:'Share Tech Mono', monospace;animation:glyphDrift ${dur.toFixed(2)}s ease-in-out ${(-delay).toFixed(2)}s infinite;pointer-events:none;`;
+    arr.push({ ch, style });
+  }
+  return arr;
+}
+
+class Component extends DCLogic {
+  particles = makeParticles(34);
+  buildings = makeBuildings(9);
+  rain = makeRain(24);
+  stageGlyphs = makeStageGlyphs(14);
+
+  state = {
+    screen: 'entry',
+    room: ['', '', '', '', '', ''],
+    scale: 1,
+    introPageIndex: 0,
+    charCount: 0,
+    typingDone: false,
+    unlockedIndex: 1,
+    toastMsg: '',
+    unlockBanner: '',
+    currentStage: null,
+    beatIndex: 0,
+    beatCharCount: 0,
+    beatTypingDone: false,
+    puzzleInput: '',
+    puzzleError: '',
+    puzzleStatus: 'idle',
+    puzzleDescCharCount: 0,
+    puzzleDescTypingDone: false,
+    collectedFragments: [],
+    creatorMode: false,
+    assemblyLetters: [...FRAGMENT_ORDER],
+    assemblyTablePos: {},
+    assemblySlots: [],
+    assemblyDrag: null,
+    assemblyDragDX: 0,
+    assemblyDragDY: 0,
+    assemblyStatus: 'idle',
+    assemblyBurst: [],
+    foodPhase: 'rules',
+    foodRulesCharCount: 0,
+    foodRulesTypingDone: false,
+    foodSlots: [],
+    foodCompleted: 0,
+    foodTimeLeft: 300,
+    foodShowResetConfirm: false,
+  };
+
+  handleResize = () => {
+    const s = Math.min(window.innerWidth / 700, window.innerHeight / 800, 1);
+    this.setState({ scale: s || 1 });
+  };
+
+  componentDidMount() {
+    this.handleResize();
+    window.addEventListener('resize', this.handleResize);
+    try {
+      const saved = JSON.parse(localStorage.getItem('mnemo_progress') || 'null');
+      if (saved && (saved.screen === 'map' || saved.screen === 'ending' || saved.screen === 'ending1' || saved.screen === 'ending2')) {
+        this.setState({ screen: saved.screen, room: saved.room || this.state.room, unlockedIndex: saved.unlockedIndex ?? 1, collectedFragments: saved.collectedFragments || [] });
+      }
+    } catch (e) {}
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize);
+    clearTimeout(this._typeTimer);
+    clearTimeout(this._toastTimer);
+    clearTimeout(this._bannerTimer);
+    clearTimeout(this._wrongTimer);
+    clearTimeout(this._descTypeTimer);
+    clearTimeout(this._assemblyTimer);
+    clearInterval(this._foodTimer);
+    if (this._successTimers) Object.values(this._successTimers).forEach(clearTimeout);
+  }
+
+  saveProgress(extra) {
+    const data = { room: this.state.room, unlockedIndex: this.state.unlockedIndex, screen: this.state.screen, collectedFragments: this.state.collectedFragments, ...extra };
+    localStorage.setItem('mnemo_progress', JSON.stringify(data));
+  }
+
+  pressKey(ch) {
+    const room = [...this.state.room];
+    const idx = room.findIndex((c) => c === '');
+    if (idx === -1) return;
+    room[idx] = ch;
+    this.setState({ room });
+  }
+
+  clearRoom() {
+    this.setState({ room: ['', '', '', '', '', ''] });
+  }
+
+  confirmRoom() {
+    if (this.state.room.some((c) => c === '')) return;
+    const code = this.state.room.join('');
+    if (code === '000000') {
+      this.setState({ screen: 'map', creatorMode: true, unlockedIndex: STAGE_META.length });
+      return;
+    }
+    this.startTyping(0);
+    this.setState({ screen: 'intro' });
+  }
+
+  resetDemo() {
+    localStorage.removeItem('mnemo_progress');
+    clearTimeout(this._typeTimer);
+    this.setState({ screen: 'entry', room: ['', '', '', '', '', ''], introPageIndex: 0, charCount: 0, typingDone: false, unlockedIndex: 1, collectedFragments: [], creatorMode: false, assemblyLetters: [...FRAGMENT_ORDER], assemblyTablePos: {}, assemblySlots: [], assemblyDrag: null, assemblyDragDX: 0, assemblyDragDY: 0, assemblyStatus: 'idle' });
+  }
+
+  delayForChar(ch) {
+    if (ch === '。' || ch === '！' || ch === '？' || ch === '—') return 260;
+    if (ch === '，' || ch === '、' || ch === ',') return 120;
+    if (ch === '\n') return 80;
+    return 32;
+  }
+
+  /** Animate `fullText` one character at a time into `charKey`/`doneKey`, using `timerKey` to track the timer so it can be cancelled later. */
+  startTypewriter(fullText, charKey, doneKey, timerKey) {
+    clearTimeout(this[timerKey]);
+    const total = fullText.length;
+    this.setState({ [charKey]: 0, [doneKey]: total === 0 });
+    if (total === 0) return;
+    let pos = 0;
+    const tick = () => {
+      pos += 1;
+      this.setState({ [charKey]: pos, [doneKey]: pos >= total });
+      if (pos < total) this[timerKey] = setTimeout(tick, this.delayForChar(fullText[pos - 1]));
+    };
+    this[timerKey] = setTimeout(tick, this.delayForChar(fullText[0]));
+  }
+
+  /** Cancel any in-flight typewriter for `timerKey` and jump straight to the fully-typed state. */
+  completeTypewriter(fullText, charKey, doneKey, timerKey) {
+    clearTimeout(this[timerKey]);
+    this.setState({ [charKey]: fullText.length, [doneKey]: true });
+  }
+
+  startTyping(pageIndex) {
+    const full = INTRO_PAGES[pageIndex].segs.map((s) => s.text).join('');
+    this.setState({ introPageIndex: pageIndex });
+    this.startTypewriter(full, 'charCount', 'typingDone', '_typeTimer');
+  }
+
+  introTap() {
+    if (this.state.typingDone) return;
+    const full = INTRO_PAGES[this.state.introPageIndex].segs.map((s) => s.text).join('');
+    this.completeTypewriter(full, 'charCount', 'typingDone', '_typeTimer');
+  }
+
+  introPrev() {
+    if (this.state.introPageIndex <= 0) return;
+    const prev = this.state.introPageIndex - 1;
+    const full = INTRO_PAGES[prev].segs.map((s) => s.text).join('');
+    this.setState({ introPageIndex: prev });
+    this.completeTypewriter(full, 'charCount', 'typingDone', '_typeTimer');
+  }
+
+  introNext() {
+    const next = this.state.introPageIndex + 1;
+    if (next >= INTRO_PAGES.length) {
+      this.setState({ screen: 'map' }, () => { this.saveProgress({ screen: 'map' }); this.showUnlockBanner(this.state.unlockedIndex); });
+      return;
+    }
+    this.startTyping(next);
+  }
+
+  introSkip() {
+    clearTimeout(this._typeTimer);
+    this.setState({ screen: 'map' }, () => { this.saveProgress({ screen: 'map' }); this.showUnlockBanner(this.state.unlockedIndex); });
+  }
+
+  showUnlockBanner(index) {
+    const meta = STAGE_META[index];
+    if (!meta) return;
+    const label = meta.name && meta.name !== '?' ? meta.name : `第${index}關`;
+    clearTimeout(this._bannerTimer);
+    this.setState({ unlockBanner: `${label} 已解鎖` });
+    this._bannerTimer = setTimeout(() => this.setState({ unlockBanner: '' }), 2600);
+  }
+
+  showToast(msg) {
+    clearTimeout(this._toastTimer);
+    this.setState({ toastMsg: msg });
+    this._toastTimer = setTimeout(() => this.setState({ toastMsg: '' }), 1800);
+  }
+
+  onNodeClick(index) {
+    const { unlockedIndex, creatorMode } = this.state;
+    if (!creatorMode && index !== unlockedIndex) return;
+    const meta = STAGE_META[index];
+    if (meta.kind === 'ending') { this.startStage('END'); return; }
+    if (meta.key && STAGES[meta.key]) {
+      this.startStage(meta.key);
+      return;
+    }
+    this.showToast('此關卡頁面尚未製作,敬請期待');
+  }
+
+  openBackpack() { this.setState({ screen: 'backpack' }); }
+  closeBackpack() { this.setState({ screen: 'map' }); }
+
+  collectFragment(letter) {
+    const collected = this.state.collectedFragments.includes(letter)
+      ? this.state.collectedFragments
+      : [...this.state.collectedFragments, letter];
+    this.setState({ collectedFragments: collected }, () => {
+      this.saveProgress({ collectedFragments: collected });
+      this.advanceBeat();
+    });
+  }
+
+  startAssembly() {
+    const activeLetters = this.state.collectedFragments.length
+      ? FRAGMENT_ORDER.filter((l) => this.state.collectedFragments.includes(l))
+      : [...FRAGMENT_ORDER];
+    const shuffled = [...activeLetters];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const tmp = shuffled[i]; shuffled[i] = shuffled[j]; shuffled[j] = tmp;
+    }
+    const cols = shuffled.length || 1;
+    const colW = ASSEMBLY_WIDTH / cols;
+    const tablePos = {};
+    shuffled.forEach((letter, i) => {
+      const maxJitterX = Math.max(0, colW - ASSEMBLY_PIECE_W * 0.55);
+      const x = Math.max(0, Math.min(ASSEMBLY_WIDTH - ASSEMBLY_PIECE_W, i * colW + Math.random() * maxJitterX));
+      const y = Math.random() * Math.max(0, ASSEMBLY_TABLE_H - ASSEMBLY_PIECE_H - 12) + 6;
+      const rot = Math.random() * 18 - 9;
+      tablePos[letter] = { x, y, rot };
+    });
+    this.setState({
+      screen: 'assembly',
+      assemblyLetters: activeLetters,
+      assemblyTablePos: tablePos,
+      assemblySlots: new Array(activeLetters.length).fill(null),
+      assemblyDrag: null,
+      assemblyDragDX: 0,
+      assemblyDragDY: 0,
+      assemblyStatus: 'idle',
+      assemblyBurst: [],
+    });
+  }
+
+  onAssemblyPieceDown(letter, from, e) {
+    if (this.state.assemblyStatus === 'correct') return;
+    e.preventDefault();
+    e.stopPropagation();
+    let startLeft, startTop;
+    if (from === 'table') {
+      const p = this.state.assemblyTablePos[letter] || { x: 0, y: 0 };
+      startLeft = p.x; startTop = p.y;
+    } else {
+      startLeft = from * ASSEMBLY_SLOT_STEP; startTop = ASSEMBLY_SLOT_TOP;
+    }
+    this._dragStartX = e.clientX;
+    this._dragStartY = e.clientY;
+    this.setState({ assemblyDrag: { letter, from, startLeft, startTop }, assemblyDragDX: 0, assemblyDragDY: 0 });
+  }
+
+  onAssemblyPointerMove(e) {
+    if (!this.state.assemblyDrag) return;
+    this.setState({ assemblyDragDX: e.clientX - this._dragStartX, assemblyDragDY: e.clientY - this._dragStartY });
+  }
+
+  onAssemblyPointerUp() {
+    const drag = this.state.assemblyDrag;
+    if (!drag) return;
+    const scale = this.state.scale || 1;
+    const dx = this.state.assemblyDragDX / scale;
+    const dy = this.state.assemblyDragDY / scale;
+    const newLeft = drag.startLeft + dx;
+    const newTop = drag.startTop + dy;
+    const centerY = newTop + ASSEMBLY_PIECE_H / 2;
+    const slots = [...this.state.assemblySlots];
+    const tablePos = { ...this.state.assemblyTablePos };
+    const droppedInSlotZone = centerY > ASSEMBLY_TABLE_H + 6;
+
+    if (droppedInSlotZone) {
+      let targetIdx = Math.round(newLeft / ASSEMBLY_SLOT_STEP);
+      targetIdx = Math.max(0, Math.min(slots.length - 1, targetIdx));
+      const occupant = slots[targetIdx];
+      if (drag.from === 'table') {
+        delete tablePos[drag.letter];
+        if (occupant && occupant !== drag.letter) {
+          tablePos[occupant] = { x: drag.startLeft, y: drag.startTop, rot: Math.random() * 18 - 9 };
+        }
+        slots[targetIdx] = drag.letter;
+      } else {
+        if (targetIdx !== drag.from) {
+          slots[drag.from] = occupant || null;
+        }
+        slots[targetIdx] = drag.letter;
+      }
+    } else {
+      const clampedX = Math.max(0, Math.min(ASSEMBLY_WIDTH - ASSEMBLY_PIECE_W, newLeft));
+      const clampedY = Math.max(0, Math.min(ASSEMBLY_TABLE_H - ASSEMBLY_PIECE_H, newTop));
+      tablePos[drag.letter] = { x: clampedX, y: clampedY, rot: 0 };
+      if (drag.from !== 'table') slots[drag.from] = null;
+    }
+
+    this.setState({ assemblySlots: slots, assemblyTablePos: tablePos, assemblyDrag: null, assemblyDragDX: 0, assemblyDragDY: 0 });
+  }
+
+  checkAssembly() {
+    const { assemblySlots, assemblyLetters } = this.state;
+    const correct = assemblySlots.length === assemblyLetters.length && assemblySlots.every((l, i) => l === assemblyLetters[i]);
+    clearTimeout(this._assemblyTimer);
+    if (correct) {
+      const burst = [];
+      const n = 12;
+      for (let i = 0; i < n; i++) {
+        burst.push({ angle: (360 / n) * i + (Math.random() * 14 - 7), dist: 54 + Math.random() * 30, delay: Math.random() * 0.15, color: PARTICLE_COLORS[i % PARTICLE_COLORS.length] });
+      }
+      this.setState({ assemblyStatus: 'correct', assemblyBurst: burst });
+      this._assemblyTimer = setTimeout(() => {
+        if (this.state.currentStage === 'END') {
+          this.setState({ screen: 'stage' }, () => this.startBeatTyping(this.state.beatIndex));
+        } else {
+          this.setState({ screen: 'ending' }, () => this.saveProgress({ screen: 'ending' }));
+        }
+      }, 2200);
+    } else {
+      this.setState({ assemblyStatus: 'wrong' });
+      this._assemblyTimer = setTimeout(() => { if (this.state.assemblyStatus === 'wrong') this.setState({ assemblyStatus: 'idle' }); }, 1400);
+    }
+  }
+
+  pressFragmentKey(ch) {
+    const stage = STAGES[this.state.currentStage];
+    const beat = stage.beats[this.state.beatIndex];
+    if (this.state.puzzleStatus === 'correct') return;
+    if (this.state.puzzleInput.length >= beat.answer.length) return;
+    this.setState({ puzzleInput: this.state.puzzleInput + ch, puzzleStatus: 'idle', puzzleError: '' });
+  }
+
+  backspaceFragmentInput() {
+    if (this.state.puzzleStatus === 'correct') return;
+    this.setState({ puzzleInput: this.state.puzzleInput.slice(0, -1) });
+  }
+
+  startStage(key) {
+    clearTimeout(this._typeTimer);
+    clearTimeout(this._wrongTimer);
+    clearTimeout(this._descTypeTimer);
+    this.setState({ screen: 'stage', currentStage: key, beatIndex: 0, puzzleInput: '', puzzleError: '', puzzleStatus: 'idle', puzzleDescCharCount: 0, puzzleDescTypingDone: false }, () => this.startBeatTyping(0));
+  }
+
+  startBeatTyping(beatIndex) {
+    clearTimeout(this._typeTimer);
+    clearTimeout(this._descTypeTimer);
+    clearInterval(this._foodTimer);
+    const stage = STAGES[this.state.currentStage];
+    const beat = stage.beats[beatIndex];
+    if (beat.type === 'foodgame') {
+      this.setState({ beatCharCount: 0, beatTypingDone: true, foodPhase: 'rules', foodSlots: [], foodCompleted: 0, foodTimeLeft: 300, foodShowResetConfirm: false });
+      const full = beat.rulesSegs.map((s) => s.text).join('');
+      this.startTypewriter(full, 'foodRulesCharCount', 'foodRulesTypingDone', '_descTypeTimer');
+      return;
+    }
+    if (beat.type === 'puzzle') {
+      this.setState({ beatCharCount: 0, beatTypingDone: true });
+      const full = beat.descSegs.map((s) => s.text).join('');
+      this.startTypewriter(full, 'puzzleDescCharCount', 'puzzleDescTypingDone', '_descTypeTimer');
+      return;
+    }
+    if (!beat || beat.type !== 'story') { this.setState({ beatCharCount: 0, beatTypingDone: true }); return; }
+    const full = beat.segs.map((s) => s.text).join('');
+    this.startTypewriter(full, 'beatCharCount', 'beatTypingDone', '_typeTimer');
+  }
+
+  foodRulesTap() {
+    if (this.state.foodRulesTypingDone) return;
+    const stage = STAGES[this.state.currentStage];
+    const beat = stage.beats[this.state.beatIndex];
+    const full = beat.rulesSegs.map((s) => s.text).join('');
+    this.completeTypewriter(full, 'foodRulesCharCount', 'foodRulesTypingDone', '_descTypeTimer');
+  }
+
+  startFoodGame() {
+    clearInterval(this._foodTimer);
+    if (this._successTimers) Object.values(this._successTimers).forEach(clearTimeout);
+    this._successTimers = {};
+    const slots = [0, 1, 2, 3].map((i) => ({ id: i, order: pickFoodOrder(), timeLeft: 60, input: '', status: 'idle' }));
+    this.setState({ foodPhase: 'playing', foodSlots: slots, foodCompleted: 0, foodTimeLeft: 300 });
+    this._foodTimer = setInterval(() => this.foodTick(), 1000);
+  }
+
+  foodTick() {
+    if (this.state.foodPhase !== 'playing') { clearInterval(this._foodTimer); return; }
+    const timeLeft = this.state.foodTimeLeft - 1;
+    const slots = this.state.foodSlots.map((slot) => {
+      if (slot.status !== 'idle' && slot.status !== 'wrong') return slot;
+      const t = slot.timeLeft - 1;
+      if (t <= 0) return { ...slot, order: pickFoodOrder(), timeLeft: 60, input: '', status: 'idle' };
+      return { ...slot, timeLeft: t };
+    });
+    if (timeLeft <= 0) {
+      clearInterval(this._foodTimer);
+      const passed = this.state.foodCompleted >= 8;
+      if (passed) { this.setFoodPassed(); return; }
+      this.setState({ foodTimeLeft: 0, foodSlots: slots, foodPhase: 'failed' });
+    } else {
+      this.setState({ foodTimeLeft: timeLeft, foodSlots: slots });
+    }
+  }
+
+  onFoodInputChange(idx, val) {
+    const slots = [...this.state.foodSlots];
+    slots[idx] = { ...slots[idx], input: val, status: 'idle' };
+    this.setState({ foodSlots: slots });
+  }
+
+  onFoodSubmit(idx) {
+    const slot = this.state.foodSlots[idx];
+    if (!slot || slot.input === '' || (slot.status !== 'idle' && slot.status !== 'wrong')) return;
+    const given = parseInt(slot.input, 10);
+    if (isNaN(given)) return;
+    if (!this._successTimers) this._successTimers = {};
+    if (given === slot.order.price) {
+      const completed = this.state.foodCompleted + 1;
+      const slots = [...this.state.foodSlots];
+      slots[idx] = { ...slot, status: 'success', input: '' };
+      this.setState({ foodSlots: slots, foodCompleted: completed });
+      clearTimeout(this._successTimers[idx]);
+      if (completed >= 8) {
+        this._successTimers[idx] = setTimeout(() => this.setFoodPassed(), 900);
+      } else {
+        this._successTimers[idx] = setTimeout(() => this.foodSlotPowerOff(idx), 900);
+      }
+    } else {
+      const slots = [...this.state.foodSlots];
+      slots[idx] = { ...slot, status: 'wrong', input: '' };
+      this.setState({ foodSlots: slots });
+    }
+  }
+
+  foodSlotPowerOff(idx) {
+    const slots = [...this.state.foodSlots];
+    if (!slots[idx]) return;
+    slots[idx] = { ...slots[idx], status: 'poweroff' };
+    this.setState({ foodSlots: slots });
+    this._successTimers[idx] = setTimeout(() => this.foodSlotEmpty(idx), 420);
+  }
+
+  foodSlotEmpty(idx) {
+    const slots = [...this.state.foodSlots];
+    if (!slots[idx]) return;
+    slots[idx] = { ...slots[idx], status: 'empty' };
+    this.setState({ foodSlots: slots });
+    this._successTimers[idx] = setTimeout(() => this.foodSlotEnter(idx), 450);
+  }
+
+  foodSlotEnter(idx) {
+    const slots = [...this.state.foodSlots];
+    if (!slots[idx]) return;
+    slots[idx] = { ...slots[idx], order: pickFoodOrder(), timeLeft: 60, input: '', status: 'entering' };
+    this.setState({ foodSlots: slots });
+    this._successTimers[idx] = setTimeout(() => this.foodSlotIdle(idx), 600);
+  }
+
+  foodSlotIdle(idx) {
+    const slots = [...this.state.foodSlots];
+    if (!slots[idx]) return;
+    slots[idx] = { ...slots[idx], status: 'idle' };
+    this.setState({ foodSlots: slots });
+  }
+
+  onFoodRetry() {
+    clearInterval(this._foodTimer);
+    if (this._successTimers) Object.values(this._successTimers).forEach(clearTimeout);
+    this._successTimers = {};
+    this.setState({ foodPhase: 'rules', foodSlots: [], foodCompleted: 0, foodTimeLeft: 300 }, () => this.startBeatTyping(this.state.beatIndex));
+  }
+
+  onFoodContinue() {
+    clearInterval(this._foodTimer);
+    this.advanceBeat();
+  }
+
+  setFoodPassed() {
+    clearInterval(this._foodTimer);
+    this._foodConfetti = makeFoodConfetti(18);
+    this.setState({ foodPhase: 'passed' });
+  }
+
+  onFoodResetClick() {
+    this.setState({ foodShowResetConfirm: true });
+  }
+
+  onFoodResetCancel() {
+    this.setState({ foodShowResetConfirm: false });
+  }
+
+  onFoodResetConfirm() {
+    this.setState({ foodShowResetConfirm: false });
+    this.onFoodRetry();
+  }
+
+  puzzleDescTap() {
+    if (this.state.puzzleDescTypingDone) return;
+    const stage = STAGES[this.state.currentStage];
+    const beat = stage.beats[this.state.beatIndex];
+    const full = beat.descSegs.map((s) => s.text).join('');
+    this.completeTypewriter(full, 'puzzleDescCharCount', 'puzzleDescTypingDone', '_descTypeTimer');
+  }
+
+  stageTap() {
+    if (this.state.beatTypingDone) return;
+    const stage = STAGES[this.state.currentStage];
+    const beat = stage.beats[this.state.beatIndex];
+    const full = beat.segs.map((s) => s.text).join('');
+    this.completeTypewriter(full, 'beatCharCount', 'beatTypingDone', '_typeTimer');
+  }
+
+  prevBeat() {
+    if (this.state.beatIndex <= 0) return;
+    clearTimeout(this._typeTimer);
+    clearTimeout(this._wrongTimer);
+    clearTimeout(this._descTypeTimer);
+    clearInterval(this._foodTimer);
+    const stage = STAGES[this.state.currentStage];
+    const prevIndex = this.state.beatIndex - 1;
+    const prevBeatDef = stage.beats[prevIndex];
+    this.setState({ beatIndex: prevIndex, puzzleInput: '', puzzleError: '', puzzleStatus: 'idle' });
+    if (prevBeatDef.type === 'story') {
+      const full = prevBeatDef.segs.map((s) => s.text).join('');
+      this.completeTypewriter(full, 'beatCharCount', 'beatTypingDone', '_typeTimer');
+    } else if (prevBeatDef.type === 'puzzle') {
+      const full = prevBeatDef.descSegs.map((s) => s.text).join('');
+      this.completeTypewriter(full, 'puzzleDescCharCount', 'puzzleDescTypingDone', '_descTypeTimer');
+    } else if (prevBeatDef.type === 'foodgame') {
+      const full = prevBeatDef.rulesSegs.map((s) => s.text).join('');
+      this.setState({ foodPhase: 'rules', foodSlots: [], foodCompleted: 0, foodTimeLeft: 300 });
+      this.completeTypewriter(full, 'foodRulesCharCount', 'foodRulesTypingDone', '_descTypeTimer');
+    }
+  }
+
+  advanceBeat() {
+    const stage = STAGES[this.state.currentStage];
+    const beat = stage.beats[this.state.beatIndex];
+    if (beat.leadsToAssembly) {
+      const nextIndex = this.state.beatIndex + 1;
+      this.setState({ beatIndex: nextIndex }, () => this.startAssembly());
+      return;
+    }
+    if (beat.endingChoice) return;
+    if (beat.isLast) {
+      const nextUnlocked = this.state.unlockedIndex + 1;
+      this.setState({ screen: 'map', currentStage: null, unlockedIndex: nextUnlocked }, () => { this.saveProgress({ screen: 'map', unlockedIndex: nextUnlocked }); this.showUnlockBanner(nextUnlocked); });
+      return;
+    }
+    clearTimeout(this._wrongTimer);
+    const nextIndex = this.state.beatIndex + 1;
+    this.setState({ beatIndex: nextIndex, puzzleInput: '', puzzleError: '', puzzleStatus: 'idle', puzzleDescCharCount: 0, puzzleDescTypingDone: false }, () => this.startBeatTyping(nextIndex));
+  }
+
+  chooseEndingKeep() {
+    this.setState({ screen: 'ending1' }, () => this.saveProgress({ screen: 'ending1' }));
+  }
+
+  chooseEndingSeal() {
+    this.setState({ screen: 'ending2' }, () => this.saveProgress({ screen: 'ending2' }));
+  }
+
+  onPuzzleInputChange(val) {
+    this.setState({ puzzleInput: val });
+  }
+
+  submitPuzzle() {
+    const stage = STAGES[this.state.currentStage];
+    const beat = stage.beats[this.state.beatIndex];
+    const given = this.state.puzzleInput.trim();
+    const answer = beat.answer;
+    const match = beat.acceptAny ? true : (beat.caseInsensitive ? given.toLowerCase() === answer.toLowerCase() : given === answer);
+    if (!given) return;
+    if (this.state.puzzleStatus === 'correct') { this.advanceBeat(); return; }
+    if (match) {
+      clearTimeout(this._wrongTimer);
+      this.setState({ puzzleStatus: 'correct', puzzleError: '' });
+    } else {
+      clearTimeout(this._wrongTimer);
+      this.setState({ puzzleStatus: 'wrong', puzzleError: '答案不對,再試一次', puzzleInput: '' });
+      this._wrongTimer = setTimeout(() => { if (this.state.puzzleStatus === 'wrong') this.setState({ puzzleStatus: 'idle' }); }, 1400);
+    }
+  }
+
+  renderVals() {
+    const { room, screen, scale, introPageIndex, charCount, typingDone, unlockedIndex, toastMsg, unlockBanner,
+      currentStage, beatIndex, beatCharCount, beatTypingDone, puzzleInput, puzzleError, puzzleStatus,
+      puzzleDescCharCount, puzzleDescTypingDone, collectedFragments, assemblyLetters, assemblyTablePos, assemblySlots, assemblyDrag,
+      assemblyDragDX, assemblyDragDY, assemblyStatus, assemblyBurst } = this.state;
+
+    // ---- entry ----
+    const firstEmpty = room.findIndex((c) => c === '');
+    const roomSlots = room.map((char, i) => ({
+      char,
+      isCursor: i === (firstEmpty === -1 ? -1 : firstEmpty) && char === '',
+      borderColor: char ? '#00e5cc' : '#5a3a80',
+      bg: char ? '#003a35' : '#150a24',
+    }));
+    const keypadKeys = KEYS.map((k) => ({ label: k, onPress: () => this.pressKey(k) }));
+    const confirmDisabled = room.some((c) => c === '');
+    const confirmBg = confirmDisabled ? '#0a1f1c' : '#003a35';
+    const confirmColor = confirmDisabled ? '#0e5c53' : '#00ffee';
+    const confirmOpacity = confirmDisabled ? 0.5 : 1;
+
+    // ---- intro ----
+    const page = INTRO_PAGES[introPageIndex];
+    let remaining = charCount;
+    const visibleSegments = [];
+    for (const seg of page.segs) {
+      if (remaining <= 0) break;
+      const take = Math.min(seg.text.length, remaining);
+      const style = CLS_STYLE[seg.cls];
+      visibleSegments.push({ text: seg.text.slice(0, take), color: style.color, weight: style.weight, glow: style.glow });
+      remaining -= take;
+    }
+    const introDots = INTRO_PAGES.map((_, i) => ({
+      size: i === introPageIndex ? 26 : 8,
+      color: i < introPageIndex ? '#c060ff' : i === introPageIndex ? '#00e5cc' : '#2a1a44',
+    }));
+    const introNextLabel = introPageIndex === INTRO_PAGES.length - 1 ? '進入地圖 ▸' : '繼續 ▸';
+    const introParagraphs = toParagraphs(visibleSegments);
+
+    // ---- map ----
+    const mapNodes = STAGE_META.map((meta, i) => {
+      const x = meta.x;
+      const y = meta.y;
+      let bg, border, fg, label, fontSize, anim = 'none', cursor = 'default';
+      if (i < unlockedIndex) {
+        const purple = meta.kind === 'prologue';
+        bg = purple ? '#2a0e4a' : '#3a0020';
+        border = purple ? '#c060ff' : '#ff2d78';
+        fg = purple ? '#e0b0ff' : '#ff80aa';
+        label = meta.name; fontSize = 12.5;
+      } else if (i === unlockedIndex) {
+        bg = '#003a35'; border = '#00e5cc'; fg = '#00ffee'; label = meta.name; fontSize = 12.5;
+        anim = 'blinkPip 1.6s ease-in-out infinite'; cursor = 'pointer';
+      } else {
+        bg = '#150a24'; border = '#3a2060'; fg = '#5a3a80'; label = '?'; fontSize = 28;
+      }
+      const shadow = `0 0 16px ${border}55, inset 0 0 14px ${border}22`;
+      const iconDefs = i <= unlockedIndex ? NODE_ICON_SHAPES[i] : null;
+      const icon = iconDefs ? iconDefs.map((s) => ({
+        isRect: s.kind === 'rect', isCircle: s.kind === 'circle', isPolygon: s.kind === 'polygon',
+        cx: s.cx, cy: s.cy, r: s.r,
+        x: s.x, y: s.y, w: s.w, h: s.h,
+        points: s.points,
+        fill: s.filled ? fg : 'none',
+        stroke: s.filled ? 'none' : fg,
+        sw: s.sw || 1.5,
+        opacity: s.opacity,
+      })) : null;
+      return { x, y, bg, border, fg, label, fontSize, shadow, anim, cursor, icon, isCurrent: i === unlockedIndex, onClick: () => this.onNodeClick(i) };
+    });
+
+    const routeNodePts = mapNodes.map((n) => ({ x: n.x, y: n.y }));
+    const traveledCount = Math.min(unlockedIndex + 1, mapNodes.length);
+    const pathD = smoothPath(routeNodePts);
+    const traveledD = traveledCount > 1 ? smoothPath(routeNodePts.slice(0, traveledCount)) : '';
+    const doneMainStages = STAGE_META.filter((m, i) => m.kind === 'stage' && i < unlockedIndex).length;
+    const fragmentCount = `${doneMainStages}/6`;
+    const progressSegs = mapNodes.map((n, i) => ({
+      color: i < unlockedIndex ? (STAGE_META[i].kind === 'prologue' ? '#c060ff' : '#ff2d78') : i === unlockedIndex ? '#00e5cc' : '#2a1a44',
+      glow: i <= unlockedIndex ? '0 0 8px currentColor' : 'none',
+      anim: i === unlockedIndex ? 'mapGlowPulse 1.8s ease-in-out infinite' : 'none',
+    }));
+
+    // ---- stage beat ----
+    let stageVals = {};
+    if (screen === 'stage' && currentStage) {
+      const stage = STAGES[currentStage];
+      const beat = stage.beats[beatIndex];
+      stageVals.stageName = stage.name;
+      stageVals.stageEmotion = stage.emotion;
+      stageVals.typeChartRows = TYPE_CHART_ROWS;
+      stageVals.isStageStory = beat.type === 'story';
+      stageVals.isStagePuzzle = beat.type === 'puzzle';
+      stageVals.isStageFragment = beat.type === 'fragment';
+      stageVals.isStageFoodgame = beat.type === 'foodgame';
+
+      if (beat.type === 'story') {
+        let rem = beatCharCount;
+        const vis = [];
+        for (const s of beat.segs) {
+          if (rem <= 0) break;
+          const take = Math.min(s.text.length, rem);
+          const st = CLS_STYLE[s.cls];
+          vis.push({ text: s.text.slice(0, take), color: st.color, weight: st.weight, glow: st.glow });
+          rem -= take;
+        }
+        stageVals.stageVisibleSegments = vis;
+        stageVals.stageParagraphs = toParagraphs(vis);
+        stageVals.stageTypingDone = beatTypingDone;
+        stageVals.stageShowCursor = !beatTypingDone;
+        stageVals.stageNextLabel = beat.nextLabel ? beat.nextLabel : (beat.isLast ? '回到地圖 ▸' : '繼續 ▸');
+        stageVals.stageIsEndingChoice = !!beat.endingChoice;
+        stageVals.stageIsNormalNext = !beat.endingChoice;
+        stageVals.onChooseKeep = () => this.chooseEndingKeep();
+        stageVals.onChooseSeal = () => this.chooseEndingSeal();
+        stageVals.stageShowTypeChart = !!beat.duelRules && beatTypingDone;
+        stageVals.stageIsDuelRules = !!beat.duelRules;
+        stageVals.stageIsTerminalStory = !beat.duelRules && !!beat.terminalStory;
+        stageVals.stageIsNormalStory = !beat.duelRules && !beat.terminalStory;
+        stageVals.terminalTitle = beat.terminalTitle || 'MEMORY TERMINAL // 記憶終端';
+        stageVals.duelTitle = beat.duelTitle || '';
+      } else if (beat.type === 'puzzle') {
+        let rem = puzzleDescCharCount;
+        const vis = [];
+        for (const s of beat.descSegs) {
+          if (rem <= 0) break;
+          const take = Math.min(s.text.length, rem);
+          const st = CLS_STYLE[s.cls];
+          vis.push({ text: s.text.slice(0, take), color: st.color, weight: st.weight, glow: st.glow });
+          rem -= take;
+        }
+        stageVals.puzzleDescParagraphs = toParagraphs(vis);
+        stageVals.hasPuzzleDesc = beat.descSegs.length > 0;
+        stageVals.puzzlePanelTitle = beat.panel ? beat.panel.title : 'MEMORY TERMINAL // 記憶解密終端';
+        stageVals.puzzlePanelAccent = beat.panel ? beat.panel.accent : '#00e5cc';
+        stageVals.puzzleBeatTag = `NO.${String(beatIndex + 1).padStart(2, '0')}`;
+        stageVals.puzzleBeatKey = `${currentStage}-${beatIndex}`;
+        stageVals.puzzleDescShowCursor = !puzzleDescTypingDone;
+        stageVals.onPuzzleDescTap = () => this.puzzleDescTap();
+        stageVals.showCipherTable = !!beat.showCipherTable;
+        stageVals.cipherCells = CIPHER_CELLS;
+        stageVals.puzzleInputLabel = beat.inputLabel;
+        stageVals.puzzleInput = puzzleInput;
+        stageVals.puzzleError = puzzleError;
+        stageVals.puzzleIsCorrect = puzzleStatus === 'correct';
+        stageVals.puzzleIsWrong = puzzleStatus === 'wrong';
+        stageVals.puzzleBorderColor = puzzleStatus === 'correct' ? '#00e5cc' : puzzleStatus === 'wrong' ? '#ff2d78' : '#5a3a80';
+        stageVals.puzzleConfirmLabel = puzzleStatus === 'correct' ? '繼續 ▸' : '確認';
+        stageVals.puzzleShakeAnim = puzzleStatus === 'wrong' ? 'glitchShift 0.4s ease' : 'none';
+        stageVals.puzzleInputDisabled = puzzleStatus === 'correct';
+
+        let lookahead = beatIndex + 1;
+        while (stage.beats[lookahead] && stage.beats[lookahead].type === 'story') lookahead++;
+        const nextBeat = stage.beats[lookahead];
+        const isFragmentAnswer = !!(nextBeat && nextBeat.type === 'fragment');
+        const isHiTech = !isFragmentAnswer && !!beat.hiTechInput;
+        stageVals.isFragmentAnswerPuzzle = isFragmentAnswer;
+        stageVals.isHiTechPuzzle = isHiTech;
+        stageVals.notFragmentAnswerPuzzle = !isFragmentAnswer && !isHiTech;
+        if (isFragmentAnswer) {
+          const maxLen = beat.answer.length;
+          const chars = puzzleInput.split('');
+          stageVals.puzzleBlanks = Array.from({ length: maxLen }).map((_, i) => ({
+            char: chars[i] || '',
+            isCursor: i === chars.length && puzzleStatus !== 'correct',
+            border: chars[i] ? stageVals.puzzleBorderColor : '#5a3a80',
+            delay: (i * 0.05).toFixed(2),
+          }));
+          stageVals.fragmentKeypadKeys = FRAGMENT_KEY_LETTERS.map((l) => ({ label: l, onPress: () => this.pressFragmentKey(l) }));
+          stageVals.onFragmentBackspace = () => this.backspaceFragmentInput();
+        }
+        if (isHiTech) {
+          const maxLen = beat.answer.length;
+          const chars = puzzleInput.toUpperCase().split('');
+          stageVals.hiTechMaxLen = maxLen;
+          stageVals.hiTechBlanks = Array.from({ length: maxLen }).map((_, i) => ({
+            char: chars[i] || '',
+            isCursor: i === chars.length && puzzleStatus !== 'correct',
+            filled: !!chars[i],
+          }));
+        }
+      } else if (beat.type === 'foodgame') {
+        let rem = this.state.foodRulesCharCount;
+        const vis = [];
+        for (const s of beat.rulesSegs) {
+          if (rem <= 0) break;
+          const take = Math.min(s.text.length, rem);
+          const st = CLS_STYLE[s.cls];
+          vis.push({ text: s.text.slice(0, take), color: st.color, weight: st.weight, glow: st.glow });
+          rem -= take;
+        }
+        stageVals.foodRulesParagraphs = toParagraphs(vis);
+        stageVals.foodRulesShowCursor = !this.state.foodRulesTypingDone;
+        stageVals.foodRulesTypingDone = this.state.foodRulesTypingDone;
+        stageVals.onFoodRulesTap = () => this.foodRulesTap();
+        stageVals.onFoodStart = () => this.startFoodGame();
+        stageVals.onFoodContinue = () => this.onFoodContinue();
+        stageVals.onFoodRetry = () => this.onFoodRetry();
+        stageVals.onFoodResetClick = () => this.onFoodResetClick();
+        stageVals.onFoodResetCancel = () => this.onFoodResetCancel();
+        stageVals.onFoodResetConfirm = () => this.onFoodResetConfirm();
+        stageVals.foodShowResetConfirm = this.state.foodShowResetConfirm;
+        stageVals.foodGameName = beat.gameName || '美食街訂單挑戰';
+        stageVals.foodConfetti = this._foodConfetti || [];
+        stageVals.foodPhaseIsRules = this.state.foodPhase === 'rules';
+        stageVals.foodPhaseIsPlaying = this.state.foodPhase === 'playing';
+        stageVals.foodPhaseIsPassed = this.state.foodPhase === 'passed';
+        stageVals.foodPhaseIsFailed = this.state.foodPhase === 'failed';
+        stageVals.foodCompleted = this.state.foodCompleted;
+        const mm = Math.floor(this.state.foodTimeLeft / 60);
+        const ss = String(this.state.foodTimeLeft % 60).padStart(2, '0');
+        stageVals.foodTimeLeftDisplay = `${mm}:${ss}`;
+        const slotsView = this.state.foodSlots.map((slot, i) => ({
+          customer: slot.order.customer,
+          item: slot.order.item,
+          timeLeft: slot.timeLeft,
+          timerColor: slot.timeLeft <= 10 ? '#ff2d78' : FOOD_ACCENTS[i % 4],
+          borderColor: slot.status === 'wrong' ? '#ff2d78' : FOOD_ACCENTS[i % 4],
+          accent: FOOD_ACCENTS[i % 4],
+          input: slot.input,
+          isWrong: slot.status === 'wrong',
+          isSuccess: slot.status === 'success',
+          isPowerOff: slot.status === 'poweroff',
+          isEmpty: slot.status === 'empty',
+          isEntering: slot.status === 'entering',
+          isScreenVisible: slot.status !== 'empty',
+          screenAnim: slot.status === 'poweroff' ? 'foodPowerOff 0.42s cubic-bezier(0.4,0,0.8,1) both' : slot.status === 'entering' ? 'screenBoot 0.6s cubic-bezier(0.2,0.9,0.25,1) both' : 'foodScreenIn 0.35s ease both',
+          onInput: (e) => this.onFoodInputChange(i, e.target.value),
+          onSubmit: () => this.onFoodSubmit(i),
+        }));
+        stageVals.foodSlotRows = [slotsView.slice(0, 2), slotsView.slice(2, 4)];
+      } else if (beat.type === 'fragment') {
+        const colors = FRAGMENT_COLORS[beat.letter] || { light: '#e8d080', dark: '#a07820' };
+        stageVals.fragLetter = beat.letter;
+        stageVals.fragSource = beat.source;
+        stageVals.fragEmotion = beat.emotion;
+        stageVals.fragLight = colors.light;
+        stageVals.fragDark = colors.dark;
+        stageVals.fragPieceNode = makePieceNode(beat.letter, FRAGMENT_ORDER.indexOf(beat.letter), 190, { gidSuffix: 'obt' });
+        stageVals.onFragCollect = () => this.collectFragment(beat.letter);
+      }
+    }
+
+    // ---- backpack ----
+    const backpackSlots = FRAGMENT_ORDER.map((letter) => {
+      const collected = collectedFragments.includes(letter);
+      return {
+        collected,
+        locked: !collected,
+        bg: collected ? '#1a1206' : '#150a24',
+        border: collected ? '#f0c030' : '#3a2060',
+        borderStyle: collected ? 'solid' : 'dashed',
+        shadow: collected ? '0 0 20px rgba(240,192,48,0.25), inset 0 0 16px rgba(240,192,48,0.12)' : 'none',
+        pieceNode: collected ? makePieceNode(letter, FRAGMENT_ORDER.indexOf(letter), 110, { gidSuffix: 'bp' }) : null,
+      };
+    });
+
+    // ---- assembly ----
+    const activeLetters = (assemblyLetters && assemblyLetters.length) ? assemblyLetters : FRAGMENT_ORDER;
+    const slots = (assemblySlots && assemblySlots.length === activeLetters.length) ? assemblySlots : new Array(activeLetters.length).fill(null);
+    const slotIndexOf = {};
+    slots.forEach((l, i) => { if (l) slotIndexOf[l] = i; });
+    const dragDX = assemblyDragDX / (scale || 1);
+    const dragDY = assemblyDragDY / (scale || 1);
+    const isCorrect = assemblyStatus === 'correct';
+    const assemblySlotBaselineTop = ASSEMBLY_SLOT_TOP + ASSEMBLY_PIECE_H + 10;
+    const assemblyTableDimStyle = isCorrect ? 'animation:tableDim 0.8s ease both;' : '';
+    const brSize = 12;
+    const assemblySlotViews = slots.map((letter, i) => {
+      const x = i * ASSEMBLY_SLOT_STEP, top = ASSEMBLY_SLOT_TOP, w = ASSEMBLY_PIECE_W, h = ASSEMBLY_PIECE_H;
+      const filled = !!letter;
+      const brColor = filled ? 'rgba(0,255,238,0.75)' : 'rgba(0,229,204,0.32)';
+      const mk = (pos) => {
+        const base = `position:absolute;width:${brSize}px;height:${brSize}px;pointer-events:none;`;
+        if (pos === 'tl') return `${base}left:${x}px;top:${top}px;border-top:2px solid ${brColor};border-left:2px solid ${brColor};`;
+        if (pos === 'tr') return `${base}left:${x + w - brSize}px;top:${top}px;border-top:2px solid ${brColor};border-right:2px solid ${brColor};`;
+        if (pos === 'bl') return `${base}left:${x}px;top:${top + h - brSize}px;border-bottom:2px solid ${brColor};border-left:2px solid ${brColor};`;
+        return `${base}left:${x + w - brSize}px;top:${top + h - brSize}px;border-bottom:2px solid ${brColor};border-right:2px solid ${brColor};`;
+      };
+      return {
+        boxStyle: `position:absolute;left:${x}px;top:${top}px;width:${w}px;height:${h}px;border-radius:6px;background:${filled ? 'rgba(0,229,204,0.05)' : 'rgba(0,229,204,0.02)'};${filled ? 'animation:slotLockPulse 2.2s ease-in-out infinite;' : ''}`,
+        brTL: mk('tl'), brTR: mk('tr'), brBL: mk('bl'), brBR: mk('br'),
+        numStyle: `position:absolute;left:${x}px;top:${top + h + 4}px;width:${w}px;text-align:center;color:${filled ? 'rgba(0,229,204,0.55)' : 'rgba(0,229,204,0.25)'};font-size:9px;letter-spacing:1px;pointer-events:none;`,
+        num: '0' + (i + 1),
+      };
+    });
+    const assemblyPieces = activeLetters.map((letter) => {
+      const inSlot = slotIndexOf.hasOwnProperty(letter);
+      const isDragging = !!(assemblyDrag && assemblyDrag.letter === letter);
+      const canonIdx = FRAGMENT_ORDER.indexOf(letter);
+      let baseLeft, baseTop, rot;
+      if (isDragging) {
+        baseLeft = assemblyDrag.startLeft; baseTop = assemblyDrag.startTop; rot = 0;
+      } else if (inSlot) {
+        baseLeft = slotIndexOf[letter] * ASSEMBLY_SLOT_STEP; baseTop = ASSEMBLY_SLOT_TOP; rot = 0;
+      } else {
+        const p = (assemblyTablePos && assemblyTablePos[letter]) || { x: 0, y: 0, rot: 0 };
+        baseLeft = p.x; baseTop = p.y; rot = p.rot || 0;
+      }
+      const left = isDragging ? baseLeft + dragDX : baseLeft;
+      const top = isDragging ? baseTop + dragDY : baseTop;
+      const idleFloat = !isDragging && !inSlot && !isCorrect;
+      const glowAnim = isCorrect ? `pieceCorrectGlow 1s ease-in-out ${(canonIdx * 0.12).toFixed(2)}s infinite` : (idleFloat ? `pieceFloat ${(3.4 + (canonIdx % 3) * 0.5).toFixed(1)}s ease-in-out ${(canonIdx * 0.22).toFixed(2)}s infinite` : 'none');
+      const style = `position:absolute;left:${left}px;top:${top}px;width:${ASSEMBLY_PIECE_W}px;--r:${rot}deg;cursor:grab;z-index:${isDragging ? 20 : (inSlot ? 2 : 1)};transform:${idleFloat ? 'none' : `rotate(${isDragging ? 0 : rot}deg)`};transition:${isDragging ? 'none' : 'left 0.22s ease, top 0.22s ease, transform 0.22s ease'};touch-action:none;filter:${isCorrect ? 'drop-shadow(0 0 14px rgba(0,229,204,0.85))' : (isDragging ? 'drop-shadow(0 10px 18px rgba(0,0,0,0.6)) brightness(1.08)' : 'drop-shadow(0 2px 6px rgba(0,0,0,0.45))')};animation:${glowAnim};`;
+      return {
+        style,
+        node: makePieceNode(letter, canonIdx, ASSEMBLY_PIECE_W, { gidSuffix: 'as' }),
+        onPointerDown: (e) => this.onAssemblyPieceDown(letter, inSlot ? slotIndexOf[letter] : 'table', e),
+      };
+    });
+    const assemblyPasscode = activeLetters.join('');
+    const assemblyPasscodeLetters = assemblyPasscode.split('').map((ch, i) => ({
+      text: ch,
+      style: `display:inline-block;color:#00ffee;font-size:22px;font-weight:700;letter-spacing:2px;text-shadow:0 0 10px rgba(0,229,204,0.85);animation:passLetterIn 0.45s ease ${(0.5 + i * 0.09).toFixed(2)}s both;`,
+    }));
+    const burstCenterX = ASSEMBLY_WIDTH / 2, burstCenterY = ASSEMBLY_SLOT_TOP + ASSEMBLY_PIECE_H / 2;
+    const assemblyBurstView = (assemblyBurst || []).map((d) => ({
+      wrapStyle: `position:absolute;left:${burstCenterX}px;top:${burstCenterY}px;width:0;height:0;transform:rotate(${d.angle}deg);z-index:16;pointer-events:none;`,
+      dotStyle: `position:absolute;left:0;top:0;width:6px;height:6px;border-radius:50%;background:${d.color};box-shadow:0 0 8px ${d.color};--dist:${d.dist}px;animation:burstDot 0.9s ease-out ${d.delay.toFixed(2)}s both;`,
+    }));
+
+    return {
+      scale,
+      isEntry: screen === 'entry',
+      isIntro: screen === 'intro',
+      isMap: screen === 'map',
+      isStage: screen === 'stage',
+      isBackpack: screen === 'backpack',
+      isAssembly: screen === 'assembly',
+      isEnding: screen === 'ending',
+      isEnding1: screen === 'ending1',
+      isEnding2: screen === 'ending2',
+      ...stageVals,
+      onStageTap: () => this.stageTap(),
+      onStageNext: (e) => { e.stopPropagation(); this.advanceBeat(); },
+      onStagePrev: (e) => { e.stopPropagation(); this.prevBeat(); },
+      stageHasPrev: beatIndex > 0 && !(STAGES[currentStage] && STAGES[currentStage].beats[beatIndex - 1] && STAGES[currentStage].beats[beatIndex - 1].type === 'puzzle'),
+      onPuzzleInput: (e) => this.onPuzzleInputChange(e.target.value),
+      onPuzzleSubmit: () => this.submitPuzzle(),
+      
+      roomSlots, keypadKeys, confirmDisabled, confirmBg, confirmColor, confirmOpacity,
+      onClear: () => this.clearRoom(),
+      onConfirmRoom: () => this.confirmRoom(),
+      onReset: () => this.resetDemo(),
+      visibleSegments, introParagraphs, introDots, introNextLabel, typingDone,
+      showCursor: !typingDone,
+      introIsRules: !!page.isRules,
+      introNotRules: !page.isRules,
+      onIntroTap: () => this.introTap(),
+      onIntroNext: (e) => { e.stopPropagation(); this.introNext(); },
+      onIntroSkip: (e) => { e.stopPropagation(); this.introSkip(); },
+      onIntroPrev: (e) => { e.stopPropagation(); this.introPrev(); },
+      introHasPrev: introPageIndex > 0,
+      mapNodes, pathD, traveledD, fragmentCount, progressSegs, toastMsg, unlockBanner,
+      stageGlyphs: this.stageGlyphs,
+      particles: this.particles,
+      buildings: this.buildings,
+      rain: this.rain,
+      onOpenBackpack: () => this.openBackpack(),
+      onCloseBackpack: () => this.closeBackpack(),
+      collectedCount: collectedFragments.length,
+      backpackSlots,
+      assemblyWidth: ASSEMBLY_WIDTH,
+      assemblyAreaHeight: ASSEMBLY_AREA_H,
+      assemblyTableH: ASSEMBLY_TABLE_H,
+      assemblySlotTop: ASSEMBLY_SLOT_TOP,
+      assemblySlotBaselineTop,
+      assemblyTableDimStyle,
+      assemblyPieceH: ASSEMBLY_PIECE_H,
+      assemblySlotViews,
+      assemblyPieces,
+      assemblyBurst: assemblyBurstView,
+      assemblyPasscode,
+      assemblyPasscodeLetters,
+      assemblyIsCorrect: assemblyStatus === 'correct',
+      assemblyIsWrong: assemblyStatus === 'wrong',
+      onAssemblyPointerMove: (e) => this.onAssemblyPointerMove(e),
+      onAssemblyPointerUp: () => this.onAssemblyPointerUp(),
+      onAssemblyConfirm: () => this.checkAssembly(),
+    };
+  }
+}
+
+</script>
+</body>
+</html>
