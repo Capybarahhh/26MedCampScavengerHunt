@@ -1,7 +1,4 @@
 .DS_Store
-.thumbnail
-scratch/
-uploads/
 node_modules/
 dist/
 .vercel/

@@ -60,4 +60,4 @@ function makeStageGlyphs(n) {
   return arr;
 }
 
-export { PARTICLE_COLORS, makeParticles, makeBuildings, makeRain, STAGE_GLYPH_CHARS, makeStageGlyphs };
+export { PARTICLE_COLORS, makeParticles, makeBuildings, makeRain, makeStageGlyphs };

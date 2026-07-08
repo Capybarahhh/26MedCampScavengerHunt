@@ -18,4 +18,4 @@ const CIPHER_CELLS = (() => {
   return cells;
 })();
 
-export { CIPHER_ALPHA, CIPHER_CELLS };
+export { CIPHER_CELLS };

@@ -25,4 +25,4 @@ const TYPE_CHART_ROWS = Object.keys(TYPE_INFO).map((name) => ({
   targets: TYPE_STRONG_AGAINST[name].map((t) => ({ name: t, icon: TYPE_ICONS[t] || '', color: TYPE_INFO[t].color, textColor: TYPE_INFO[t].dark ? '#1a1206' : '#fdf6ff' })),
 }));
 
-export { TYPE_INFO, TYPE_STRONG_AGAINST, TYPE_ICONS, TYPE_CHART_ROWS };
+export { TYPE_CHART_ROWS };
