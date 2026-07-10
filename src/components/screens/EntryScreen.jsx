@@ -3,9 +3,11 @@ import { css } from '../../lib/css.js';
 
 const KEYS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
-// Room-code keypad. Calls onConfirm(code) once all six slots are filled.
+// Room-code keypad. Calls onConfirm(code) once all six slots are filled;
+// onConfirm returns false for an unknown code → shake + error message.
 export function EntryScreen({ onConfirm, onReset }) {
   const [room, setRoom] = useState(['', '', '', '', '', '']);
+  const [errorShake, setErrorShake] = useState(0); // bumps to retrigger the animation
 
   const firstEmpty = room.findIndex((c) => c === '');
   const confirmDisabled = firstEmpty !== -1;
@@ -15,6 +17,16 @@ export function EntryScreen({ onConfirm, onReset }) {
     const next = [...room];
     next[firstEmpty] = ch;
     setRoom(next);
+    if (errorShake) setErrorShake(0);
+  };
+
+  const confirm = () => {
+    if (confirmDisabled) return;
+    const ok = onConfirm(room.join(''));
+    if (!ok) {
+      setRoom(['', '', '', '', '', '']);
+      setErrorShake((n) => n + 1);
+    }
   };
 
   return (
@@ -30,13 +42,19 @@ export function EntryScreen({ onConfirm, onReset }) {
         請輸入六位<span style={css('color:var(--teal);font-weight:700;')}>房間碼</span>以同步路線
       </div>
 
-      <div style={css('display:flex;justify-content:center;gap:10px;margin-bottom:24px;')}>
+      <div
+        key={errorShake}
+        style={{
+          ...css('display:flex;justify-content:center;gap:10px;margin-bottom:6px;'),
+          animation: errorShake ? 'glitchShift 0.4s ease' : 'none',
+        }}
+      >
         {room.map((char, i) => (
           <div
             key={i}
             style={{
               ...css('width:68px;height:68px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:30px;color:var(--teal-bright);text-shadow:0 0 10px rgba(var(--teal-rgb),0.7);'),
-              border: `2px solid ${char ? 'var(--teal)' : 'var(--purple-dim)'}`,
+              border: `2px solid ${errorShake ? 'var(--pink)' : char ? 'var(--teal)' : 'var(--purple-dim)'}`,
               background: char ? 'var(--teal-bg)' : 'var(--purple-deep)',
             }}
           >
@@ -46,6 +64,9 @@ export function EntryScreen({ onConfirm, onReset }) {
             )}
           </div>
         ))}
+      </div>
+      <div style={css('height:18px;text-align:center;color:var(--pink-text);font-size:12px;letter-spacing:2px;')}>
+        {errorShake ? '▓▓ 房間碼無效 // 請確認小隊代碼' : ''}
       </div>
 
       <div style={css('flex:1;display:grid;grid-template-columns:repeat(6, 1fr);gap:7px;align-content:start;')}>
@@ -62,12 +83,12 @@ export function EntryScreen({ onConfirm, onReset }) {
       <div style={css('display:flex;gap:12px;margin-top:16px;')}>
         <button
           className="press98"
-          onClick={() => setRoom(['', '', '', '', '', ''])}
+          onClick={() => { setRoom(['', '', '', '', '', '']); setErrorShake(0); }}
           style={css("flex:1;height:56px;background:var(--purple-btn);border:2px solid var(--purple-border);color:var(--purple-text);border-radius:8px;font-size:16px;letter-spacing:2px;cursor:pointer;")}
         >清除</button>
         <button
           className="press98"
-          onClick={() => !confirmDisabled && onConfirm(room.join(''))}
+          onClick={confirm}
           disabled={confirmDisabled}
           style={{
             ...css("flex:2;height:56px;border:2px solid var(--teal);border-radius:8px;font-size:16px;letter-spacing:4px;cursor:pointer;"),

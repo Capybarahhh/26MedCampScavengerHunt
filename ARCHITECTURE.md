@@ -106,7 +106,9 @@ Events: `session_start`, `room_confirmed`, `stage_start`, `puzzle_attempt`
 
 - **Develop**: `npm run dev` → http://localhost:5173/ (hot-reloads on save).
 - **Build check**: `npm run build`.
-- **Deploy**: push to `main` on GitHub; Vercel/CF Pages auto-deploys
-  (static site + `api/` function).
+- **Deploy**: push to `main` → `.github/workflows/deploy.yml` builds and
+  publishes to GitHub Pages. Full setup (Google Sheet backend, team codes,
+  Pages switch): **docs/DEPLOY.md**. Team room codes live in
+  `src/data/teams.js`.
 - **Verify a change**: walk the game with room code `000000`; compare against
   `.dev/legacy/MNEMO.dc.html` (open directly in a browser) if visuals drift.

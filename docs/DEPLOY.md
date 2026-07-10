@@ -1,0 +1,95 @@
+# 部署與資料收集設定指南
+
+整體架構（全部免費、不需要自己養伺服器）：
+
+```
+玩家手機瀏覽器
+   │  玩遊戲（GitHub Pages 靜態網頁）
+   │  每個關鍵動作 fire-and-forget 送出一筆事件
+   ▼
+Google Apps Script Web App（掛在你的 Google Sheet 上的小後端）
+   ▼
+Google Sheet
+   ├── 事件記錄：一列一事件的完整原始資料
+   └── 小隊看板：一隊一列的即時進度總覽
+```
+
+照順序做完以下三步就能上線。
+
+---
+
+## 第 1 步：建立 Google Sheet 資料收集端（約 5 分鐘）
+
+1. 到 [sheets.new](https://sheets.new) 開一個新試算表，命名如「MNEMO 活動數據」。
+2. 上方選單 **擴充功能 → Apps Script**。
+3. 刪掉編輯器裡的預設程式碼，把 **`docs/google-apps-script.gs`** 的完整內容貼上，存檔。
+4. 右上角 **部署 → 新增部署作業**：
+   - 類型（齒輪圖示）選 **網頁應用程式**
+   - 「執行身分」選 **我**
+   - 「誰可以存取」選 **所有人**（玩家的瀏覽器是匿名打進來的，必須選這個）
+   - 按部署，過程會要求授權，一路允許（警告畫面點「進階」→「前往…（不安全）」是正常的，因為這是你自己寫的未驗證腳本）。
+5. 複製最後給你的 **網頁應用程式網址**（`https://script.google.com/macros/s/…/exec`）。
+   - 驗證：把網址貼到瀏覽器打開，看到 `MNEMO tracker is running.` 就成功了。
+
+> 之後如果改了腳本，要用「部署 → 管理部署作業 → 編輯 → 版本：新版本」更新，網址不變。
+
+## 第 2 步：把網址接進遊戲
+
+1. 打開專案根目錄的 **`.env.production`**，貼上網址：
+   ```
+   VITE_TRACK_ENDPOINT=https://script.google.com/macros/s/…/exec
+   ```
+2. commit + push。
+
+## 第 3 步：開啟 GitHub Pages（約 2 分鐘）
+
+1. **repo 必須是 Public**（私有 repo 的 Pages 需要付費方案）：
+   GitHub repo 頁面 → Settings → General → 最下方 Danger Zone → Change visibility → Make public。
+2. Settings → **Pages** → Build and deployment → Source 選 **GitHub Actions**。
+3. push 任何 commit（或到 Actions 頁手動 Run「Deploy to GitHub Pages」）。
+4. 一兩分鐘後，遊戲網址就是：
+   **https://austinhe19.github.io/26MedCampScavengerHunt/**
+
+之後的更新流程不變：改code → commit → push，Pages 會自動重新部署。
+
+---
+
+## 小隊帳號（房間碼）
+
+12 組房間碼定義在 **`src/data/teams.js`**，活動前可以自行改碼、改隊名。
+輸入不在清單上的碼會被擋下（並記錄一筆「登入失敗」）。
+
+| 小隊 | 房間碼 | 小隊 | 房間碼 |
+|---|---|---|---|
+| 第1小隊 | `RX7K2M` | 第7小隊 | `GH9PL5` |
+| 第2小隊 | `QW4TN8` | 第8小隊 | `VJ5CK8` |
+| 第3小隊 | `ZP3HV6` | 第9小隊 | `NY3DZ7` |
+| 第4小隊 | `KD8SR4` | 第10小隊 | `SW8FM2` |
+| 第5小隊 | `MF2XQ7` | 第11小隊 | `LC4RB9` |
+| 第6小隊 | `BT6NW3` | 第12小隊 | `XK6TG3` |
+
+工作人員測試碼：`000000`（全關卡解鎖，資料不會進小隊看板）。
+
+## 你會收集到什麼
+
+**事件記錄** 工作表（原始資料，一列一筆）：
+時間、小隊、房間碼、事件（登入／進入關卡／解謎作答／取得碎片／外送遊戲結束／拼圖完成／選擇結局…）、關卡、內容（含答錯的答案原文）、sessionId。
+
+**小隊看板** 工作表（一隊一列，活動當天盯這張就好）：
+最後活動時間、最新動態、目前關卡、已取得碎片、解謎嘗試/答錯次數、外送遊戲、拼圖、結局。
+
+## 活動前檢查清單
+
+- [ ] Apps Script 網址打開顯示 `MNEMO tracker is running.`
+- [ ] `.env.production` 已填網址並 push
+- [ ] Pages 網址能開出遊戲
+- [ ] 用一組小隊碼登入 → Google Sheet「事件記錄」出現「登入成功」
+- [ ] 故意答錯一題 → 「事件記錄」出現 ❌ 與答錯內容、「小隊看板」答錯+1
+- [ ] 用 `000000` 走完全程一次，確認所有關卡正常
+- [ ] （建議）活動前把示範主題確定下來，avoid 玩家自己帶 `?theme=` 參數
+
+## 已知限制（營隊場合皆可接受）
+
+- 房間碼與謎題答案存在前端程式裡，懂技術的人翻 bundle 找得到——防君子不防駭客。
+- Apps Script 免費額度每天數萬次請求，12 隊一整天的活動綽綽有餘。
+- 若之後改用 Vercel 部署，`api/track.js` 那條路仍然保留可用（設 `TRACK_WEBHOOK_URL` 轉發），兩者互不干擾。

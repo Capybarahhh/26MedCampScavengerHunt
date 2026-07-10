@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { STAGES } from './data/stages.js';
 import { STAGE_META } from './data/stageMeta.js';
+import { findTeam, CREATOR_CODE } from './data/teams.js';
 import { FRAGMENT_ORDER } from './lib/pieces.js';
 import { loadProgress, saveProgress, clearProgress } from './lib/progress.js';
 import { track, setTrackedRoom } from './lib/track.js';
@@ -50,7 +51,9 @@ export default function App() {
   const toastTimer = useRef(null);
   const bannerTimer = useRef(null);
   useEffect(() => () => { clearTimeout(toastTimer.current); clearTimeout(bannerTimer.current); }, []);
-  useEffect(() => { setTrackedRoom(game.roomCode); }, [game.roomCode]);
+  useEffect(() => {
+    setTrackedRoom(game.roomCode, findTeam(game.roomCode)?.name || '');
+  }, [game.roomCode]);
   useEffect(() => { track('session_start'); }, []);
 
   const persist = (g) => saveProgress({
@@ -76,13 +79,21 @@ export default function App() {
     bannerTimer.current = setTimeout(() => setUnlockBanner(''), 2600);
   };
 
+  // Returns false when the code doesn't match any team → EntryScreen shows an error.
   const confirmRoom = (code) => {
+    const team = findTeam(code);
+    if (!team) {
+      track('room_rejected', { roomCode: code });
+      return false;
+    }
+    setTrackedRoom(code, team.name);
     track('room_confirmed', { roomCode: code });
-    if (code === '000000') {
+    if (code === CREATOR_CODE) {
       setGame((g) => ({ ...g, roomCode: code, screen: 'map', creatorMode: true, unlockedIndex: STAGE_META.length }));
-      return;
+      return true;
     }
     setGame((g) => ({ ...g, roomCode: code, screen: 'intro' }));
+    return true;
   };
 
   const enterMap = () => setGame((g) => {
