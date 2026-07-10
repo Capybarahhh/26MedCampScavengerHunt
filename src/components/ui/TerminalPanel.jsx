@@ -1,9 +1,4 @@
-import { css } from '../../lib/css.js';
-
-function rgba(hex, a) {
-  const n = parseInt(hex.slice(1), 16);
-  return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
-}
+import { css, mix } from '../../lib/css.js';
 
 /**
  * The CRT terminal panel used all over the game (intro rules, duel rules,
@@ -18,7 +13,7 @@ function rgba(hex, a) {
  * - headerInset: header rendered inside the padded body (intro rules layout)
  */
 export function TerminalPanel({
-  accent = '#00e5cc',
+  accent = 'var(--teal)',
   title,
   tag = null,
   boot = false,
@@ -36,8 +31,8 @@ export function TerminalPanel({
         position: 'relative', zIndex: 3, display: 'flex', alignItems: 'center',
         gap: small ? 10 : 8,
         ...(headerInset
-          ? { marginBottom: 16, borderBottom: `1px solid ${rgba(accent, 0.35)}`, paddingBottom: 10 }
-          : { padding: small ? '11px 16px' : '11px 18px', borderBottom: `1px solid ${rgba(accent, 0.35)}`, background: rgba(accent, 0.05) }),
+          ? { marginBottom: 16, borderBottom: `1px solid ${mix(accent, 35)}`, paddingBottom: 10 }
+          : { padding: small ? '11px 16px' : '11px 18px', borderBottom: `1px solid ${mix(accent, 35)}`, background: mix(accent, 5) }),
       }}
     >
       <span style={{
@@ -46,9 +41,9 @@ export function TerminalPanel({
       }} />
       <span style={{
         color: accent, fontSize: headerInset ? 13 : small ? 11 : 12,
-        letterSpacing: headerInset ? 4 : 3, flex: 1, textShadow: `0 0 8px ${rgba(accent, 0.7)}`,
+        letterSpacing: headerInset ? 4 : 3, flex: 1, textShadow: `0 0 8px ${mix(accent, 70)}`,
       }}>{title}</span>
-      {tag && <span style={{ color: rgba(accent, 0.6), fontSize: 10, letterSpacing: 1 }}>{tag}</span>}
+      {tag && <span style={{ color: mix(accent, 60), fontSize: 10, letterSpacing: 1 }}>{tag}</span>}
     </div>
   );
 
@@ -56,28 +51,28 @@ export function TerminalPanel({
     <div
       onClick={onClick}
       style={{
-        position: 'relative', borderRadius: 14, background: '#050810', border: '1px solid #1a2a30',
+        position: 'relative', borderRadius: 14, background: 'var(--panel)', border: '1px solid var(--bezel)',
         padding: 10,
-        boxShadow: `0 0 0 1px ${rgba(accent, 0.08)}, 0 18px 40px rgba(0,0,0,0.55)`,
+        boxShadow: `0 0 0 1px ${mix(accent, 8)}, 0 18px 40px rgba(0,0,0,0.55)`,
         ...(boot ? { animation: `screenBoot ${boot} cubic-bezier(0.2,0.9,0.25,1) both`, transformOrigin: 'center top' } : {}),
         ...outerStyle,
       }}
     >
       {/* bezel screws */}
-      <div style={css('position:absolute;top:6px;left:9px;width:5px;height:5px;border-radius:50%;background:#1e2a2e;box-shadow:inset 0 1px 1px rgba(0,0,0,0.6);')} />
-      <div style={css('position:absolute;top:6px;right:9px;width:5px;height:5px;border-radius:50%;background:#1e2a2e;box-shadow:inset 0 1px 1px rgba(0,0,0,0.6);')} />
+      <div style={css('position:absolute;top:6px;left:9px;width:5px;height:5px;border-radius:50%;background:var(--screw);box-shadow:inset 0 1px 1px rgba(0,0,0,0.6);')} />
+      <div style={css('position:absolute;top:6px;right:9px;width:5px;height:5px;border-radius:50%;background:var(--screw);box-shadow:inset 0 1px 1px rgba(0,0,0,0.6);')} />
 
       <div style={{
         position: 'relative', borderRadius: 8, overflow: 'hidden',
-        background: `radial-gradient(ellipse at 50% 0%, ${rgba(accent, 0.1)}, #060911 65%)`,
-        border: `1px solid ${rgba(accent, 0.4)}`,
-        boxShadow: `inset 0 0 30px rgba(0,0,0,0.65), inset 0 0 40px ${rgba(accent, 0.12)}`,
+        background: `radial-gradient(ellipse at 50% 0%, ${mix(accent, 10)}, var(--panel-2) 65%)`,
+        border: `1px solid ${mix(accent, 40)}`,
+        boxShadow: `inset 0 0 30px rgba(0,0,0,0.65), inset 0 0 40px ${mix(accent, 12)}`,
       }}>
         {/* scanlines + sweeping glow */}
         <div style={css('position:absolute;inset:0;z-index:1;pointer-events:none;background-image:repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 3px);opacity:0.5;')} />
         <div style={{
           position: 'absolute', left: 0, right: 0, height: 70, zIndex: 1, pointerEvents: 'none',
-          background: `linear-gradient(to bottom, transparent, ${rgba(accent, 0.16)}, transparent)`,
+          background: `linear-gradient(to bottom, transparent, ${mix(accent, 16)}, transparent)`,
           animation: 'scanlineMove 4.5s linear infinite',
         }} />
         {boot && (
@@ -103,7 +98,7 @@ export function TerminalPanel({
       </div>
 
       {zigzag && (
-        <div style={css('height:9px;margin-top:-1px;background-image:linear-gradient(45deg, #08030f 25%, transparent 25%), linear-gradient(-45deg, #08030f 25%, transparent 25%);background-size:14px 14px;background-position:0 -1px;')} />
+        <div style={css('height:9px;margin-top:-1px;background-image:linear-gradient(45deg, var(--bg) 25%, transparent 25%), linear-gradient(-45deg, var(--bg) 25%, transparent 25%);background-size:14px 14px;background-position:0 -1px;')} />
       )}
     </div>
   );

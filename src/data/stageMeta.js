@@ -50,7 +50,7 @@ const STAGE_META = [
   { code: 'Y', name: '舊城區', x: 588, y: 150, kind: 'stage', key: 'Y' },
   { code: 'A', name: '傳送港', x: 610, y: 336, kind: 'stage', key: 'A' },
   { code: 'M', name: '黑色地下市集', x: 400, y: 388, kind: 'stage', key: 'M' },
-  { code: '?', name: '垃圾山', x: 168, y: 350, kind: 'stage', key: null },
+  { code: 'G', name: '垃圾山', x: 168, y: 350, kind: 'stage', key: 'G' },
   { code: '?', name: '市中心的不夜城', x: 128, y: 528, kind: 'stage', key: null },
   { code: '?', name: '終章', x: 400, y: 574, kind: 'ending', key: null },
 ];

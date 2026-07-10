@@ -1,0 +1,179 @@
+/*
+ * Design tokens — the single place the game's palette lives.
+ * Components reference these via var(--…); nothing outside this file should
+ * hardcode a theme color.
+ *
+ * To try a different art style: copy the [data-theme="…"] block, rename it,
+ * override the tokens you care about (unset ones inherit the default), then
+ * open the game with ?theme=yourname (persisted in localStorage; ?theme=default
+ * switches back).
+ *
+ * Naming: families by ROLE in the current look —
+ *   teal-*   primary accent (terminals, success, key text)
+ *   purple-* secondary chrome (buttons, panels, narration text)
+ *   pink-*   danger/error
+ *   gold-*   reward/fragments/food mini-game
+ *   plus grounds (bg/panel/input/bezel) and misc text tints.
+ * The *-rgb twins exist for rgba(var(--x-rgb), a) glow patterns.
+ */
+:root {
+  /* grounds */
+  --bg: #08030f;            --bg-rgb: 8, 3, 15;
+  --panel: #050810;
+  --panel-2: #060911;
+  --input-bg: #02040a;
+  --input-hi: #0a1418;
+  --input-lo: #050a0d;
+  --bezel: #1a2a30;
+  --screw: #1e2a2e;
+  --modal-bg: #0c0a10;
+  --building-a: #120820;
+  --building-b: #180b2a;
+
+  /* teal — primary accent */
+  --teal: #00e5cc;          --teal-rgb: 0, 229, 204;
+  --teal-bright: #00ffee;   --teal-bright-rgb: 0, 255, 238;
+  --teal-bg: #003a35;
+  --teal-bg-dim: #0a1f1c;
+  --teal-muted: #0e5c53;
+  --teal-text-bright: #c8fff4;
+  --teal-text: #9fd8d0;
+  --teal-text-dim: #5ec9c0;
+  --teal-faint: #3a6a68;
+  --teal-key-bg: #0d1a1e;
+  --teal-key-active: #123a35;
+
+  /* purple — secondary chrome */
+  --purple: #c060ff;        --purple-rgb: 192, 96, 255;
+  --purple-border: #9a50cc; --purple-border-rgb: 154, 80, 204;
+  --purple-dim: #5a3a80;
+  --purple-btn: #2a0e4a;
+  --purple-panel: #180b2c;
+  --purple-deep: #150a24;
+  --purple-locked: #3a2060;
+  --purple-track: #2a1a44;
+  --purple-text: #e0b0ff;
+  --purple-text-dim: #c09ad8;
+  --purple-text-faint: #8a6ab0;
+  --purple-label: #6a4a90;
+  --desk-a: #1d0f34;
+  --desk-b: #0f0820;
+  --desk-glow-rgb: 122, 60, 180;
+
+  /* pink — danger */
+  --pink: #ff2d78;          --pink-rgb: 255, 45, 120;
+  --pink-text: #ff80aa;
+  --pink-rec: #ff5a7a;
+  --pink-dot: #ff5566;
+  --pink-bg: #3a0020;
+
+  /* gold — reward */
+  --gold: #f0c030;          --gold-rgb: 240, 192, 48;
+  --gold-text: #f0e070;
+  --gold-bright: #ffe07a;
+  --gold-bg: #3a2c00;
+  --gold-deep: #1a1206;
+  --gold-dim: #8a6020;
+  --gold-label: #a9832e;
+  --gold-body: #c9a860;
+  --gold-line: #4a3a1a;
+  --gold-card-a: #241a04;
+  --gold-card-b: #0c0a08;
+  --gold-ink: #2a1a00;
+
+  /* misc text */
+  --grey-text: #8a9aa0;
+  --cream-text: #e8dcc8;
+  --paper-text: #fdf6e3;
+}
+
+/* ---------------------------------------------------------------------------
+ * Demo theme: ember — 工業熔爐. Amber primary, rust secondary, warm blacks.
+ * Open with ?theme=ember
+ * ------------------------------------------------------------------------- */
+[data-theme="ember"] {
+  --bg: #0f0705;            --bg-rgb: 15, 7, 5;
+  --panel: #0d0805;
+  --panel-2: #100a06;
+  --input-bg: #0a0503;
+  --input-hi: #14100a;
+  --input-lo: #0a0705;
+  --bezel: #2a221a;
+  --screw: #2a2620;
+  --modal-bg: #120d08;
+  --building-a: #1a0f08;
+  --building-b: #221208;
+
+  --teal: #ffa32b;          --teal-rgb: 255, 163, 43;
+  --teal-bright: #ffc95e;   --teal-bright-rgb: 255, 201, 94;
+  --teal-bg: #3a2600;
+  --teal-bg-dim: #201600;
+  --teal-muted: #6b4a10;
+  --teal-text-bright: #ffedc8;
+  --teal-text: #e8c890;
+  --teal-text-dim: #c9a55e;
+  --teal-faint: #6a5a3a;
+  --teal-key-bg: #1e160d;
+  --teal-key-active: #3a2c12;
+
+  --purple: #ff6b4a;        --purple-rgb: 255, 107, 74;
+  --purple-border: #cc5a3a; --purple-border-rgb: 204, 90, 58;
+  --purple-dim: #80402a;
+  --purple-btn: #4a1a0e;
+  --purple-panel: #2c120b;
+  --purple-deep: #24100a;
+  --purple-locked: #602a1a;
+  --purple-track: #441e12;
+  --purple-text: #ffc9b0;
+  --purple-text-dim: #d8a08a;
+  --purple-text-faint: #b0705a;
+  --purple-label: #904a30;
+  --desk-a: #341a0f;
+  --desk-b: #200f08;
+  --desk-glow-rgb: 180, 80, 40;
+}
+
+/* ---------------------------------------------------------------------------
+ * Demo theme: ice — 冷冽全息. Glacial blue primary, violet-slate secondary.
+ * Open with ?theme=ice
+ * ------------------------------------------------------------------------- */
+[data-theme="ice"] {
+  --bg: #04070e;            --bg-rgb: 4, 7, 14;
+  --panel: #050910;
+  --panel-2: #060b13;
+  --input-hi: #0a1220;
+  --input-lo: #050a12;
+  --bezel: #1a222e;
+  --screw: #1e242c;
+  --modal-bg: #0a0e16;
+  --building-a: #0a1020;
+  --building-b: #0e1428;
+
+  --teal: #4db8ff;          --teal-rgb: 77, 184, 255;
+  --teal-bright: #8ed4ff;   --teal-bright-rgb: 142, 212, 255;
+  --teal-bg: #0a2a4a;
+  --teal-bg-dim: #061a30;
+  --teal-muted: #1a4a70;
+  --teal-text-bright: #d8efff;
+  --teal-text: #a8cfe8;
+  --teal-text-dim: #6aa5cc;
+  --teal-faint: #3a586a;
+  --teal-key-bg: #0d161e;
+  --teal-key-active: #12304a;
+
+  --purple: #8a9fff;        --purple-rgb: 138, 159, 255;
+  --purple-border: #6a7fd0; --purple-border-rgb: 106, 127, 208;
+  --purple-dim: #3f4a80;
+  --purple-btn: #16204a;
+  --purple-panel: #0f142c;
+  --purple-deep: #0c1024;
+  --purple-locked: #263060;
+  --purple-track: #1c2444;
+  --purple-text: #cdd8ff;
+  --purple-text-dim: #a0aed8;
+  --purple-text-faint: #6a7ab0;
+  --purple-label: #4a5890;
+  --desk-a: #141c3a;
+  --desk-b: #0a0f24;
+  --desk-glow-rgb: 80, 110, 200;
+}

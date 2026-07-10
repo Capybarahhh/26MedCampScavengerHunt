@@ -8,13 +8,13 @@ export function NavButtons({ hasPrev = false, onPrev, onNext, nextLabel = '繼�
         <button
           className="press98"
           onClick={onPrev}
-          style={css("height:58px;padding:0 22px;background:#2a0e4a;border:2px solid #9a50cc;color:#e0b0ff;border-radius:8px;font-size:17px;letter-spacing:4px;cursor:pointer;")}
+          style={css("height:58px;padding:0 22px;background:var(--purple-btn);border:2px solid var(--purple-border);color:var(--purple-text);border-radius:8px;font-size:17px;letter-spacing:4px;cursor:pointer;")}
         >◂ 上一頁</button>
       )}
       <button
         className="press98"
         onClick={onNext}
-        style={css("flex:1;height:58px;background:#003a35;border:2px solid #00e5cc;color:#00ffee;border-radius:8px;font-size:17px;letter-spacing:6px;cursor:pointer;")}
+        style={css("flex:1;height:58px;background:var(--teal-bg);border:2px solid var(--teal);color:var(--teal-bright);border-radius:8px;font-size:17px;letter-spacing:6px;cursor:pointer;")}
       >{nextLabel}</button>
     </div>
   );

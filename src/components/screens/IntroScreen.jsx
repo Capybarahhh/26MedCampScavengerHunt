@@ -29,7 +29,7 @@ export function IntroScreen({ onDone }) {
   };
 
   const body = (
-    <SegText segs={page.segs} count={count} cursorColor={done ? null : '#00e5cc'} paraMargin={page.isRules ? 18 : 20} />
+    <SegText segs={page.segs} count={count} cursorColor={done ? null : 'var(--teal)'} paraMargin={page.isRules ? 18 : 20} />
   );
 
   return (
@@ -40,7 +40,7 @@ export function IntroScreen({ onDone }) {
       <button
         className="press96"
         onClick={(e) => { e.stopPropagation(); onDone(); }}
-        style={css("position:absolute;top:20px;right:24px;background:#2a0e4a;border:2px solid #9a50cc;color:#e0b0ff;border-radius:6px;height:36px;padding:0 14px;font-size:12px;letter-spacing:2px;cursor:pointer;z-index:5;")}
+        style={css("position:absolute;top:20px;right:24px;background:var(--purple-btn);border:2px solid var(--purple-border);color:var(--purple-text);border-radius:6px;height:36px;padding:0 14px;font-size:12px;letter-spacing:2px;cursor:pointer;z-index:5;")}
       >跳過 ▸</button>
 
       <div style={css('flex:1;display:flex;flex-direction:column;overflow-y:auto;min-height:0;')}>
@@ -65,7 +65,7 @@ export function IntroScreen({ onDone }) {
             key={i}
             style={{
               width: i === pageIndex ? 26 : 8, height: 8, borderRadius: 4, transition: 'all 0.3s',
-              background: i < pageIndex ? '#c060ff' : i === pageIndex ? '#00e5cc' : '#2a1a44',
+              background: i < pageIndex ? 'var(--purple)' : i === pageIndex ? 'var(--teal)' : 'var(--purple-track)',
             }}
           />
         ))}

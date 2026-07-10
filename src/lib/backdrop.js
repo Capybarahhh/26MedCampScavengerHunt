@@ -1,5 +1,5 @@
 // Ambient backdrop generators (particles / buildings / rain / glyphs).
-const PARTICLE_COLORS = ['#00e5cc', '#c060ff', '#ff2d78', '#f0c030'];
+const PARTICLE_COLORS = ['var(--teal)', 'var(--purple)', 'var(--pink)', 'var(--gold)'];
 
 function makeParticles(n) {
   const arr = [];
@@ -22,8 +22,8 @@ function makeBuildings(n) {
   for (let i = 0; i < n; i++) {
     const width = 55 + Math.random() * 55;
     const height = 70 + Math.random() * 170;
-    const shade = i % 2 === 0 ? '#120820' : '#180b2a';
-    const style = `position:absolute;left:${x}px;bottom:0;width:${width}px;height:${height}px;background:${shade};box-shadow:inset 0 2px 0 rgba(192,96,255,0.12);`;
+    const shade = i % 2 === 0 ? 'var(--building-a)' : 'var(--building-b)';
+    const style = `position:absolute;left:${x}px;bottom:0;width:${width}px;height:${height}px;background:${shade};box-shadow:inset 0 2px 0 rgba(var(--purple-rgb),0.12);`;
     arr.push({ style });
     x += width * 0.72;
   }
@@ -37,7 +37,7 @@ function makeRain(n) {
     const height = 30 + Math.random() * 60;
     const dur = 1.2 + Math.random() * 1.6;
     const delay = Math.random() * 3;
-    const color = Math.random() > 0.5 ? 'rgba(0,229,204,0.28)' : 'rgba(192,96,255,0.22)';
+    const color = Math.random() > 0.5 ? 'rgba(var(--teal-rgb),0.28)' : 'rgba(var(--purple-rgb),0.22)';
     const style = `position:absolute;left:${x}px;top:-100px;width:1px;height:${height}px;background:linear-gradient(to bottom, transparent, ${color}, transparent);animation:rainFall ${dur.toFixed(2)}s linear infinite;animation-delay:-${delay.toFixed(2)}s;`;
     arr.push({ style });
   }
@@ -54,7 +54,7 @@ function makeStageGlyphs(n) {
     const delay = Math.random() * 4;
     const size = 10 + Math.random() * 8;
     const ch = STAGE_GLYPH_CHARS[Math.floor(Math.random() * STAGE_GLYPH_CHARS.length)];
-    const style = `position:absolute;left:${x.toFixed(1)}%;top:${y.toFixed(1)}%;font-size:${size.toFixed(0)}px;color:rgba(0,229,204,0.3);font-family:'Share Tech Mono', monospace;animation:glyphDrift ${dur.toFixed(2)}s ease-in-out ${(-delay).toFixed(2)}s infinite;pointer-events:none;`;
+    const style = `position:absolute;left:${x.toFixed(1)}%;top:${y.toFixed(1)}%;font-size:${size.toFixed(0)}px;color:rgba(var(--teal-rgb),0.3);font-family:'Share Tech Mono', monospace;animation:glyphDrift ${dur.toFixed(2)}s ease-in-out ${(-delay).toFixed(2)}s infinite;pointer-events:none;`;
     arr.push({ ch, style });
   }
   return arr;

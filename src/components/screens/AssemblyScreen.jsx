@@ -132,8 +132,8 @@ export function AssemblyScreen({ letters, scale, onComplete }) {
 
   return (
     <div style={css('position:absolute;inset:0;z-index:10;padding:34px 24px;display:flex;flex-direction:column;align-items:center;overflow:auto;')}>
-      <div style={css('color:#00ffee;font-size:14px;letter-spacing:4px;text-shadow:0 0 8px rgba(0,229,204,0.6);margin-bottom:8px;')}>MNEMO // 記憶重組</div>
-      <div style={css('color:#8a6ab0;font-size:12px;letter-spacing:2px;margin-bottom:22px;text-align:center;')}>拖曳桌上的記憶碎片，依正確順序放入下方拼湊區</div>
+      <div style={css('color:var(--teal-bright);font-size:14px;letter-spacing:4px;text-shadow:0 0 8px rgba(var(--teal-rgb),0.6);margin-bottom:8px;')}>MNEMO // 記憶重組</div>
+      <div style={css('color:var(--purple-text-faint);font-size:12px;letter-spacing:2px;margin-bottom:22px;text-align:center;')}>拖曳桌上的記憶碎片，依正確順序放入下方拼湊區</div>
 
       <div
         style={{ position: 'relative', width: ASSEMBLY_WIDTH, height: ASSEMBLY_AREA_H, marginBottom: 30, touchAction: 'none' }}
@@ -143,30 +143,30 @@ export function AssemblyScreen({ letters, scale, onComplete }) {
       >
         {/* desk surface */}
         <div style={{
-          ...css('position:absolute;left:0;top:0;width:100%;border-radius:14px;overflow:hidden;border:1px solid rgba(154,80,204,0.35);background:radial-gradient(ellipse 70% 60% at 50% 30%, rgba(122,60,180,0.16), transparent 70%), repeating-linear-gradient(128deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 9px), linear-gradient(160deg, #1d0f34, #0f0820 75%);box-shadow:inset 0 0 34px rgba(0,0,0,0.55);transition:opacity 0.6s ease;'),
+          ...css('position:absolute;left:0;top:0;width:100%;border-radius:14px;overflow:hidden;border:1px solid rgba(var(--purple-border-rgb),0.35);background:radial-gradient(ellipse 70% 60% at 50% 30%, rgba(var(--desk-glow-rgb),0.16), transparent 70%), repeating-linear-gradient(128deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 9px), linear-gradient(160deg, var(--desk-a), var(--desk-b) 75%);box-shadow:inset 0 0 34px rgba(0,0,0,0.55);transition:opacity 0.6s ease;'),
           height: ASSEMBLY_TABLE_H,
           ...(isCorrect ? { animation: 'tableDim 0.8s ease both' } : {}),
         }}>
-          <div style={css('position:absolute;inset:0;background:radial-gradient(circle at 50% 8%, rgba(0,229,204,0.09), transparent 55%);animation:deskGlowPulse 4s ease-in-out infinite;')} />
+          <div style={css('position:absolute;inset:0;background:radial-gradient(circle at 50% 8%, rgba(var(--teal-rgb),0.09), transparent 55%);animation:deskGlowPulse 4s ease-in-out infinite;')} />
         </div>
-        <div style={css('position:absolute;left:9px;top:9px;width:14px;height:14px;border-top:1.5px solid rgba(192,96,255,0.5);border-left:1.5px solid rgba(192,96,255,0.5);')} />
-        <div style={css('position:absolute;right:9px;top:9px;width:14px;height:14px;border-top:1.5px solid rgba(192,96,255,0.5);border-right:1.5px solid rgba(192,96,255,0.5);')} />
-        <div style={{ ...css('position:absolute;left:8px;transform:translateY(-22px);color:#6a4a90;font-size:10px;letter-spacing:3px;'), top: ASSEMBLY_TABLE_H }}>桌面 · DESK</div>
-        <div style={{ ...css('position:absolute;left:8px;transform:translateY(-20px);color:#3a6a68;font-size:10px;letter-spacing:3px;'), top: ASSEMBLY_SLOT_TOP }}>拼湊區 · ASSEMBLY</div>
-        <div style={{ ...css('position:absolute;left:0;width:100%;height:1px;background:linear-gradient(to right, transparent, rgba(0,229,204,0.35), transparent);'), top: baselineTop }} />
+        <div style={css('position:absolute;left:9px;top:9px;width:14px;height:14px;border-top:1.5px solid rgba(var(--purple-rgb),0.5);border-left:1.5px solid rgba(var(--purple-rgb),0.5);')} />
+        <div style={css('position:absolute;right:9px;top:9px;width:14px;height:14px;border-top:1.5px solid rgba(var(--purple-rgb),0.5);border-right:1.5px solid rgba(var(--purple-rgb),0.5);')} />
+        <div style={{ ...css('position:absolute;left:8px;transform:translateY(-22px);color:var(--purple-label);font-size:10px;letter-spacing:3px;'), top: ASSEMBLY_TABLE_H }}>桌面 · DESK</div>
+        <div style={{ ...css('position:absolute;left:8px;transform:translateY(-20px);color:var(--teal-faint);font-size:10px;letter-spacing:3px;'), top: ASSEMBLY_SLOT_TOP }}>拼湊區 · ASSEMBLY</div>
+        <div style={{ ...css('position:absolute;left:0;width:100%;height:1px;background:linear-gradient(to right, transparent, rgba(var(--teal-rgb),0.35), transparent);'), top: baselineTop }} />
 
         {/* slot outlines */}
         {slots.map((letter, i) => {
           const x = i * ASSEMBLY_SLOT_STEP, top = ASSEMBLY_SLOT_TOP, w = ASSEMBLY_PIECE_W, h = ASSEMBLY_PIECE_H;
           const filled = !!letter;
-          const brColor = filled ? 'rgba(0,255,238,0.75)' : 'rgba(0,229,204,0.32)';
+          const brColor = filled ? 'rgba(var(--teal-bright-rgb),0.75)' : 'rgba(var(--teal-rgb),0.32)';
           const bracket = { position: 'absolute', width: BR, height: BR, pointerEvents: 'none' };
           const line = `2px solid ${brColor}`;
           return (
             <div key={i}>
               <div style={{
                 position: 'absolute', left: x, top, width: w, height: h, borderRadius: 6,
-                background: filled ? 'rgba(0,229,204,0.05)' : 'rgba(0,229,204,0.02)',
+                background: filled ? 'rgba(var(--teal-rgb),0.05)' : 'rgba(var(--teal-rgb),0.02)',
                 ...(filled ? { animation: 'slotLockPulse 2.2s ease-in-out infinite' } : {}),
               }} />
               <div style={{ ...bracket, left: x, top, borderTop: line, borderLeft: line }} />
@@ -175,7 +175,7 @@ export function AssemblyScreen({ letters, scale, onComplete }) {
               <div style={{ ...bracket, left: x + w - BR, top: top + h - BR, borderBottom: line, borderRight: line }} />
               <div style={{
                 position: 'absolute', left: x, top: top + h + 4, width: w, textAlign: 'center',
-                color: filled ? 'rgba(0,229,204,0.55)' : 'rgba(0,229,204,0.25)',
+                color: filled ? 'rgba(var(--teal-rgb),0.55)' : 'rgba(var(--teal-rgb),0.25)',
                 fontSize: 9, letterSpacing: 1, pointerEvents: 'none',
               }}>0{i + 1}</div>
             </div>
@@ -185,7 +185,7 @@ export function AssemblyScreen({ letters, scale, onComplete }) {
         {isCorrect && (
           <>
             <div style={{
-              ...css('position:absolute;left:0;width:70px;background:linear-gradient(to right, transparent, rgba(0,255,238,0.85), transparent);filter:blur(3px);animation:seamSweep 1.1s ease-out both;pointer-events:none;z-index:15;'),
+              ...css('position:absolute;left:0;width:70px;background:linear-gradient(to right, transparent, rgba(var(--teal-bright-rgb),0.85), transparent);filter:blur(3px);animation:seamSweep 1.1s ease-out both;pointer-events:none;z-index:15;'),
               top: ASSEMBLY_SLOT_TOP, height: ASSEMBLY_PIECE_H,
             }} />
             {burst.map((d, i) => (
@@ -239,7 +239,7 @@ export function AssemblyScreen({ letters, scale, onComplete }) {
                 transition: isDragging ? 'none' : 'left 0.22s ease, top 0.22s ease, transform 0.22s ease',
                 touchAction: 'none',
                 filter: isCorrect
-                  ? 'drop-shadow(0 0 14px rgba(0,229,204,0.85))'
+                  ? 'drop-shadow(0 0 14px rgba(var(--teal-rgb),0.85))'
                   : isDragging
                     ? 'drop-shadow(0 10px 18px rgba(0,0,0,0.6)) brightness(1.08)'
                     : 'drop-shadow(0 2px 6px rgba(0,0,0,0.45))',
@@ -254,11 +254,11 @@ export function AssemblyScreen({ letters, scale, onComplete }) {
 
       {isCorrect && (
         <div style={css('display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:24px;animation:fadeUp 0.4s ease both;')}>
-          <div style={css('color:#00ffee;font-size:14px;letter-spacing:4px;text-shadow:0 0 10px rgba(0,229,204,0.8);')}>✓ 記憶重組成功 · 密碼已還原</div>
+          <div style={css('color:var(--teal-bright);font-size:14px;letter-spacing:4px;text-shadow:0 0 10px rgba(var(--teal-rgb),0.8);')}>✓ 記憶重組成功 · 密碼已還原</div>
           <div style={css('display:flex;gap:6px;')}>
             {letters.join('').split('').map((ch, i) => (
               <span key={i} style={{
-                ...css('display:inline-block;color:#00ffee;font-size:22px;font-weight:700;letter-spacing:2px;text-shadow:0 0 10px rgba(0,229,204,0.85);'),
+                ...css('display:inline-block;color:var(--teal-bright);font-size:22px;font-weight:700;letter-spacing:2px;text-shadow:0 0 10px rgba(var(--teal-rgb),0.85);'),
                 animation: `passLetterIn 0.45s ease ${(0.5 + i * 0.09).toFixed(2)}s both`,
               }}>{ch}</span>
             ))}
@@ -266,10 +266,10 @@ export function AssemblyScreen({ letters, scale, onComplete }) {
         </div>
       )}
       {status === 'wrong' && (
-        <div style={css('color:#ff80aa;font-size:13px;letter-spacing:2px;margin-bottom:20px;')}>順序不對，再試試看</div>
+        <div style={css('color:var(--pink-text);font-size:13px;letter-spacing:2px;margin-bottom:20px;')}>順序不對，再試試看</div>
       )}
 
-      <button className="press98" onClick={confirm} style={css("height:58px;padding:0 40px;background:#003a35;border:2px solid #00e5cc;color:#00ffee;border-radius:8px;font-size:16px;letter-spacing:6px;cursor:pointer;flex-shrink:0;")}>確認</button>
+      <button className="press98" onClick={confirm} style={css("height:58px;padding:0 40px;background:var(--teal-bg);border:2px solid var(--teal);color:var(--teal-bright);border-radius:8px;font-size:16px;letter-spacing:6px;cursor:pointer;flex-shrink:0;")}>確認</button>
     </div>
   );
 }

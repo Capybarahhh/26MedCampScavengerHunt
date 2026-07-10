@@ -164,14 +164,14 @@ export default function App() {
 
   return (
     <div style={{
-      width: '100vw', height: '100vh', background: '#08030f', display: 'flex',
+      width: '100vw', height: '100vh', background: 'var(--bg)', display: 'flex',
       alignItems: 'center', justifyContent: 'center', position: 'fixed', inset: 0,
       fontFamily: "'Share Tech Mono', monospace",
     }}>
       <div style={{
         width: 700, height: 800, position: 'relative', transform: `scale(${scale})`,
-        transformOrigin: 'center center', background: '#08030f', overflow: 'hidden',
-        boxShadow: '0 0 60px rgba(192,96,255,0.15)',
+        transformOrigin: 'center center', background: 'var(--bg)', overflow: 'hidden',
+        boxShadow: '0 0 60px rgba(var(--purple-rgb),0.15)',
       }}>
         <CityBackdrop />
 

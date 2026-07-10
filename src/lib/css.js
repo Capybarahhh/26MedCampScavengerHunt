@@ -4,6 +4,13 @@
 // frame (e.g. drag positions) — build those as plain objects instead.
 const cache = new Map();
 
+// Alpha-fade any CSS color — including var(--token) references — without
+// string-concatenating hex alpha suffixes (which break with var()).
+// mix('var(--teal)', 53) ≈ the old '#00e5cc88'.
+export function mix(color, pct) {
+  return `color-mix(in srgb, ${color} ${pct}%, transparent)`;
+}
+
 export function css(str) {
   let obj = cache.get(str);
   if (obj) return obj;

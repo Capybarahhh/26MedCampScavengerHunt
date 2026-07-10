@@ -39,19 +39,41 @@ mini-game state machine and its timers).
 **`src/components/` — presentation.**
 - `screens/` — one file per full screen: Entry (room code), Intro, Map,
   Stage, Backpack, Assembly (drag-and-drop jigsaw), Endings.
-- `beats/` — the units inside a stage: StoryBeat, PuzzleBeat, FoodGameBeat,
-  FragmentBeat. `StageScreen` dispatches on `beat.type`.
+- `beats/` — the units inside a stage: StoryBeat, PuzzleBeat, ColorPickBeat,
+  FoodGameBeat, FragmentBeat. `StageScreen` dispatches on `beat.type`.
 - `ui/` — shared pieces: `TerminalPanel` (the CRT panel frame used
-  everywhere), `SegText` (styled narrative text under a typewriter budget),
-  `NavButtons` (prev/next row).
+  everywhere), `AnswerTerminal` (the status-tinted answer-input frame shared
+  by puzzle and color-pick beats), `SegText` (styled narrative text under a
+  typewriter budget), `NavButtons` (prev/next row).
 - `CityBackdrop.jsx` — ambient city background (buildings, rain, particles,
   HUD corners) behind every screen.
 
 **`src/lib/` — pure helpers.**
-`css.js` (CSS-string → style object, keeps ported styles readable),
+`css.js` (CSS-string → style object + `mix()` alpha-fade helper),
 `pieces.js` (jigsaw geometry + fragment SVG), `text.js` (seg/paragraph
 utils), `map.js` (route curve), `backdrop.js` (ambience generators),
 `progress.js` (localStorage save/load), `track.js` (analytics, below).
+
+## Styling & theming (art-style testing)
+
+The palette lives in **`src/styles/tokens.css`** as CSS custom properties on
+`:root` — components never hardcode theme colors; they reference
+`var(--teal)`, `var(--purple-btn)`, `rgba(var(--gold-rgb), .5)`, etc.
+(`src/styles/global.css` holds only keyframes and :active/:focus classes.)
+
+- **To try a new art style**: copy a `[data-theme="…"]` block in tokens.css,
+  rename it, override the tokens you care about (unset ones inherit the
+  default), then open the game with `?theme=yourname`. The choice persists in
+  localStorage; `?theme=default` switches back. Two demo themes ship as
+  proof: `?theme=ember` (amber/rust) and `?theme=ice` (glacial blue).
+- **Alpha fades of a token** go through `mix(color, pct)` from `lib/css.js`
+  (CSS `color-mix`), never string-concatenated hex suffixes — those break
+  with `var()` references.
+- **Deliberately NOT tokenized** (content, not theme): per-panel accents in
+  `data/stages.js` (e.g. the G stage's `#8fe23c`), colorpick swatches, and
+  the fragment paper golds in `lib/pieces.js`.
+- `.dev/smoke.mjs` (`node .dev/smoke.mjs` after `npm run build`) mounts the
+  built bundle in happy-dom and walks map → stage as a crash check.
 
 **`src/App.jsx` — the controller.** Owns the screen router and all
 cross-screen progress (unlocked stage index, collected fragments, current

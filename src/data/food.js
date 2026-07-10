@@ -7,7 +7,7 @@ const FOOD_ORDER_POOL = [
   { customer: '主廚高登', item: '油菜花半熟蛋披薩', price: 170 },
 ];
 
-const FOOD_ACCENTS = ['#f0c030', '#00e5cc', '#c060ff', '#ff2d78'];
+const FOOD_ACCENTS = ['var(--gold)', 'var(--teal)', 'var(--purple)', 'var(--pink)'];
 
 function pickFoodOrder() {
   return FOOD_ORDER_POOL[Math.floor(Math.random() * FOOD_ORDER_POOL.length)];
