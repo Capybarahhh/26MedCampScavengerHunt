@@ -42,7 +42,9 @@ export function MapScreen({ startStageKey, completedStages, creatorMode, onNodeC
     } else {
       bg = 'var(--pink-bg)'; border = 'var(--pink)'; fg = 'var(--pink-text)'; label = meta.name; fontSize = 12.5;
     }
-    const clickable = creatorMode || isCurrent;
+    // The locked ending is always clickable — it shows a narration teaser
+    // instead of actually starting the stage (see App.jsx onNodeClick).
+    const clickable = isEnding || creatorMode || isCurrent;
     const iconDefs = NODE_ICON_SHAPES[ICON_INDEX[meta.code]];
     return { ...meta, bg, border, fg, label, fontSize, anim, iconDefs, isEnding, done, isCurrent, clickable };
   });

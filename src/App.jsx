@@ -94,10 +94,10 @@ export default function App() {
   };
 
   // Shows the banner for whatever the team's next stop is: their next stage
-  // in the cyclic order, or 終章 once all six stages are complete.
+  // in the cyclic order, or 主線 once all six stages are complete.
   const showNextUnlockBanner = (startStageKey, completedStages) => {
     const cur = computeCurrentStageKey(startStageKey, completedStages);
-    showUnlockBanner(cur ? stageName(cur) : '終章');
+    showUnlockBanner(cur ? stageName(cur) : '主線');
   };
 
   // Returns false when the code doesn't match any team → EntryScreen shows an error.
@@ -133,7 +133,12 @@ export default function App() {
   const onNodeClick = (meta) => {
     if (meta.kind === 'ending') {
       const allDone = game.completedStages.length >= STAGE_ORDER.length;
-      if (!game.creatorMode && !allDone) return;
+      if (!game.creatorMode && !allDone) {
+        // Still locked — replays the opening narration as a teaser instead
+        // of doing nothing.
+        setGame((g) => ({ ...g, screen: 'endingPreview' }));
+        return;
+      }
       startStage('END');
       return;
     }
@@ -225,7 +230,7 @@ export default function App() {
     <div style={{
       width: '100vw', height: '100vh', background: 'var(--bg)', display: 'flex',
       alignItems: 'center', justifyContent: 'center', position: 'fixed', inset: 0,
-      fontFamily: "'Share Tech Mono', monospace",
+      fontFamily: 'var(--font-ui)',
     }}>
       <div style={{
         width: 700, height: 800, position: 'relative', transform: `scale(${scale})`,
@@ -236,6 +241,12 @@ export default function App() {
 
         {game.screen === 'entry' && <EntryScreen onConfirm={confirmRoom} onReset={reset} />}
         {game.screen === 'intro' && <IntroScreen onDone={enterMap} />}
+        {game.screen === 'endingPreview' && (
+          <IntroScreen
+            onDone={() => setGame((g) => ({ ...g, screen: 'map' }))}
+            finalLabel="返回地圖 ▸"
+          />
+        )}
         {game.screen === 'map' && (
           <MapScreen
             startStageKey={game.startStageKey}
@@ -275,7 +286,7 @@ export default function App() {
             style={{
               position: 'absolute', top: 10, right: 10, zIndex: 999,
               padding: '5px 10px', fontSize: 11, letterSpacing: 1,
-              fontFamily: "'Share Tech Mono', monospace",
+              fontFamily: 'var(--font-ui)',
               background: 'rgba(0,0,0,0.55)', color: 'var(--gold-text, #e8c96a)',
               border: '1px solid var(--gold, #c9a94a)', borderRadius: 6, cursor: 'pointer',
               opacity: 0.7,

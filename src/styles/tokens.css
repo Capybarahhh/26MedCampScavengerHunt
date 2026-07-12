@@ -17,6 +17,27 @@
  * The *-rgb twins exist for rgba(var(--x-rgb), a) glow patterns.
  */
 :root {
+  /* fonts — layered so each script/role gets the right face automatically:
+   * Latin glyphs render in the first (downloaded) face that has them; CJK
+   * glyphs fall through to the reader's SYSTEM Chinese font. This is a
+   * deliberate perf choice: a downloaded CJK webfont (Noto Sans TC) is huge
+   * and, worse, forces per-glyph rasterization as the typewriter reveals
+   * characters one at a time — which was the source of the in-story jank.
+   * PingFang (mac/iOS) / Microsoft JhengHei (Windows) are native, cached,
+   * and instant. Never hand-pick per string; just use the token.
+   *   --font-ui       body text — HUD labels, narration, numbers, inputs.
+   *                   Monospace Latin (JetBrains Mono, engineered feel) +
+   *                   system Chinese sans (never monospace CJK — it wrecks
+   *                   tracking/line-height).
+   *   --font-display  large titles and the logo only — geometric condensed
+   *                   Latin (Chakra Petch); Chinese titles use the system
+   *                   font at whatever bold weight the element sets. Never
+   *                   use for body copy.
+   */
+  --font-cjk: 'PingFang TC', 'PingFang SC', 'Microsoft JhengHei', 'Heiti TC', sans-serif;
+  --font-ui: 'JetBrains Mono', var(--font-cjk);
+  --font-display: 'Chakra Petch', var(--font-cjk);
+
   /* grounds */
   --bg: #08030f;            --bg-rgb: 8, 3, 15;
   --panel: #050810;

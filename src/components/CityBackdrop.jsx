@@ -1,8 +1,9 @@
 import { css } from '../lib/css.js';
-import { makeParticles, makeBuildings, makeRain } from '../lib/backdrop.js';
+import { makeParticles, makeBuildings, makeFarBuildings, makeRain } from '../lib/backdrop.js';
 
 // Generated once per page load (matches legacy: once per component instance).
 const PARTICLES = makeParticles(34);
+const FAR_BUILDINGS = makeFarBuildings(12);
 const BUILDINGS = makeBuildings(9);
 const RAIN = makeRain(24);
 
@@ -15,7 +16,16 @@ export function CityBackdrop() {
     <>
       <div style={css('position:absolute;inset:0;z-index:0;pointer-events:none;background-image:repeating-linear-gradient(0deg, rgba(var(--purple-rgb),0.045) 0 1px, transparent 1px 42px), repeating-linear-gradient(90deg, rgba(var(--purple-rgb),0.045) 0 1px, transparent 1px 42px);')} />
       <div style={css('position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;')}>
-        {BUILDINGS.map((b, i) => <div key={i} style={css(b.style)} />)}
+        {FAR_BUILDINGS.map((b, i) => <div key={i} style={css(b.style)} />)}
+      </div>
+      <div style={css('position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;')}>
+        {BUILDINGS.map((b, i) => (
+          <div key={i} style={css(b.style)}>
+            {b.windows.map((w, wi) => <div key={wi} style={css(w.style)} />)}
+            {b.hasAntenna && <div style={css(b.antennaStyle)} />}
+            {b.hasAntenna && <div style={css(b.antennaDotStyle)} />}
+          </div>
+        ))}
       </div>
       <div style={css('position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;')}>
         {PARTICLES.map((p, i) => <div key={i} style={css(p.style)} />)}

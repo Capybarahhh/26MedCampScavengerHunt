@@ -49,7 +49,7 @@ const STAGE_META = [
   { code: 'M', name: '地下市集', x: 350, y: 520, kind: 'stage', key: 'M' },
   { code: 'G', name: '垃圾山', x: 159.5, y: 410, kind: 'stage', key: 'G' },
   { code: 'C', name: '市中心', x: 159.5, y: 190, kind: 'stage', key: 'C' },
-  { code: '?', name: '終章', x: 350, y: 300, kind: 'ending', key: null },
+  { code: '?', name: '主線', x: 350, y: 300, kind: 'ending', key: null },
 ];
 
 export { NODE_ICON_SHAPES, STAGE_META, STAGE_ORDER };

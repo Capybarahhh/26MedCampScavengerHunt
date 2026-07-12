@@ -75,6 +75,18 @@ The palette lives in **`src/styles/tokens.css`** as CSS custom properties on
 - `.dev/smoke.mjs` (`node .dev/smoke.mjs` after `npm run build`) mounts the
   built bundle in happy-dom and walks map → stage as a crash check.
 
+**Fonts** are two role-based stacks, also in `tokens.css`. Only the Latin
+faces are downloaded (Google Fonts in `index.html`); Chinese uses the
+reader's **system** font via `--font-cjk` (PingFang / Microsoft JhengHei).
+This is deliberate: a downloaded CJK webfont forces per-glyph rasterization
+as the typewriter reveals characters one at a time — that was a real source
+of in-story jank. System CJK is native, cached, and instant.
+- `var(--font-ui)` — JetBrains Mono for Latin, system CJK for Chinese. The
+  default for everything: body text, narration, HUD labels, inputs, codes.
+- `var(--font-display)` — Chakra Petch for Latin, system CJK (bold) for
+  Chinese. Reserved for large one-off titles (the MNEMO logo,
+  duel/food-game names) — never body copy.
+
 **`src/App.jsx` — the controller.** Owns the screen router and all
 cross-screen progress (unlocked stage index, collected fragments, current
 stage/beat). Everything beat-local (typewriters, puzzle inputs, mini-game

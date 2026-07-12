@@ -120,7 +120,7 @@ export function StoryBeat({ beat, hasPrev, startDone, onNext, onPrev, onChooseEn
         <div style={css('flex:1;display:flex;flex-direction:column;overflow-y:auto;padding-top:6px;')} onClick={tapToSkip}>
           <div style={css('text-align:center;margin-bottom:14px;flex-shrink:0;')}>
             <DiamondDivider label="DUEL PROTOCOL" />
-            <div style={css('color:var(--teal-bright);font-size:26px;font-weight:700;letter-spacing:4px;margin-top:8px;text-shadow:0 0 18px rgba(var(--teal-rgb),0.65), 0 0 3px rgba(255,255,255,0.4);')}>{beat.duelTitle || ''}</div>
+            <div style={css('font-family:var(--font-display);color:var(--teal-bright);font-size:26px;font-weight:700;letter-spacing:4px;margin-top:8px;text-shadow:0 0 18px rgba(var(--teal-rgb),0.65), 0 0 3px rgba(255,255,255,0.4);')}>{beat.duelTitle || ''}</div>
           </div>
           <TerminalPanel title="決鬥守則 // RULE.SET" zigzag outerStyle={{ flexShrink: 0 }} bodyStyle={{ fontSize: 15.5, lineHeight: 1.95, textAlign: 'left' }}>
             <SegText segs={beat.segs} count={count} cursorColor={cursor} />

@@ -8,17 +8,20 @@ import { css } from '../../lib/css.js';
 
 // Opening narration: typewriter pages, with the last page framed as a
 // SYSTEM NOTICE terminal panel. Calls onDone() when finished or skipped.
-export function IntroScreen({ onDone }) {
+// `pages`/`finalLabel` default to the real opening narration, but the same
+// component also replays it read-only as a teaser from a locked 終章 node
+// (see App.jsx) — pass different ones there.
+export function IntroScreen({ onDone, pages = INTRO_PAGES, finalLabel = '進入地圖 ▸' }) {
   const [pageIndex, setPageIndex] = useState(0);
   // Pages we navigate back to render instantly instead of re-typing.
   const [instant, setInstant] = useState(false);
 
-  const page = INTRO_PAGES[pageIndex];
+  const page = pages[pageIndex];
   const fullText = useMemo(() => page.segs.map((s) => s.text).join(''), [page]);
   const { count, done, skip } = useTypewriter(fullText, { startDone: instant });
 
   const next = () => {
-    if (pageIndex + 1 >= INTRO_PAGES.length) { onDone(); return; }
+    if (pageIndex + 1 >= pages.length) { onDone(); return; }
     setInstant(false);
     setPageIndex(pageIndex + 1);
   };
@@ -60,7 +63,7 @@ export function IntroScreen({ onDone }) {
       </div>
 
       <div style={css('display:flex;justify-content:center;gap:8px;margin-bottom:18px;')}>
-        {INTRO_PAGES.map((_, i) => (
+        {pages.map((_, i) => (
           <div
             key={i}
             style={{
@@ -76,7 +79,7 @@ export function IntroScreen({ onDone }) {
           hasPrev={pageIndex > 0}
           onPrev={(e) => { e.stopPropagation(); prev(); }}
           onNext={(e) => { e.stopPropagation(); next(); }}
-          nextLabel={pageIndex === INTRO_PAGES.length - 1 ? '進入地圖 ▸' : '繼續 ▸'}
+          nextLabel={pageIndex === pages.length - 1 ? finalLabel : '繼續 ▸'}
         />
       )}
     </div>

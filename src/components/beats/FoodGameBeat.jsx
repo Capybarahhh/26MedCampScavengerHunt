@@ -19,7 +19,7 @@ function Rules({ beat, startDone, onStart }) {
           <span style={css('width:6px;height:6px;transform:rotate(45deg);background:var(--gold);box-shadow:0 0 8px rgba(var(--gold-rgb),0.8);')} />
           <span style={css('width:22px;height:1px;background:linear-gradient(to right, rgba(var(--gold-rgb),0.7), transparent);')} />
         </div>
-        <div style={css('color:var(--gold-bright);font-size:28px;font-weight:700;letter-spacing:4px;margin-top:8px;text-shadow:0 0 18px rgba(var(--gold-rgb),0.65), 0 0 3px rgba(255,255,255,0.4);')}>
+        <div style={css('font-family:var(--font-display);color:var(--gold-bright);font-size:28px;font-weight:700;letter-spacing:4px;margin-top:8px;text-shadow:0 0 18px rgba(var(--gold-rgb),0.65), 0 0 3px rgba(255,255,255,0.4);')}>
           {beat.gameName || '美食街訂單挑戰'}
         </div>
       </div>
@@ -89,7 +89,7 @@ function OrderSlot({ slot, idx, onInput, onSubmit }) {
                 inputMode="numeric"
                 placeholder="輸入金額"
                 style={{
-                  ...css("flex:1;height:38px;border-radius:6px;background:var(--input-bg);font-family:'Share Tech Mono', monospace;font-size:15px;text-align:center;letter-spacing:2px;box-shadow:inset 0 2px 6px rgba(0,0,0,0.6);"),
+                  ...css("flex:1;height:38px;border-radius:6px;background:var(--input-bg);font-family:var(--font-ui);font-size:15px;text-align:center;letter-spacing:2px;box-shadow:inset 0 2px 6px rgba(0,0,0,0.6);"),
                   border: `1px solid ${mix(accent, 47)}`, color: accent,
                 }}
               />

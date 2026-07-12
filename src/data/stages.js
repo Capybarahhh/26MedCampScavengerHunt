@@ -533,7 +533,7 @@ const STAGES = {
     ],
   },
   END: {
-    name: '記憶重組 · 終章',
+    name: '記憶重組 · 主線',
     emotion: '',
     beats: [
       { type: 'story', nextLabel: '拼合記憶碎片 ▸', leadsToAssembly: true, segs: [

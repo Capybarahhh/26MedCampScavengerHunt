@@ -2,7 +2,7 @@
 const CIPHER_ALPHA = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const CIPHER_CELLS = (() => {
   const cells = [];
-  const cellBase = 'display:flex;align-items:center;justify-content:center;width:20px;height:20px;font-family:\'Share Tech Mono\', monospace;font-size:10px;';
+  const cellBase = 'display:flex;align-items:center;justify-content:center;width:20px;height:20px;font-family:var(--font-ui);font-size:10px;';
   cells.push({ text: '', style: `${cellBase}background:#03060c;` });
   for (let c = 0; c < 26; c++) {
     cells.push({ text: CIPHER_ALPHA[c], style: `${cellBase}background:rgba(0,229,204,0.16);color:#00ffee;font-weight:700;text-shadow:0 0 4px rgba(0,229,204,0.6);` });

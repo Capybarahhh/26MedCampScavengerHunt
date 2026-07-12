@@ -1,9 +1,15 @@
-html, body { margin: 0; padding: 0; background: var(--bg); overflow: hidden; }
+html, body { margin: 0; padding: 0; background: var(--bg); overflow: hidden; font-family: var(--font-ui); }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 ::selection { background: var(--teal); color: var(--bg); }
 
-/* --- pressed / focus states (was style-active / style-focus in the DC template) --- */
-button { font-family: 'Share Tech Mono', monospace; }
+/* --- pressed / focus states (was style-active / style-focus in the DC template) ---
+ * Kept deliberately plain: a `transform` declared on every button (even a
+ * hover-only one) forces each one onto its own GPU layer permanently,
+ * which is exactly the jank the magnetic-tilt hover experiment ran into
+ * and got reverted for. `transform` here only ever appears inside a
+ * pseudo-class, so it exists only for the moment a button is actually
+ * pressed. */
+button { font-family: var(--font-ui); }
 .press98:active { transform: scale(0.98); }
 .press97:active { transform: scale(0.97); }
 .press96:active { transform: scale(0.96); }

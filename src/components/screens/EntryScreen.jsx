@@ -32,10 +32,9 @@ export function EntryScreen({ onConfirm, onReset }) {
   return (
     <div style={css('position:absolute;inset:0;z-index:10;padding:36px 30px 24px;display:flex;flex-direction:column;')}>
       <div style={css('text-align:center;margin-bottom:6px;position:relative;display:inline-block;')}>
-        <div style={css('font-size:44px;letter-spacing:10px;color:var(--teal-bright);text-shadow:0 0 18px rgba(var(--teal-rgb),0.8);font-weight:700;')}>MNEMO</div>
-        <div style={css('position:absolute;top:0;left:0;font-size:44px;letter-spacing:10px;color:var(--pink);font-weight:700;opacity:0;animation:glitchTop 4.5s infinite;')}>MNEMO</div>
-        <div style={css('position:absolute;top:0;left:0;font-size:44px;letter-spacing:10px;color:var(--purple);font-weight:700;opacity:0;animation:glitchBot 4.5s infinite;')}>MNEMO</div>
-        <div style={css('color:var(--purple-text-dim);font-size:14px;letter-spacing:4px;margin-top:6px;')}>記憶協定 · 房間碼驗證</div>
+        <div style={css('font-family:var(--font-display);font-size:44px;letter-spacing:10px;color:var(--teal-bright);text-shadow:0 0 18px rgba(var(--teal-rgb),0.8);font-weight:700;')}>MNEMO</div>
+        <div style={css('position:absolute;top:0;left:0;font-family:var(--font-display);font-size:44px;letter-spacing:10px;color:var(--pink);font-weight:700;opacity:0;animation:glitchTop 4.5s infinite;')}>MNEMO</div>
+        <div style={css('position:absolute;top:0;left:0;font-family:var(--font-display);font-size:44px;letter-spacing:10px;color:var(--purple);font-weight:700;opacity:0;animation:glitchBot 4.5s infinite;')}>MNEMO</div>
       </div>
 
       <div style={css('color:var(--purple-text-dim);font-size:14px;text-align:center;margin:26px 0 14px;letter-spacing:2px;')}>

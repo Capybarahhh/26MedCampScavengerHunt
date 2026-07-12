@@ -197,7 +197,7 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
                   disabled={inputDisabled}
                   placeholder="輸入解密內容……"
                   style={{
-                    ...css("width:100%;height:60px;background:var(--input-bg);border-radius:8px;color:var(--teal-text-bright);font-family:'Share Tech Mono', monospace;font-size:20px;padding:0 16px 0 40px;letter-spacing:4px;transition:box-shadow 0.2s, border-color 0.2s;"),
+                    ...css("width:100%;height:60px;background:var(--input-bg);border-radius:8px;color:var(--teal-text-bright);font-family:var(--font-ui);font-size:20px;padding:0 16px 0 40px;letter-spacing:4px;transition:box-shadow 0.2s, border-color 0.2s;"),
                     border: `1px solid ${borderColor}`,
                     boxShadow: `inset 0 2px 8px rgba(0,0,0,0.6), 0 0 14px ${mix(borderColor, 20)}`,
                     '--accent-focus': mix(borderColor, 47),
