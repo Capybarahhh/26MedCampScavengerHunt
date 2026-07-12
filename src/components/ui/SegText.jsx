@@ -17,6 +17,9 @@ export function SegText({ segs, count = Infinity, cursorColor = null, paraMargin
     rem -= take;
   }
   const paras = toParagraphs(vis);
+  const cursor = cursorColor && (
+    <span style={{ color: cursorColor, animation: 'cursorBlink 1s step-start infinite' }}>▌</span>
+  );
   return (
     <>
       {paras.map((para, pi) => (
@@ -30,11 +33,10 @@ export function SegText({ segs, count = Infinity, cursorColor = null, paraMargin
               </span>
             )
           )}
+          {pi === paras.length - 1 && cursor}
         </div>
       ))}
-      {cursorColor && (
-        <span style={{ color: cursorColor, animation: 'cursorBlink 1s step-start infinite' }}>▌</span>
-      )}
+      {paras.length === 0 && cursor}
     </>
   );
 }
