@@ -2,21 +2,44 @@ html, body { margin: 0; padding: 0; background: var(--bg); overflow: hidden; fon
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 ::selection { background: var(--teal); color: var(--bg); }
 
-/* --- pressed / focus states (was style-active / style-focus in the DC template) ---
- * Kept deliberately plain: a `transform` declared on every button (even a
- * hover-only one) forces each one onto its own GPU layer permanently,
- * which is exactly the jank the magnetic-tilt hover experiment ran into
- * and got reverted for. `transform` here only ever appears inside a
- * pseudo-class, so it exists only for the moment a button is actually
- * pressed. */
+/* --- pressed / hover / focus states (was style-active / style-focus in the DC template) ---
+ * `filter` on hover/active is cheap and scoped to the pseudo-class, so it
+ * costs nothing at rest — fine to leave on every button.
+ *
+ * The magnetic tilt's `transform`, however, is NOT declared on the bare
+ * `button` rule. A `transform`/`transition:transform` pair on every button
+ * at once — even one whose --mx/--my/--lift all compute to identity —
+ * gets every single button (36 keys on the entry keypad alone) promoted to
+ * its own GPU layer permanently, which is what made the first attempt at
+ * this jank on modest hardware. So `.magnetic-tilt` is a class
+ * lib/magneticButtons.js adds only to the one button currently being
+ * hovered/pressed, and removes once it settles back to rest — the
+ * transform (and its layer) exists only for as long as it's actually
+ * doing something. `.pressNN:active` sets only `--press` (the click-down
+ * scale) so it composes with whatever tilt is in progress rather than
+ * overwriting it, but has no visible effect unless `.magnetic-tilt` is
+ * also present. */
 button { font-family: var(--font-ui); }
-.press98:active { transform: scale(0.98); }
-.press97:active { transform: scale(0.97); }
-.press96:active { transform: scale(0.96); }
-.press95:active { transform: scale(0.95); }
-.press94:active { transform: scale(0.94); }
-.key-entry:active { background: var(--purple-btn) !important; border-color: var(--purple) !important; transform: scale(0.98); }
-.key-frag:active { background: var(--teal-key-active) !important; border-color: var(--accent) !important; transform: scale(0.94); }
+.magnetic-tilt {
+  --mx: 0; --my: 0; --lift: 0px; --press: 1;
+  transform: perspective(700px) rotateX(calc(var(--my) * -6deg)) rotateY(calc(var(--mx) * 6deg)) translateY(var(--lift)) scale(var(--press));
+  transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+button { transition: filter 0.15s ease; }
+@media (hover: hover) and (pointer: fine) {
+  button:not(:disabled):hover { filter: brightness(1.12); }
+}
+button:not(:disabled):active { filter: brightness(0.92); }
+@media (prefers-reduced-motion: reduce) {
+  .magnetic-tilt { transition: none; transform: none !important; }
+}
+.press98:active { --press: 0.98; }
+.press97:active { --press: 0.97; }
+.press96:active { --press: 0.96; }
+.press95:active { --press: 0.95; }
+.press94:active { --press: 0.94; }
+.key-entry:active { background: var(--purple-btn) !important; border-color: var(--purple) !important; --press: 0.98; }
+.key-frag:active { background: var(--teal-key-active) !important; border-color: var(--accent) !important; --press: 0.94; }
 .puzzle-input:focus { box-shadow: inset 0 2px 8px rgba(0,0,0,0.6), 0 0 22px var(--accent-focus) !important; outline: none; }
 
 @keyframes blinkPip {

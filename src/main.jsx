@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import './styles/tokens.css';
 import './styles/global.css';
+import { initMagneticButtons } from './lib/magneticButtons.js';
+
+initMagneticButtons();
 
 // Art-style testing: ?theme=ember picks a [data-theme] block from tokens.css
 // and persists it; ?theme=default clears it. No param → last choice sticks.
