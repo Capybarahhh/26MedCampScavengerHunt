@@ -227,8 +227,8 @@ export default function App() {
     : [...FRAGMENT_ORDER];
 
   return (
-    <div style={{
-      width: '100vw', height: '100vh', background: 'var(--bg)', display: 'flex',
+    <div className="game-viewport" style={{
+      background: 'var(--bg)', display: 'flex',
       alignItems: 'center', justifyContent: 'center', position: 'fixed', inset: 0,
       fontFamily: 'var(--font-ui)',
     }}>

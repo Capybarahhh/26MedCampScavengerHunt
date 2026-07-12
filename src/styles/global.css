@@ -2,6 +2,16 @@ html, body { margin: 0; padding: 0; background: var(--bg); overflow: hidden; fon
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 ::selection { background: var(--teal); color: var(--bg); }
 
+/* Mobile browsers resize the *visual* viewport (address bar collapsing,
+ * a keyboard opening) without necessarily updating `100vh` consistently —
+ * classic symptom is content looking fine on load then clipped a screen or
+ * two later. `dvh`/`dvw` track the real visible area; declared after the
+ * plain vh/vw so unsupported browsers just keep the first value. */
+.game-viewport {
+  width: 100vw; width: 100dvw;
+  height: 100vh; height: 100dvh;
+}
+
 /* --- pressed / hover / focus states (was style-active / style-focus in the DC template) ---
  * `filter` on hover/active is cheap and scoped to the pseudo-class, so it
  * costs nothing at rest — fine to leave on every button.
