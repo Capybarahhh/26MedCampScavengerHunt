@@ -479,6 +479,7 @@ const STAGES = {
       ]},
       { type: 'puzzle',
         descSegs: [
+          seg('rule', '規則　'), seg('narr', '人面朝的方向，以前一次走的方向為前方。\n\n'),
           seg('warn', '警告：連續答錯三次，即視為闖關失敗。'),
         ],
         inputLabel: '密碼',
