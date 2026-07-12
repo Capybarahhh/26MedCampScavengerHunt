@@ -1,4 +1,8 @@
-html, body { margin: 0; padding: 0; background: var(--bg); overflow: hidden; font-family: var(--font-ui); }
+/* overscroll-behavior stops iOS Safari's elastic rubber-band bounce, which
+ * can shift the *visual* viewport away from the fixed-position canvas
+ * (looks exactly like the canvas got cropped/shifted sideways) even with
+ * overflow:hidden on body — that alone doesn't stop the bounce on iOS. */
+html, body { margin: 0; padding: 0; background: var(--bg); overflow: hidden; overscroll-behavior: none; font-family: var(--font-ui); }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 ::selection { background: var(--teal); color: var(--bg); }
 
