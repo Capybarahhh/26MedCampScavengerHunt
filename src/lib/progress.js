@@ -1,11 +1,10 @@
-// localStorage persistence. Key and shape match the legacy version exactly,
-// so players keep their progress across the rewrite.
+// localStorage persistence.
 const KEY = 'mnemo_progress';
 
 export function loadProgress() {
   try {
     const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
-    // Only screens that are safe to restore into (same rule as legacy).
+    // Only screens that are safe to restore into.
     if (saved && ['map', 'ending', 'ending1', 'ending2'].includes(saved.screen)) return saved;
   } catch { /* corrupt data → start fresh */ }
   return null;

@@ -12,7 +12,7 @@ globalThis.fetch = () => Promise.resolve({ ok: true });
 
 // Pre-seed progress so App restores straight into the map with G current.
 win.localStorage.setItem('mnemo_progress', JSON.stringify({
-  room: ['1','2','3','4','5','6'], unlockedIndex: 5, screen: 'map', collectedFragments: ['MF','AX'],
+  room: ['1','2','3','4','5','6'], screen: 'map', startStageKey: 'G', completedStages: [], collectedFragments: ['MF','AX'],
 }));
 
 const errors = [];

@@ -1,32 +1,61 @@
-import { STAGE_META, NODE_ICON_SHAPES } from '../../data/stageMeta.js';
+import { STAGE_META, STAGE_ORDER, NODE_ICON_SHAPES } from '../../data/stageMeta.js';
 import { smoothPath } from '../../lib/map.js';
 import { css, mix } from '../../lib/css.js';
 
-// Signal map: the route curve, one node per stage, progress bar, toast + unlock banner.
-export function MapScreen({ unlockedIndex, onNodeClick, onOpenBackpack, onReset, toastMsg, unlockBanner }) {
-  const nodes = STAGE_META.map((meta, i) => {
-    let bg, border, fg, label, fontSize, anim = 'none', cursor = 'default';
-    if (i < unlockedIndex) {
-      const purple = meta.kind === 'prologue';
-      bg = purple ? 'var(--purple-btn)' : 'var(--pink-bg)';
-      border = purple ? 'var(--purple)' : 'var(--pink)';
-      fg = purple ? 'var(--purple-text)' : 'var(--pink-text)';
-      label = meta.name; fontSize = 12.5;
-    } else if (i === unlockedIndex) {
-      bg = 'var(--teal-bg)'; border = 'var(--teal)'; fg = 'var(--teal-bright)'; label = meta.name; fontSize = 12.5;
-      anim = 'blinkPip 1.6s ease-in-out infinite'; cursor = 'pointer';
+// Icon shapes are positional: STAGE_META[i] <-> NODE_ICON_SHAPES[i].
+const ICON_INDEX = Object.fromEntries(STAGE_META.map((m, i) => [m.code, i]));
+
+// The next stage a team can step into: STAGE_ORDER walked forward from their
+// start by however many they've completed, wrapping around the circle.
+function currentStageKey(startStageKey, completedStages) {
+  if (!startStageKey || completedStages.length >= STAGE_ORDER.length) return null;
+  const startIdx = STAGE_ORDER.indexOf(startStageKey);
+  return STAGE_ORDER[(startIdx + completedStages.length) % STAGE_ORDER.length];
+}
+
+// Signal map: six stages ringed in their fixed play order, 終章 at the
+// center. Only the one true next stop is orange/pulsing — everything else
+// reads as done (green) or locked (red). Creator mode leaves the same
+// coloring intact (so testing still shows real progress) but makes every
+// node clickable regardless of status.
+export function MapScreen({ startStageKey, completedStages, creatorMode, onNodeClick, onOpenBackpack, onReset, toastMsg, unlockBanner }) {
+  const curKey = currentStageKey(startStageKey, completedStages);
+  const allDone = completedStages.length >= STAGE_ORDER.length;
+
+  const nodes = STAGE_META.map((meta) => {
+    const isEnding = meta.kind === 'ending';
+    const done = !isEnding && completedStages.includes(meta.key);
+    const isCurrent = isEnding ? allDone : meta.key === curKey;
+    let bg, border, fg, label, fontSize, anim = 'none';
+    if (isEnding) {
+      if (isCurrent) {
+        bg = 'var(--gold-deep)'; border = 'var(--gold)'; fg = 'var(--gold-text)'; label = meta.name; fontSize = 13;
+        anim = 'blinkPip 1.6s ease-in-out infinite';
+      } else {
+        bg = 'var(--pink-bg)'; border = 'var(--pink)'; fg = 'var(--pink-text)'; label = meta.name; fontSize = 12.5;
+      }
+    } else if (done) {
+      bg = 'var(--green-bg)'; border = 'var(--green)'; fg = 'var(--green-text)'; label = meta.name; fontSize = 12.5;
+    } else if (isCurrent) {
+      bg = 'var(--orange-bg)'; border = 'var(--orange)'; fg = 'var(--orange-text)'; label = meta.name; fontSize = 12.5;
+      anim = 'blinkPip 1.6s ease-in-out infinite';
     } else {
-      bg = 'var(--purple-deep)'; border = 'var(--purple-locked)'; fg = 'var(--purple-dim)'; label = '?'; fontSize = 28;
+      bg = 'var(--pink-bg)'; border = 'var(--pink)'; fg = 'var(--pink-text)'; label = meta.name; fontSize = 12.5;
     }
-    const iconDefs = i <= unlockedIndex ? NODE_ICON_SHAPES[i] : null;
-    return { ...meta, bg, border, fg, label, fontSize, anim, cursor, iconDefs, isCurrent: i === unlockedIndex };
+    const clickable = creatorMode || isCurrent;
+    const iconDefs = NODE_ICON_SHAPES[ICON_INDEX[meta.code]];
+    return { ...meta, bg, border, fg, label, fontSize, anim, iconDefs, isEnding, done, isCurrent, clickable };
   });
 
-  const pts = nodes.map((n) => ({ x: n.x, y: n.y }));
-  const traveledCount = Math.min(unlockedIndex + 1, nodes.length);
-  const pathD = smoothPath(pts);
-  const traveledD = traveledCount > 1 ? smoothPath(pts.slice(0, traveledCount)) : '';
-  const doneMainStages = STAGE_META.filter((m, i) => m.kind === 'stage' && i < unlockedIndex).length;
+  const ring = nodes.filter((n) => !n.isEnding);
+  const ringPts = ring.map((n) => ({ x: n.x, y: n.y }));
+  const basePath = smoothPath([...ringPts, ringPts[0]]);
+
+  const startIdx = startStageKey ? STAGE_ORDER.indexOf(startStageKey) : -1;
+  const traveledCount = startIdx >= 0 ? Math.min(completedStages.length + (allDone ? 0 : 1), STAGE_ORDER.length) : 0;
+  const traveledPts = [];
+  for (let j = 0; j < traveledCount; j++) traveledPts.push(ringPts[(startIdx + j) % STAGE_ORDER.length]);
+  const traveledPath = traveledPts.length > 1 ? smoothPath(traveledPts) : '';
 
   return (
     <div style={css('position:absolute;inset:0;z-index:10;padding:26px 24px;overflow:hidden;')}>
@@ -47,37 +76,41 @@ export function MapScreen({ unlockedIndex, onNodeClick, onOpenBackpack, onReset,
         <div style={css('display:flex;align-items:center;gap:8px;')}>
           <div style={css('display:flex;align-items:center;gap:8px;background:var(--purple-panel);border:2px solid var(--purple-dim);border-radius:20px;padding:8px 14px;min-height:44px;')}>
             <span style={css('color:var(--gold);font-size:16px;')}>◆</span>
-            <span style={css('color:var(--gold-text);font-size:14px;letter-spacing:2px;')}>{doneMainStages}/6</span>
+            <span style={css('color:var(--gold-text);font-size:14px;letter-spacing:2px;')}>{completedStages.length}/6</span>
           </div>
           <button className="press96" onClick={onOpenBackpack} style={css("height:44px;padding:0 14px;background:var(--purple-btn);border:2px solid var(--purple-border);color:var(--purple-text);border-radius:20px;font-size:12px;letter-spacing:2px;cursor:pointer;")}>▤ 背包</button>
         </div>
       </div>
 
-      <div style={css('position:relative;width:100%;height:640px;margin-top:6px;')}>
+      {/* Fixed 700×640 box (matching the svg viewBox exactly) so the hexagon
+          is never squeezed by this screen's own 24px horizontal padding —
+          width:100% here would inherit a narrower, padding-shrunk box and
+          skew the "circle" instead of keeping it regular. */}
+      <div style={css('position:relative;width:700px;height:640px;margin:6px -24px 0 -24px;')}>
         <svg viewBox="0 0 700 640" style={css('position:absolute;inset:0;width:100%;height:100%;')}>
-          <path d={pathD} fill="none" stroke="var(--purple-locked)" strokeWidth="4" strokeDasharray="2 12" strokeLinecap="round" />
-          {traveledD && (
-            <path d={traveledD} fill="none" stroke="var(--teal)" strokeWidth="3" strokeDasharray="9 9" strokeLinecap="round" opacity="0.85"
+          <path d={basePath} fill="none" stroke="var(--purple-locked)" strokeWidth="4" strokeDasharray="2 12" strokeLinecap="round" />
+          {traveledPath && (
+            <path d={traveledPath} fill="none" stroke="var(--teal)" strokeWidth="3" strokeDasharray="9 9" strokeLinecap="round" opacity="0.85"
               style={css('animation:dashFlow 2.4s linear infinite;filter:drop-shadow(0 0 4px rgba(var(--teal-rgb),0.8));')} />
           )}
         </svg>
-        {traveledD && (
+        {traveledPath && (
           <div style={{
             ...css('position:absolute;left:0;top:0;width:9px;height:9px;margin:-4.5px;border-radius:50%;background:var(--teal-bright);box-shadow:0 0 10px rgba(var(--teal-rgb),1), 0 0 20px rgba(var(--teal-rgb),0.6);animation:signalTravel 3.6s linear infinite;pointer-events:none;'),
-            offsetPath: `path('${traveledD}')`,
+            offsetPath: `path('${traveledPath}')`,
           }} />
         )}
 
-        {nodes.map((node, i) => (
-          <div key={i} style={{ position: 'absolute', left: node.x, top: node.y, width: 120, transform: 'translate(-50%,-50%)' }}>
+        {nodes.map((node) => (
+          <div key={node.code} style={{ position: 'absolute', left: node.x, top: node.y, width: 120, transform: 'translate(-50%,-50%)' }}>
             {node.isCurrent && (
               <div style={css('position:absolute;left:50%;top:50%;width:116px;height:92px;transform:translate(-50%,-50%);border-radius:8px;border:1.5px solid rgba(var(--teal-rgb),0.6);animation:radarPing 2.2s ease-out infinite;pointer-events:none;')} />
             )}
             <div
-              onClick={() => onNodeClick(i)}
+              onClick={() => node.clickable && onNodeClick(node)}
               style={{
                 ...css('position:relative;width:116px;height:92px;border-radius:6px;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:8px;'),
-                background: node.bg, border: `2px solid ${node.border}`, cursor: node.cursor, animation: node.anim,
+                background: node.bg, border: `2px solid ${node.border}`, cursor: node.clickable ? 'pointer' : 'default', animation: node.anim,
                 boxShadow: `0 0 16px ${mix(node.border, 33)}, inset 0 0 14px ${mix(node.border, 13)}`,
               }}
             >
@@ -116,16 +149,13 @@ export function MapScreen({ unlockedIndex, onNodeClick, onOpenBackpack, onReset,
       </div>
 
       <div style={css('display:flex;gap:5px;margin-top:8px;')}>
-        {nodes.map((_, i) => {
-          const color = i < unlockedIndex ? (STAGE_META[i].kind === 'prologue' ? 'var(--purple)' : 'var(--pink)') : i === unlockedIndex ? 'var(--teal)' : 'var(--purple-track)';
-          return (
-            <div key={i} style={{
-              flex: 1, height: 7, borderRadius: 4, background: color, color,
-              boxShadow: i <= unlockedIndex ? '0 0 8px currentColor' : 'none',
-              animation: i === unlockedIndex ? 'mapGlowPulse 1.8s ease-in-out infinite' : 'none',
-            }} />
-          );
-        })}
+        {nodes.map((node) => (
+          <div key={node.code} style={{
+            flex: 1, height: 7, borderRadius: 4, background: node.border, color: node.border,
+            boxShadow: node.done || node.isCurrent ? '0 0 8px currentColor' : 'none',
+            animation: node.isCurrent ? 'mapGlowPulse 1.8s ease-in-out infinite' : 'none',
+          }} />
+        ))}
       </div>
 
       {toastMsg && (

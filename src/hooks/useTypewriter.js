@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 
-// Punctuation-aware per-character delay (ported from the original delayForChar).
+// Punctuation-aware per-character delay (ported from the original delayForChar,
+// then sped up ~1.5x). The blinking cursor itself (cursorBlink in global.css)
+// is a fixed-rate CSS animation unrelated to typing speed — nothing to sync there;
+// it just rides along at the tail of the visible text (see SegText.jsx).
 function delayForChar(ch) {
-  if (ch === '。' || ch === '！' || ch === '？' || ch === '—') return 260;
-  if (ch === '，' || ch === '、' || ch === ',') return 120;
-  if (ch === '\n') return 80;
-  return 32;
+  if (ch === '。' || ch === '！' || ch === '？' || ch === '—') return 173;
+  if (ch === '，' || ch === '、' || ch === ',') return 80;
+  if (ch === '\n') return 53;
+  return 21;
 }
 
 /**

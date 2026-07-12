@@ -85,6 +85,16 @@
   --grey-text: #8a9aa0;
   --cream-text: #e8dcc8;
   --paper-text: #fdf6e3;
+
+  /* green — completed map stage (status, not a decorative accent) */
+  --green: #35e07a;         --green-rgb: 53, 224, 122;
+  --green-bg: #0a3a20;
+  --green-text: #a8f5c8;
+
+  /* orange — next playable map stage (status, not a decorative accent) */
+  --orange: #ff9a30;        --orange-rgb: 255, 154, 48;
+  --orange-bg: #3a2200;
+  --orange-text: #ffd9a0;
 }
 
 /* ---------------------------------------------------------------------------
