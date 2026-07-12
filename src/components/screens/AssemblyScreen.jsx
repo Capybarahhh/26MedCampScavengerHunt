@@ -48,6 +48,10 @@ export function AssemblyScreen({ letters, scale, onComplete }) {
     if (status === 'correct') return;
     e.preventDefault();
     e.stopPropagation();
+    // Capture the pointer so this element keeps getting move/up events even
+    // once the cursor strays outside the drag area — without this, a fast
+    // trackpad swipe leaves the box mid-gesture and the piece snaps/cancels.
+    e.currentTarget.setPointerCapture?.(e.pointerId);
     let startLeft, startTop;
     if (from === 'table') {
       const p = tablePos[letter] || { x: 0, y: 0 };
@@ -139,7 +143,7 @@ export function AssemblyScreen({ letters, scale, onComplete }) {
         style={{ position: 'relative', width: ASSEMBLY_WIDTH, height: ASSEMBLY_AREA_H, marginBottom: 30, touchAction: 'none' }}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
-        onPointerLeave={onPointerUp}
+        onPointerCancel={onPointerUp}
       >
         {/* desk surface */}
         <div style={{
