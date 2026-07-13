@@ -2,8 +2,10 @@
 // catching any load/render-time crash from the token refactor.
 import { Window } from 'happy-dom';
 import { readdirSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
-const ROOT = '/Users/liang/Documents/醫學營城市尋寶';
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const win = new Window({ url: 'http://localhost/' });
 for (const k of ['window', 'document', 'localStorage', 'navigator', 'location', 'HTMLElement', 'Node', 'CustomEvent', 'MutationObserver', 'getComputedStyle', 'requestAnimationFrame', 'cancelAnimationFrame']) {
   try { Object.defineProperty(globalThis, k, { value: win[k], configurable: true, writable: true }); } catch {}
