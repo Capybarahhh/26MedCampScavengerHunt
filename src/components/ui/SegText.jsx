@@ -81,19 +81,26 @@ export function SegText({ segs, count = Infinity, cursorColor = null, paraMargin
     <span style={{ color: cursorColor, animation: 'cursorBlink 1s step-start infinite' }}>▌</span>
   );
 
-  // Split each paragraph into render blocks at every `rule`-classed run, not
-  // just when one happens to open the paragraph. Content authors separate
-  // rules with either "\n\n" (each rule its own toParagraphs() paragraph
-  // already) or a single "\n" (several rules packed into one paragraph,
-  // line-broken) — the latter used to leave rules 2+ stranded as plain bold
-  // text inside rule 1's card instead of getting their own badge.
+  // Split each paragraph into render blocks at every LINE-OPENING
+  // `rule`-classed run — i.e. one that's either the first run of the
+  // paragraph or immediately follows a line break — not just any `rule` run
+  // anywhere. `rule` doubles as plain inline emphasis in some narration
+  // (e.g. "藏在字裡行間" mid-sentence); only treating line-leading ones as
+  // rule labels keeps that emphasis as normal styled text instead of
+  // wrongly popping it into its own numbered card. Content authors still
+  // separate rules with either "\n\n" (each already its own toParagraphs()
+  // paragraph) or a single "\n" (several rules packed into one paragraph,
+  // line-broken) — both open a new line, so both are caught here.
   const blocks = [];
   for (const para of paras) {
     let current = null;
+    let atLineStart = true;
     for (const r of para.runs) {
-      if (r.cls === 'rule' && current) { blocks.push(current); current = null; }
-      if (!current) current = { isRule: r.cls === 'rule', runs: [] };
+      const startsRule = r.cls === 'rule' && atLineStart;
+      if (startsRule && current) { blocks.push(current); current = null; }
+      if (!current) current = { isRule: startsRule, runs: [] };
       current.runs.push(r);
+      atLineStart = r.isBr;
     }
     if (current) blocks.push(current);
   }
