@@ -1,5 +1,6 @@
 // All stage content: story beats, puzzles, answers (extracted verbatim).
 import { seg } from '../lib/text.js';
+import { FRAGMENT_ORDER } from '../lib/pieces.js';
 
 const STAGES = {
   R: {
@@ -11,7 +12,7 @@ const STAGES = {
       ]},
       { type: 'story', segs: [
         seg('narr', '書架比你想像的還要深。\n\n你沿著長廊走，手指無意識地掠過書脊——不是在找什麼，只是那個動作讓你覺得，自己好像曾經這樣做過。書架盡頭，有一排排的置物櫃，漆面早已斑駁，卻整齊地嵌在牆裡。每一格都只有一個編號，冷靜，簡單，什麼都沒有多說。\n\n'),
-        seg('quote', '「這座圖書館最後的管理員，是一個只懂中文的盲人。記憶裡只剩下這樣一句話。或許他可以幫我找到那本書——但他藏在這棟樓的哪個角落，在這麼大的地方，該怎麼找？」'),
+        seg('quote', '「這座圖書館最後的管理員，是一個只會說英文的盲人。記憶裡只剩下這樣一句話。或許他可以幫我找到那本書——但他藏在這棟樓的哪個角落，在這麼大的地方，該怎麼找？」'),
       ]},
       { type: 'story', segs: [
         seg('narr', '你繼續往前走。書庫的牆面上留著一排人為的印記，幾張書籤散落在角落的辦公桌上。\n\n'),
@@ -24,11 +25,13 @@ const STAGES = {
         descSegs: [
           seg('rule', '01　'), seg('narr', '書籤是用來整理書櫃編號的重要工具。\n'),
           seg('rule', '02　'), seg('narr', '藏書都只放在'), seg('mission', '適中'), seg('narr', '的櫃子裡——過大或過小的櫃子太不堪用了，它們只是裝飾用的。\n'),
-          seg('rule', '03　'), seg('narr', '依據書籤上的指示標記符合編號的書櫃，但標記會兩兩互相抵銷。\n'),
-          seg('rule', '04　'), seg('narr', '經過整理後，用大黑點畫記所有有標示的書櫃。'),
+          seg('rule', '03　'), seg('narr', '依據書籤上的編號找出對應書櫃並給於標記，被標記到兩次的書櫃身上的標記便會抵銷。\n'),
+          seg('rule', '04　'), seg('narr', '經過整理後，用大黑點畫記所有有標示的書櫃。\n'),
+          seg('rule', '05　'), seg('narr', '這些雜亂的符號，或許唯有失去一種感官你才能理解。'),
         ],
-        inputLabel: '通往館長的密語 / 共九字',
-        answer: '直走男廁第一間敲門',
+        inputLabel: '通往館長的密語 / 英數字 11 碼',
+        answer: 'MENSTOILET1',
+        keypadInput: true,
       },
       { type: 'puzzle',
         descSegs: [],
@@ -291,7 +294,7 @@ const STAGES = {
         seg('mission', '前往K區美食街'),
       ]},
       { type: 'foodgame', gameName: '天下沒有你的午餐', rulesSegs: [
-        seg('rule', '目標　'), seg('narr', '玩家必須在 300 秒內完成八張訂單。\n\n'),
+        seg('rule', '目標　'), seg('narr', '玩家必須在 300 秒內完成五張訂單。\n\n'),
         seg('rule', '訂單機制　'), seg('narr', '一次最多同時出現四張訂單，若超過 60 秒未完成，該筆訂單即視為失敗。\n\n'),
         seg('rule', '完成方式　'), seg('narr', '玩家需在美食街中找到訂單對應的食物，並正確輸入該餐點的價錢，才算送餐成功。\n\n'),
         seg('warn', '注意事項　'), seg('narr', '地下市集相當擁擠，請勿奔跑，並小心與他人碰撞。'),
@@ -559,6 +562,15 @@ const STAGES = {
         seg('narr', '\n\n'),
         seg('quote', '「我記得我把密碼設成了...密碼？」'),
         seg('narr', '\n\n'),
+        seg('quote', '「啊況且那時候英文老師說過...可數名詞前面要加入定冠詞」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「我可是個學測英文15級分的世界之巔，怎可能會忘記這種小細節呢...」'),
+        seg('narr', '\n\n'),
+        seg('narr', '低頭看向剛拼湊完成的六道記憶碎片，上面刻著的符號連在一起，忽然有了意義——\n\n'),
+        seg('key', FRAGMENT_ORDER.join('')),
+        seg('narr', '\n\n'),
+        seg('quote', '「這應該就是……第一把鑰匙了吧。」'),
+        seg('narr', '\n\n'),
         seg('rule', '規則 01　'), seg('narr', '需要兩把等長的字母鑰匙。\n\n'),
         seg('rule', '規則 02　'), seg('narr', '按照順序，用密碼表交叉查詢，即可拼湊出完整密碼。'),
       ]},
@@ -593,4 +605,14 @@ const STAGES = {
   },
 };
 
-export { STAGES };
+// letter -> { source, emotion }, derived from each stage's own `fragment`
+// beat rather than duplicated by hand — stays correct if a stage's source
+// name or emotion tag ever changes.
+const FRAGMENT_META = {};
+for (const stage of Object.values(STAGES)) {
+  for (const beat of stage.beats) {
+    if (beat.type === 'fragment') FRAGMENT_META[beat.letter] = { source: beat.source, emotion: beat.emotion };
+  }
+}
+
+export { STAGES, FRAGMENT_META };

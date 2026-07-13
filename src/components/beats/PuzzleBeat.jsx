@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { CIPHER_CELLS } from '../../data/cipher.js';
 import { FRAGMENT_KEY_LETTERS } from '../../lib/pieces.js';
+const ALPHANUMERIC_KEYS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 import { useTypewriter } from '../../hooks/useTypewriter.js';
 import { SegText } from '../ui/SegText.jsx';
 import { TerminalPanel } from '../ui/TerminalPanel.jsx';
@@ -40,8 +41,9 @@ function Brackets({ color, size = 10, weight = 1.5 }) {
 
 /**
  * A puzzle beat: optional description terminal, optional cipher table, and the
- * answer-input terminal in one of three input modes:
+ * answer-input terminal in one of four input modes:
  * - fragment keypad (next non-story beat is a fragment → letter blanks + A–Z keys)
+ * - alphanumeric keypad (beat.keypadInput → letter/digit blanks + 0–9A–Z keys)
  * - hi-tech cells (beat.hiTechInput → per-letter cells over an invisible input)
  * - plain text input
  */
@@ -54,10 +56,16 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
   const descText = useMemo(() => beat.descSegs.map((s) => s.text).join(''), [beat]);
   const { count, done, skip } = useTypewriter(descText, { startDone });
 
-  const isHiTech = !isFragmentAnswer && !!beat.hiTechInput;
+  const isKeypad = !isFragmentAnswer && !!beat.keypadInput;
+  const isHiTech = !isFragmentAnswer && !isKeypad && !!beat.hiTechInput;
   const accent = beat.panel ? beat.panel.accent : 'var(--teal)';
   const borderColor = status === 'correct' ? 'var(--teal)' : status === 'wrong' ? 'var(--pink)' : 'var(--purple-dim)';
   const inputDisabled = status === 'correct';
+
+  // Fragment codes (e.g. "MF") are accepted in any letter order — the
+  // collected fragment is always beat's fixed answer letter regardless of
+  // which order was typed, since FragmentBeat reads its own `letter` prop.
+  const isPermutationMatch = (a, b) => a.length === b.length && [...a].sort().join('') === [...b].sort().join('');
 
   const submit = () => {
     const given = input.trim();
@@ -65,9 +73,11 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
     if (status === 'correct') { onAdvance(); return; }
     const match = beat.acceptAny
       ? true
-      : beat.caseInsensitive
-        ? given.toLowerCase() === beat.answer.toLowerCase()
-        : given === beat.answer;
+      : isFragmentAnswer
+        ? isPermutationMatch(given.toUpperCase(), beat.answer.toUpperCase())
+        : beat.caseInsensitive
+          ? given.toLowerCase() === beat.answer.toLowerCase()
+          : given === beat.answer;
     track('puzzle_attempt', { stageKey, beatIndex, input: given, correct: match });
     clearTimeout(wrongTimer.current);
     if (match) {
@@ -79,7 +89,7 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
     }
   };
 
-  const pressFragmentKey = (ch) => {
+  const pressKey = (ch) => {
     if (status === 'correct' || input.length >= beat.answer.length) return;
     setInput(input + ch);
     setStatus('idle');
@@ -103,7 +113,7 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
             onClick={() => { if (!done) skip(); }}
             bodyStyle={{ padding: '20px 22px 24px', fontSize: 16, lineHeight: 2, textAlign: 'left', width: '100%', minHeight: 64 }}
           >
-            <SegText segs={beat.descSegs} count={count} cursorColor={done ? null : accent} />
+            <SegText segs={beat.descSegs} count={count} cursorColor={done ? null : accent} accent={accent} />
           </TerminalPanel>
         )}
 
@@ -141,13 +151,53 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
                   <button
                     key={l}
                     className="key-frag"
-                    onClick={() => pressFragmentKey(l)}
+                    onClick={() => pressKey(l)}
                     style={{
                       ...css("height:40px;background:var(--teal-key-bg);border-radius:6px;color:var(--teal-text);font-size:14px;cursor:pointer;"),
                       border: `1px solid ${mix(borderColor, 33)}`,
                       '--accent': borderColor,
                     }}
                   >{l}</button>
+                ))}
+              </div>
+              <button
+                className="press96"
+                onClick={() => status !== 'correct' && setInput(input.slice(0, -1))}
+                style={css("width:100%;margin-top:7px;height:38px;background:var(--purple-btn);border:1px solid var(--purple-border);border-radius:6px;color:var(--purple-text);font-size:12px;letter-spacing:2px;cursor:pointer;")}
+              >⌫ 清除</button>
+            </>
+          ) : isKeypad ? (
+            <>
+              <div style={css('position:relative;padding:10px 6px;margin-bottom:6px;')}>
+                <Brackets color={mix(borderColor, 53)} size={12} />
+                <div style={css('display:flex;gap:6px;justify-content:center;flex-wrap:wrap;')}>
+                  {blanksOf(input.split(''), beat.answer.length).map((blank, i) => (
+                    <div key={i} style={{
+                      ...css('width:34px;height:44px;border-radius:6px;background:linear-gradient(180deg, var(--input-hi), var(--input-bg));display:flex;align-items:center;justify-content:center;font-size:17px;color:var(--teal-text-bright);text-shadow:0 0 8px rgba(var(--teal-rgb),0.5);'),
+                      border: `1px solid ${blank.char ? borderColor : 'var(--purple-dim)'}`,
+                      boxShadow: `inset 0 2px 8px rgba(0,0,0,0.6), 0 0 10px ${mix(blank.char ? borderColor : 'var(--purple-dim)', 20)}`,
+                      animation: `blankPop 0.4s ease ${(i * 0.05).toFixed(2)}s both`,
+                    }}>
+                      {blank.char}
+                      {blank.isCursor && (
+                        <span style={{ ...css('width:2px;height:20px;display:inline-block;animation:cursorBlink 1s step-start infinite;'), background: borderColor }} />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div style={css('display:grid;grid-template-columns:repeat(6, 1fr);gap:6px;')}>
+                {ALPHANUMERIC_KEYS.map((k) => (
+                  <button
+                    key={k}
+                    className="key-frag"
+                    onClick={() => pressKey(k)}
+                    style={{
+                      ...css("height:36px;background:var(--teal-key-bg);border-radius:6px;color:var(--teal-text);font-size:13px;cursor:pointer;"),
+                      border: `1px solid ${mix(borderColor, 33)}`,
+                      '--accent': borderColor,
+                    }}
+                  >{k}</button>
                 ))}
               </div>
               <button
@@ -166,7 +216,9 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
                   <div key={i} style={{
                     ...css('position:relative;width:32px;height:44px;border-radius:6px;background:linear-gradient(180deg, var(--input-hi), var(--input-lo));display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--teal-text-bright);text-shadow:0 0 8px rgba(var(--teal-rgb),0.7);'),
                     border: `1.5px solid ${blank.char ? borderColor : 'rgba(var(--teal-rgb),0.28)'}`,
-                    animation: blank.isCursor ? 'hiTechCellGlow 1.3s ease-in-out infinite' : 'none',
+                    animation: blank.isCursor
+                      ? 'hiTechCellGlow 1.3s ease-in-out infinite'
+                      : blank.char ? 'blankPop 0.35s ease both' : 'none',
                   }}>
                     {blank.char}
                     {blank.isCursor && (

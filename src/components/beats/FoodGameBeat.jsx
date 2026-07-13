@@ -25,7 +25,7 @@ function Rules({ beat, startDone, onStart }) {
       </div>
 
       <TerminalPanel accent="var(--gold)" title="送餐規則 // NO.001" zigzag bodyStyle={{ padding: '20px 22px 22px', fontSize: 15, lineHeight: 2, textAlign: 'left' }}>
-        <SegText segs={beat.rulesSegs} count={count} cursorColor={done ? null : 'var(--gold)'} />
+        <SegText segs={beat.rulesSegs} count={count} cursorColor={done ? null : 'var(--gold)'} accent="var(--gold)" />
       </TerminalPanel>
 
       {done && (
@@ -39,8 +39,20 @@ function Rules({ beat, startDone, onStart }) {
   );
 }
 
+// Order text is content-driven (real dish names, some quite long — e.g.
+// "中碗豚骨烏龍麵加一份豆皮") and the card is a fixed-ish width, so long
+// strings auto-shrink a step rather than risk wrapping past the card's
+// vertical budget or overflowing sideways.
+function fitFontSize(text, { base, steps }) {
+  for (const [len, size] of steps) if (text.length > len) return size;
+  return base;
+}
+
 function OrderSlot({ slot, idx, onInput, onSubmit }) {
   const accent = FOOD_ACCENTS[idx % 4];
+  const customerSize = fitFontSize(slot.order.customer, { base: 11, steps: [[7, 9.5]] });
+  const itemSize = fitFontSize(slot.order.item, { base: 16, steps: [[11, 13], [8, 14.5]] });
+  const itemMinHeight = Math.ceil(itemSize * 1.4 * 2);
   const screenAnim =
     slot.status === 'poweroff' ? 'foodPowerOff 0.42s cubic-bezier(0.4,0,0.8,1) both'
     : slot.status === 'entering' ? 'screenBoot 0.6s cubic-bezier(0.2,0.9,0.25,1) both'
@@ -76,10 +88,13 @@ function OrderSlot({ slot, idx, onInput, onSubmit }) {
           </div>
 
           <div style={css('position:relative;z-index:2;padding:10px 14px 16px;text-align:center;')}>
-            <div style={{ ...css('font-size:11px;letter-spacing:2px;margin-bottom:6px;opacity:0.85;'), color: accent }}>客人 · {slot.order.customer}</div>
             <div style={{
-              ...css('color:var(--paper-text);font-size:16px;font-weight:700;letter-spacing:0.5px;line-height:1.4;min-height:44px;display:flex;align-items:center;justify-content:center;'),
-              textShadow: `0 0 10px ${mix(accent, 60)}`,
+              ...css('letter-spacing:2px;margin-bottom:6px;opacity:0.85;overflow-wrap:break-word;'),
+              color: accent, fontSize: customerSize,
+            }}>客人 · {slot.order.customer}</div>
+            <div style={{
+              ...css('color:var(--paper-text);font-weight:700;letter-spacing:0.5px;line-height:1.4;display:flex;align-items:center;justify-content:center;overflow-wrap:break-word;'),
+              textShadow: `0 0 10px ${mix(accent, 60)}`, fontSize: itemSize, minHeight: itemMinHeight,
             }}>{slot.order.item}</div>
             <div style={css('display:flex;gap:8px;margin-top:10px;')}>
               <input
@@ -144,7 +159,7 @@ export function FoodGameBeat({ beat, startDone, onContinue }) {
         <>
           <div style={css('display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;')}>
             <div style={css('color:var(--gold-text);font-size:13px;letter-spacing:2px;')}>剩餘時間 {mm}:{ss}</div>
-            <div style={css('color:var(--gold-text);font-size:13px;letter-spacing:2px;')}>完成 {game.completed} / 8</div>
+            <div style={css('color:var(--gold-text);font-size:13px;letter-spacing:2px;')}>完成 {game.completed} / {game.target}</div>
           </div>
           <div style={css('flex:1;display:grid;grid-template-rows:repeat(2, 1fr);gap:28px;')}>
             {[game.slots.slice(0, 2), game.slots.slice(2, 4)].map((row, ri) => (

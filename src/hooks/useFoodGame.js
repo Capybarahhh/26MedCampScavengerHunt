@@ -4,7 +4,7 @@ import { track } from '../lib/track.js';
 
 const TOTAL_TIME = 300;
 const ORDER_TIME = 60;
-const TARGET = 8;
+const TARGET = 5;
 
 const initialState = (run = 0) => ({
   phase: 'rules', // rules | playing | passed | failed
@@ -12,6 +12,7 @@ const initialState = (run = 0) => ({
   completed: 0,
   timeLeft: TOTAL_TIME,
   showResetConfirm: false,
+  usedOrderIndices: [], // every order index shown this session, so none repeat
   run, // bumped on retry so the rules typewriter replays
 });
 
@@ -62,24 +63,34 @@ export function useFoodGame() {
   const tick = () => setGame((s) => {
     if (s.phase !== 'playing') { clearInterval(intervalRef.current); return s; }
     const timeLeft = s.timeLeft - 1;
+    let usedOrderIndices = s.usedOrderIndices;
     const slots = s.slots.map((slot) => {
       if (slot.status !== 'idle' && slot.status !== 'wrong') return slot;
       const t = slot.timeLeft - 1;
-      if (t <= 0) return { ...slot, order: pickFoodOrder(), timeLeft: ORDER_TIME, input: '', status: 'idle' };
+      if (t <= 0) {
+        const { order, index } = pickFoodOrder(usedOrderIndices);
+        usedOrderIndices = [...usedOrderIndices, index];
+        return { ...slot, order, orderIndex: index, timeLeft: ORDER_TIME, input: '', status: 'idle' };
+      }
       return { ...slot, timeLeft: t };
     });
     if (timeLeft <= 0) {
       clearInterval(intervalRef.current);
       if (s.completed >= TARGET) return { ...s, phase: 'passed' };
-      return { ...s, timeLeft: 0, slots, phase: 'failed' };
+      return { ...s, timeLeft: 0, slots, usedOrderIndices, phase: 'failed' };
     }
-    return { ...s, timeLeft, slots };
+    return { ...s, timeLeft, slots, usedOrderIndices };
   });
 
   const start = () => {
     clearAllTimers();
-    const slots = [0, 1, 2, 3].map((i) => ({ id: i, order: pickFoodOrder(), timeLeft: ORDER_TIME, input: '', status: 'idle' }));
-    setGame((s) => ({ ...s, phase: 'playing', slots, completed: 0, timeLeft: TOTAL_TIME }));
+    const usedOrderIndices = [];
+    const slots = [0, 1, 2, 3].map((i) => {
+      const { order, index } = pickFoodOrder(usedOrderIndices);
+      usedOrderIndices.push(index);
+      return { id: i, order, orderIndex: index, timeLeft: ORDER_TIME, input: '', status: 'idle' };
+    });
+    setGame((s) => ({ ...s, phase: 'playing', slots, completed: 0, timeLeft: TOTAL_TIME, usedOrderIndices }));
     intervalRef.current = setInterval(tick, 1000);
   };
 
@@ -89,7 +100,13 @@ export function useFoodGame() {
     slotTimersRef.current[idx] = setTimeout(() => {
       setSlot(idx, { status: 'empty' });
       slotTimersRef.current[idx] = setTimeout(() => {
-        setSlot(idx, { order: pickFoodOrder(), timeLeft: ORDER_TIME, input: '', status: 'entering' });
+        setGame((s) => {
+          if (!s.slots[idx]) return s;
+          const { order, index } = pickFoodOrder(s.usedOrderIndices);
+          const slots = [...s.slots];
+          slots[idx] = { ...slots[idx], order, orderIndex: index, timeLeft: ORDER_TIME, input: '', status: 'entering' };
+          return { ...s, slots, usedOrderIndices: [...s.usedOrderIndices, index] };
+        });
         slotTimersRef.current[idx] = setTimeout(() => setSlot(idx, { status: 'idle' }), 600);
       }, 450);
     }, 420);
@@ -135,5 +152,6 @@ export function useFoodGame() {
     openResetConfirm: () => setGame((s) => ({ ...s, showResetConfirm: true })),
     cancelResetConfirm: () => setGame((s) => ({ ...s, showResetConfirm: false })),
     confirmReset: () => { setGame((s) => ({ ...s, showResetConfirm: false })); retry(); },
+    target: TARGET,
   };
 }
