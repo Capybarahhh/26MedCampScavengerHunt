@@ -45,6 +45,13 @@ function stageName(key) {
  * (unlocks, fragments, current stage/beat). Everything beat-local
  * (typewriters, puzzle inputs, mini-game clocks) lives in the screens.
  */
+// Which backdrop skin CityBackdrop shows: the current stage's own theme
+// while playing a stage, generic city ambience everywhere else (map, entry,
+// intro, backpack, assembly, endings).
+function backdropVariantFor(game) {
+  return game.screen === 'stage' && game.stageKey ? game.stageKey : 'default';
+}
+
 export default function App() {
   const scale = useScale();
   const [game, setGame] = useState(() => {
@@ -237,7 +244,7 @@ export default function App() {
         transformOrigin: 'center center', background: 'var(--bg)', overflow: 'hidden',
         boxShadow: '0 0 60px rgba(var(--purple-rgb),0.15)',
       }}>
-        <CityBackdrop />
+        <CityBackdrop variant={backdropVariantFor(game)} />
 
         {game.screen === 'entry' && <EntryScreen onConfirm={confirmRoom} onReset={reset} />}
         {game.screen === 'intro' && <IntroScreen onDone={enterMap} />}

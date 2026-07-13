@@ -85,7 +85,11 @@ button:not(:disabled):active { filter: brightness(0.92); }
 @keyframes screenFlash {
   0% { opacity: 0.9; } 8% { opacity: 0.1; } 11% { opacity: 0.7; } 15% { opacity: 0; } 100% { opacity: 0; }
 }
-@keyframes scanlineMove { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+/* `top` (parent-relative) rather than transform:translateY (element-relative
+ * %) — the old version only ever traveled 2x the element's OWN height
+ * (70px/50px), so any panel taller than ~140px never got swept past its top
+ * section. `top` scales to whatever the actual panel height is. */
+@keyframes scanlineMove { 0% { top: -80px; } 100% { top: 100%; } }
 @keyframes powerDotPulse { 0%, 100% { opacity: 1; box-shadow: 0 0 6px currentColor; } 50% { opacity: 0.4; box-shadow: 0 0 2px currentColor; } }
 @keyframes pieceCorrectGlow { 0%, 100% { filter: drop-shadow(0 0 6px rgba(var(--teal-rgb),0.5)); } 50% { filter: drop-shadow(0 0 18px rgba(var(--teal-rgb),0.95)); } }
 @keyframes pieceFloat { 0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); } 50% { transform: translateY(-5px) rotate(var(--r, 0deg)); } }
@@ -125,3 +129,18 @@ button:not(:disabled):active { filter: brightness(0.92); }
 @keyframes licenseCardIn { 0% { opacity: 0; transform: scale(0.7) rotateX(20deg) translateY(20px); } 60% { opacity: 1; } 100% { opacity: 1; transform: scale(1) rotateX(0deg) translateY(0); } }
 @keyframes stampSlam { 0% { opacity: 0; transform: rotate(-14deg) scale(2.4); } 45% { opacity: 1; transform: rotate(-14deg) scale(0.88); } 70% { transform: rotate(-14deg) scale(1.08); } 100% { opacity: 1; transform: rotate(-14deg) scale(1); } }
 @keyframes confettiBurst { 0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); opacity: 1; } 100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(200deg) scale(0.3); opacity: 0; } }
+
+/* Per-stage backdrop variants (see src/lib/backdrop.js STAGE_THEMES). */
+@keyframes mistDrift { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(40px); } }
+@keyframes emberRise { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: 0.9; } 85% { opacity: 0.5; } 100% { transform: translateY(-820px); opacity: 0; } }
+@keyframes ruleRowIn { 0% { opacity: 0; transform: translateX(-8px); } 100% { opacity: 1; transform: translateX(0); } }
+/* Animates `left` (parent-relative) rather than transform:translateX (which
+ * resolves percentages against the element's OWN box) — hiTechScan's -10%
+ * to 110% only ever crossed ~half of a wide row when reused here, reading
+ * as the sweep stalling partway across. */
+@keyframes ruleRowScan { 0% { left: -40%; } 100% { left: 120%; } }
+@keyframes buildingGlitch {
+  0%, 88%, 100% { transform: translateX(0); filter: brightness(1); }
+  90% { transform: translateX(-2px); filter: brightness(1.4) hue-rotate(8deg); }
+  94% { transform: translateX(2px); filter: brightness(0.85); }
+}

@@ -1,6 +1,8 @@
 import { STAGE_META, STAGE_ORDER, NODE_ICON_SHAPES } from '../../data/stageMeta.js';
-import { smoothPath } from '../../lib/map.js';
+import { loopPath, loopSubPath } from '../../lib/map.js';
 import { css, mix } from '../../lib/css.js';
+
+const MAP_CENTER = { x: 350, y: 300 };
 
 // Icon shapes are positional: STAGE_META[i] <-> NODE_ICON_SHAPES[i].
 const ICON_INDEX = Object.fromEntries(STAGE_META.map((m, i) => [m.code, i]));
@@ -51,13 +53,13 @@ export function MapScreen({ startStageKey, completedStages, creatorMode, onNodeC
 
   const ring = nodes.filter((n) => !n.isEnding);
   const ringPts = ring.map((n) => ({ x: n.x, y: n.y }));
-  const basePath = smoothPath([...ringPts, ringPts[0]]);
+  const basePath = loopPath(ringPts);
 
   const startIdx = startStageKey ? STAGE_ORDER.indexOf(startStageKey) : -1;
   const traveledCount = startIdx >= 0 ? Math.min(completedStages.length + (allDone ? 0 : 1), STAGE_ORDER.length) : 0;
-  const traveledPts = [];
-  for (let j = 0; j < traveledCount; j++) traveledPts.push(ringPts[(startIdx + j) % STAGE_ORDER.length]);
-  const traveledPath = traveledPts.length > 1 ? smoothPath(traveledPts) : '';
+  // Reuses the exact same curve segments as basePath, so the dashed guide
+  // line and the traveled/moving-dot line are always perfectly overlaid.
+  const traveledPath = traveledCount > 1 ? loopSubPath(ringPts, startIdx, traveledCount) : '';
 
   return (
     <div style={css('position:absolute;inset:0;z-index:10;padding:26px 24px;overflow:hidden;')}>
@@ -89,7 +91,28 @@ export function MapScreen({ startStageKey, completedStages, creatorMode, onNodeC
           width:100% here would inherit a narrower, padding-shrunk box and
           skew the "circle" instead of keeping it regular. */}
       <div style={css('position:relative;width:700px;height:640px;margin:6px -24px 0 -24px;')}>
+        {/* Radar sweep wedge, rotating slowly behind everything else — pure
+            decoration, centered independently of the route so it can never
+            drift out of alignment with the dashed path. */}
+        <div style={{
+          ...css('position:absolute;border-radius:50%;pointer-events:none;mix-blend-mode:screen;animation:scannerRotate 9s linear infinite;'),
+          left: MAP_CENTER.x - 235, top: MAP_CENTER.y - 235, width: 470, height: 470,
+          background: 'conic-gradient(from 0deg, rgba(var(--teal-rgb),0.16), transparent 26%)',
+        }} />
         <svg viewBox="0 0 700 640" style={css('position:absolute;inset:0;width:100%;height:100%;')}>
+          {[100, 170, 235].map((r) => (
+            <circle key={r} cx={MAP_CENTER.x} cy={MAP_CENTER.y} r={r} fill="none" stroke="rgba(var(--purple-rgb),0.14)" strokeWidth="1" strokeDasharray="1 7" />
+          ))}
+          {ring.map((n) => (
+            <line
+              key={`spoke-${n.code}`}
+              x1={MAP_CENTER.x} y1={MAP_CENTER.y} x2={n.x} y2={n.y}
+              stroke={n.done || n.isCurrent ? n.border : 'rgba(var(--purple-rgb),0.12)'}
+              strokeWidth={n.isCurrent ? 1.4 : 1}
+              strokeDasharray="3 6"
+              opacity={n.done || n.isCurrent ? 0.5 : 1}
+            />
+          ))}
           <path d={basePath} fill="none" stroke="var(--purple-locked)" strokeWidth="4" strokeDasharray="2 12" strokeLinecap="round" />
           {traveledPath && (
             <path d={traveledPath} fill="none" stroke="var(--teal)" strokeWidth="3" strokeDasharray="9 9" strokeLinecap="round" opacity="0.85"
@@ -103,7 +126,14 @@ export function MapScreen({ startStageKey, completedStages, creatorMode, onNodeC
           }} />
         )}
 
-        {nodes.map((node) => (
+        {/* Center hub emblem — visually anchors the radar rings/spokes. */}
+        <div style={{
+          position: 'absolute', left: MAP_CENTER.x, top: MAP_CENTER.y, width: 14, height: 14,
+          transform: 'translate(-50%,-50%) rotate(45deg)', border: '1.5px solid rgba(var(--teal-rgb),0.4)',
+          pointerEvents: 'none',
+        }} />
+
+        {nodes.map((node, ni) => (
           <div key={node.code} style={{ position: 'absolute', left: node.x, top: node.y, width: 120, transform: 'translate(-50%,-50%)' }}>
             {node.isCurrent && (
               <div style={css('position:absolute;left:50%;top:50%;width:116px;height:92px;transform:translate(-50%,-50%);border-radius:8px;border:1.5px solid rgba(var(--teal-rgb),0.6);animation:radarPing 2.2s ease-out infinite;pointer-events:none;')} />
@@ -117,6 +147,11 @@ export function MapScreen({ startStageKey, completedStages, creatorMode, onNodeC
               }}
             >
               <div style={css('position:absolute;inset:0;background-image:repeating-linear-gradient(0deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 4px);pointer-events:none;')} />
+              {!node.isEnding && (
+                <div style={{ position: 'absolute', top: 5, left: 8, fontSize: 8, letterSpacing: 1, opacity: 0.55, color: node.fg, fontFamily: 'var(--font-ui)' }}>
+                  N.{String(ni + 1).padStart(2, '0')}
+                </div>
+              )}
               {['top:4px;left:4px;border-top:1px solid C;border-left:1px solid C;',
                 'top:4px;right:4px;border-top:1px solid C;border-right:1px solid C;',
                 'bottom:4px;left:4px;border-bottom:1px solid C;border-left:1px solid C;',
@@ -125,19 +160,26 @@ export function MapScreen({ startStageKey, completedStages, creatorMode, onNodeC
               ))}
               <div style={css('position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:100%;')}>
                 {node.iconDefs && (
-                  <svg viewBox="0 0 64 64" style={css('width:34px;height:34px;flex-shrink:0;')}>
-                    {node.iconDefs.map((s, si) => {
-                      const common = {
-                        fill: s.filled ? node.fg : 'none',
-                        stroke: s.filled ? 'none' : node.fg,
-                        strokeWidth: s.sw || 1.5,
-                        opacity: s.opacity,
-                      };
-                      if (s.kind === 'rect') return <rect key={si} x={s.x} y={s.y} width={s.w} height={s.h} {...common} />;
-                      if (s.kind === 'circle') return <circle key={si} cx={s.cx} cy={s.cy} r={s.r} {...common} />;
-                      return <polygon key={si} points={s.points} {...common} />;
-                    })}
-                  </svg>
+                  <div style={css('position:relative;display:flex;align-items:center;justify-content:center;')}>
+                    <div style={{
+                      position: 'absolute', width: 46, height: 46, borderRadius: '50%',
+                      background: `radial-gradient(circle, ${mix(node.border, 40)}, transparent 70%)`,
+                      filter: 'blur(2px)', pointerEvents: 'none',
+                    }} />
+                    <svg viewBox="0 0 64 64" style={css('position:relative;width:34px;height:34px;flex-shrink:0;')}>
+                      {node.iconDefs.map((s, si) => {
+                        const common = {
+                          fill: s.filled ? node.fg : 'none',
+                          stroke: s.filled ? 'none' : node.fg,
+                          strokeWidth: s.sw || 1.5,
+                          opacity: s.opacity,
+                        };
+                        if (s.kind === 'rect') return <rect key={si} x={s.x} y={s.y} width={s.w} height={s.h} {...common} />;
+                        if (s.kind === 'circle') return <circle key={si} cx={s.cx} cy={s.cy} r={s.r} {...common} />;
+                        return <polygon key={si} points={s.points} {...common} />;
+                      })}
+                    </svg>
+                  </div>
                 )}
                 <div style={{
                   ...css('font-weight:700;text-align:center;line-height:1.3;letter-spacing:1.5px;'),

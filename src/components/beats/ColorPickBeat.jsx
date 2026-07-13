@@ -68,7 +68,7 @@ export function ColorPickBeat({ stageKey, beat, beatIndex, hasPrev, startDone, o
             onClick={() => { if (!done) skip(); }}
             bodyStyle={{ padding: '20px 22px 24px', fontSize: 16, lineHeight: 2, textAlign: 'left', width: '100%', minHeight: 64 }}
           >
-            <SegText segs={beat.descSegs} count={count} cursorColor={done ? null : accent} />
+            <SegText segs={beat.descSegs} count={count} cursorColor={done ? null : accent} accent={accent} />
           </TerminalPanel>
         )}
 
