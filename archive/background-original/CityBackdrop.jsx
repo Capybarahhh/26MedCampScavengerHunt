@@ -1,8 +1,6 @@
 import { useMemo } from 'react';
 import { css } from '../lib/css.js';
 import { makeParticles, makeBuildings, makeFarBuildings, makeRain, makeMist, makeEmbers, STAGE_THEMES } from '../lib/backdrop.js';
-import { PortalFlash } from './PortalFlash.jsx';
-import { JunkyardScene } from './JunkyardScene.jsx';
 
 // Generated once per variant and cached — regenerating on every render would
 // make the skyline flicker to a new random layout on each re-render, and
@@ -54,8 +52,6 @@ export function CityBackdrop({ variant = 'default' }) {
       <div style={css('position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;')}>
         {particles.map((p, i) => <div key={i} style={css(p.style)} />)}
       </div>
-      {variant === 'A' && <PortalFlash />}
-      {variant === 'G' && <JunkyardScene />}
       {mist.length > 0 && (
         <div style={css('position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;')}>
           {mist.map((m, i) => <div key={i} style={css(m.style)} />)}
