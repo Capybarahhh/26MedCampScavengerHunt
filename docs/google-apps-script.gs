@@ -34,7 +34,13 @@ const EVENT_LABELS = {
 
 const STAGE_LABELS = {
   R: '廢棄的圖書館', Y: '舊城區', A: '傳送港', M: '黑色地下市集',
-  G: '垃圾山', END: '終章',
+  G: '垃圾山', C: '市中心', END: '終章',
+};
+
+// 各關卡在「小隊看板」上的「答錯次數」欄名（每關一欄，方便一眼看出哪一關卡關）
+const STAGE_ERROR_COL = {
+  R: '圖書館錯誤', Y: '舊城區錯誤', A: '傳送港錯誤', M: '地下市集錯誤',
+  G: '垃圾山錯誤', C: '市中心錯誤', END: '終章錯誤',
 };
 
 function doPost(e) {
@@ -109,11 +115,15 @@ function appendEvent_(d) {
 
 const BOARD_HEADERS = [
   '小隊', '房間碼', '最後活動時間', '最新動態',
-  '目前關卡', '已取得碎片', '解謎嘗試', '答錯次數',
+  '目前關卡', '已取得碎片', '解謎嘗試', '答錯總計',
+  '圖書館錯誤', '舊城區錯誤', '傳送港錯誤', '地下市集錯誤', '垃圾山錯誤', '市中心錯誤', '終章錯誤',
   '外送遊戲', '拼圖', '結局',
 ];
 const COL = {}; // 名稱 → 欄位索引(1-based)
 BOARD_HEADERS.forEach((h, i) => { COL[h] = i + 1; });
+
+// 數字欄（計數用）預設 0，其餘欄預設空字串
+const NUMERIC_COLS = new Set(['解謎嘗試', '答錯總計', ...Object.values(STAGE_ERROR_COL)]);
 
 function updateBoard_(d) {
   const sh = sheet_(SHEET_BOARD, BOARD_HEADERS);
@@ -121,7 +131,11 @@ function updateBoard_(d) {
   const codes = sh.getRange(2, COL['房間碼'], Math.max(sh.getLastRow() - 1, 1), 1).getValues().flat();
   let row = codes.indexOf(d.roomCode) + 2;
   if (row < 2) {
-    sh.appendRow([d.team || '', d.roomCode, '', '', '', '', 0, 0, '', '', '']);
+    // 依表頭長度建一列空白資料，計數欄補 0（避免欄位數對不上）
+    const blank = BOARD_HEADERS.map((h) => (NUMERIC_COLS.has(h) ? 0 : ''));
+    blank[COL['小隊'] - 1] = d.team || '';
+    blank[COL['房間碼'] - 1] = d.roomCode;
+    sh.appendRow(blank);
     row = sh.getLastRow();
   }
   const get = (col) => sh.getRange(row, COL[col]).getValue();
@@ -138,7 +152,11 @@ function updateBoard_(d) {
     case 'puzzle_attempt':
     case 'colorpick_attempt':
       set('解謎嘗試', (Number(get('解謎嘗試')) || 0) + 1);
-      if (!d.correct) set('答錯次數', (Number(get('答錯次數')) || 0) + 1);
+      if (!d.correct) {
+        set('答錯總計', (Number(get('答錯總計')) || 0) + 1);
+        const ecol = STAGE_ERROR_COL[d.stageKey]; // 依關卡累加到對應欄
+        if (ecol) set(ecol, (Number(get(ecol)) || 0) + 1);
+      }
       break;
     case 'fragment_collected': {
       const cur = String(get('已取得碎片') || '');
