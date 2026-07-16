@@ -12,12 +12,12 @@ initMagneticButtons();
 const requested = new URLSearchParams(location.search).get('theme');
 if (requested !== null) {
   try {
-    if (requested === '' || requested === 'default') localStorage.removeItem('mnemo_theme');
-    else localStorage.setItem('mnemo_theme', requested);
+    if (requested === '' || requested === 'default') localStorage.removeItem('cp2157_theme');
+    else localStorage.setItem('cp2157_theme', requested);
   } catch { /* private mode */ }
 }
 try {
-  const theme = localStorage.getItem('mnemo_theme');
+  const theme = localStorage.getItem('cp2157_theme');
   if (theme) document.documentElement.dataset.theme = theme;
 } catch { /* private mode */ }
 

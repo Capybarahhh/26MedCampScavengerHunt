@@ -20,7 +20,7 @@ Google Sheet
 
 ## 第 1 步：建立 Google Sheet 資料收集端（約 5 分鐘）
 
-1. 到 [sheets.new](https://sheets.new) 開一個新試算表，命名如「MNEMO 活動數據」。
+1. 到 [sheets.new](https://sheets.new) 開一個新試算表，命名如「CYBERPUNK2157 活動數據」。
 2. 上方選單 **擴充功能 → Apps Script**。
 3. 刪掉編輯器裡的預設程式碼，把 **`docs/google-apps-script.gs`** 的完整內容貼上，存檔。
 4. 右上角 **部署 → 新增部署作業**：
@@ -29,7 +29,7 @@ Google Sheet
    - 「誰可以存取」選 **所有人**（玩家的瀏覽器是匿名打進來的，必須選這個）
    - 按部署，過程會要求授權，一路允許（警告畫面點「進階」→「前往…（不安全）」是正常的，因為這是你自己寫的未驗證腳本）。
 5. 複製最後給你的 **網頁應用程式網址**（`https://script.google.com/macros/s/…/exec`）。
-   - 驗證：把網址貼到瀏覽器打開，看到 `MNEMO tracker is running.` 就成功了。
+   - 驗證：把網址貼到瀏覽器打開，看到 `CYBERPUNK2157 tracker is running.` 就成功了。
 
 > 之後如果改了腳本，要用「部署 → 管理部署作業 → 編輯 → 版本：新版本」更新，網址不變。
 
@@ -80,7 +80,7 @@ Google Sheet
 
 ## 活動前檢查清單
 
-- [ ] Apps Script 網址打開顯示 `MNEMO tracker is running.`
+- [ ] Apps Script 網址打開顯示 `CYBERPUNK2157 tracker is running.`
 - [ ] `.env.production` 已填網址並 push
 - [ ] Pages 網址能開出遊戲
 - [ ] 用一組小隊碼登入 → Google Sheet「事件記錄」出現「登入成功」

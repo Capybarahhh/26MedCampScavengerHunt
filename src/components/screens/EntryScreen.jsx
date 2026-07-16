@@ -30,11 +30,11 @@ export function EntryScreen({ onConfirm, onReset }) {
   };
 
   return (
-    <div style={css('position:absolute;inset:0;z-index:10;padding:36px 30px 24px;display:flex;flex-direction:column;')}>
+    <div style={css('position:absolute;inset:0;z-index:10;padding:64px 30px 24px;display:flex;flex-direction:column;')}>
       <div style={css('text-align:center;margin-bottom:6px;position:relative;display:inline-block;')}>
-        <div style={css('font-family:var(--font-display);font-size:44px;letter-spacing:10px;color:var(--teal-bright);text-shadow:0 0 18px rgba(var(--teal-rgb),0.8);font-weight:700;')}>MNEMO</div>
-        <div style={css('position:absolute;top:0;left:0;font-family:var(--font-display);font-size:44px;letter-spacing:10px;color:var(--pink);font-weight:700;opacity:0;animation:glitchTop 4.5s infinite;')}>MNEMO</div>
-        <div style={css('position:absolute;top:0;left:0;font-family:var(--font-display);font-size:44px;letter-spacing:10px;color:var(--purple);font-weight:700;opacity:0;animation:glitchBot 4.5s infinite;')}>MNEMO</div>
+        <div style={css('font-family:var(--font-logo);font-size:24px;letter-spacing:1px;color:var(--teal-bright);text-shadow:0 0 18px rgba(var(--teal-rgb),0.8);')}>CYBERPUNK2157</div>
+        <div style={css('position:absolute;top:0;left:0;font-family:var(--font-logo);font-size:24px;letter-spacing:1px;color:var(--pink);opacity:0;animation:glitchTop 4.5s infinite;')}>CYBERPUNK2157</div>
+        <div style={css('position:absolute;top:0;left:0;font-family:var(--font-logo);font-size:24px;letter-spacing:1px;color:var(--purple);opacity:0;animation:glitchBot 4.5s infinite;')}>CYBERPUNK2157</div>
       </div>
 
       <div style={css('color:var(--purple-text-dim);font-size:14px;text-align:center;margin:26px 0 14px;letter-spacing:2px;')}>
@@ -68,7 +68,7 @@ export function EntryScreen({ onConfirm, onReset }) {
         {errorShake ? '▓▓ 房間碼無效 // 請確認小隊代碼' : ''}
       </div>
 
-      <div style={css('flex:1;display:grid;grid-template-columns:repeat(6, 1fr);gap:7px;align-content:start;')}>
+      <div style={css('flex:1;display:grid;grid-template-columns:repeat(6, 1fr);gap:7px;align-content:center;')}>
         {KEYS.map((k) => (
           <button
             key={k}

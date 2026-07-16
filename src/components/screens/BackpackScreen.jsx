@@ -7,7 +7,7 @@ export function BackpackScreen({ collectedFragments, onClose }) {
   return (
     <div style={css('position:absolute;inset:0;z-index:10;padding:26px 24px;display:flex;flex-direction:column;')}>
       <div style={css('display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;')}>
-        <div style={css('color:var(--purple-text-dim);font-size:13px;letter-spacing:3px;')}>MNEMO // 記憶背包</div>
+        <div style={css('color:var(--purple-text-dim);font-size:13px;letter-spacing:3px;')}>CYBERPUNK2157 // 記憶背包</div>
         <button className="press96" onClick={onClose} style={css("background:var(--purple-btn);border:2px solid var(--purple-border);color:var(--purple-text);border-radius:8px;height:40px;padding:0 16px;font-size:12px;letter-spacing:2px;cursor:pointer;")}>◂ 返回</button>
       </div>
       <div style={css('color:var(--purple-text-faint);font-size:12px;letter-spacing:2px;margin:14px 0 24px;')}>已收集 {collectedFragments.length} / 6 枚記憶碎片</div>

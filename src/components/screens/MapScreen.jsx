@@ -71,7 +71,7 @@ export function MapScreen({ startStageKey, completedStages, creatorMode, onNodeC
           <div>
             <div style={css('display:flex;align-items:center;gap:8px;')}>
               <span style={css('width:6px;height:6px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px rgba(var(--teal-rgb),0.9);animation:mapGlowPulse 2s ease-in-out infinite;')} />
-              <span style={css('color:var(--teal-bright);font-size:14px;letter-spacing:4px;text-shadow:0 0 10px rgba(var(--teal-rgb),0.6);')}>MNEMO // 訊號地圖</span>
+              <span style={css('color:var(--teal-bright);font-size:14px;letter-spacing:4px;text-shadow:0 0 10px rgba(var(--teal-rgb),0.6);')}>CYBERPUNK2157 // 訊號地圖</span>
             </div>
             <div style={css('color:var(--purple-dim);font-size:10px;letter-spacing:2px;margin-top:3px;margin-left:14px;')}>SIGNAL MAP // 記憶路徑追蹤中</div>
           </div>

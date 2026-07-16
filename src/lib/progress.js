@@ -1,5 +1,5 @@
 // localStorage persistence.
-const KEY = 'mnemo_progress';
+const KEY = 'cp2157_progress';
 
 export function loadProgress() {
   try {

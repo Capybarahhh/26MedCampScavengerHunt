@@ -136,7 +136,7 @@ export function AssemblyScreen({ letters, scale, onComplete }) {
 
   return (
     <div style={css('position:absolute;inset:0;z-index:10;padding:34px 24px;display:flex;flex-direction:column;align-items:center;overflow:auto;')}>
-      <div style={css('color:var(--teal-bright);font-size:14px;letter-spacing:4px;text-shadow:0 0 8px rgba(var(--teal-rgb),0.6);margin-bottom:8px;')}>MNEMO // 記憶重組</div>
+      <div style={css('color:var(--teal-bright);font-size:14px;letter-spacing:4px;text-shadow:0 0 8px rgba(var(--teal-rgb),0.6);margin-bottom:8px;')}>CYBERPUNK2157 // 記憶重組</div>
       <div style={css('color:var(--purple-text-faint);font-size:12px;letter-spacing:2px;margin-bottom:22px;text-align:center;')}>拖曳桌上的記憶碎片，依正確順序放入下方拼湊區</div>
 
       <div

@@ -10,10 +10,10 @@ const ENDPOINT = import.meta.env.VITE_TRACK_ENDPOINT || '';
 
 function getSessionId() {
   try {
-    let id = localStorage.getItem('mnemo_session');
+    let id = localStorage.getItem('cp2157_session');
     if (!id) {
       id = Math.random().toString(36).slice(2) + Date.now().toString(36);
-      localStorage.setItem('mnemo_session', id);
+      localStorage.setItem('cp2157_session', id);
     }
     return id;
   } catch {

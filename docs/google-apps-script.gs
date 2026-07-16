@@ -1,5 +1,5 @@
 /**
- * MNEMO 城市尋寶 — Google Sheet 資料收集後端
+ * CYBERPUNK2157 城市尋寶 — Google Sheet 資料收集後端
  *
  * 使用方式見 docs/DEPLOY.md。簡述：
  *   1. 開一個新的 Google Sheet
@@ -56,7 +56,7 @@ function doPost(e) {
 
 // 瀏覽器直接打開網址時顯示的健康檢查頁
 function doGet() {
-  return ContentService.createTextOutput('MNEMO tracker is running.');
+  return ContentService.createTextOutput('CYBERPUNK2157 tracker is running.');
 }
 
 function sheet_(name, headers) {

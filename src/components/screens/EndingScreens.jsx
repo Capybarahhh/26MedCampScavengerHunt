@@ -56,7 +56,7 @@ function EndingFrame({ accent, tag, title, titleColor, children, open, resetLabe
 // Fallback ending (assembly completed outside the END stage flow).
 export function EndingScreen({ onReset }) {
   return (
-    <EndingFrame accent="var(--teal)" tag="MNEMO // 記憶重組完成" title="NTUHOSPITAL" titleColor="var(--teal-bright)" open onReset={onReset}>
+    <EndingFrame accent="var(--teal)" tag="CYBERPUNK2157 // 記憶重組完成" title="NTUHOSPITAL" titleColor="var(--teal-bright)" open onReset={onReset}>
       記憶已重組完成。<br />（結局劇情尚待補充）
     </EndingFrame>
   );
@@ -64,7 +64,7 @@ export function EndingScreen({ onReset }) {
 
 export function Ending1Screen({ onReset }) {
   return (
-    <EndingFrame accent="var(--gold)" tag="MNEMO // 記憶處理結果" title="ENDING 1 // 保留所有記憶" titleColor="var(--gold-text)" open onReset={onReset}>
+    <EndingFrame accent="var(--gold)" tag="CYBERPUNK2157 // 記憶處理結果" title="ENDING 1 // 保留所有記憶" titleColor="var(--gold-text)" open onReset={onReset}>
       你選擇帶著完整的自己，繼續走下去。<br />有笑，有淚，也有熬夜與狼狽——但這才是真正活過的證明。<br /><br />（結局劇情尚待補充）
     </EndingFrame>
   );
@@ -72,7 +72,7 @@ export function Ending1Screen({ onReset }) {
 
 export function Ending2Screen({ onReset }) {
   return (
-    <EndingFrame accent="var(--purple)" tag="MNEMO // 記憶處理結果" title="ENDING 2 // 將記憶封回" titleColor="var(--purple-text)" open={false} onReset={onReset}>
+    <EndingFrame accent="var(--purple)" tag="CYBERPUNK2157 // 記憶處理結果" title="ENDING 2 // 將記憶封回" titleColor="var(--purple-text)" open={false} onReset={onReset}>
       你選擇把這些記憶重新鎖回原處。<br />不再想起那些酸楚與疲憊，只需要，繼續快樂地過下去。<br /><br />（結局劇情尚待補充）
     </EndingFrame>
   );

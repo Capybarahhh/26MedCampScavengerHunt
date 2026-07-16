@@ -24,10 +24,18 @@ const NODE_ICON_SHAPES = [
     { kind: 'rect', x: 28, y: 47, w: 4, h: 4, filled: true, opacity: 0.8 },
     { kind: 'rect', x: 38, y: 45, w: 5, h: 5, filled: true, opacity: 0.8 },
     { kind: 'rect', x: 24, y: 38, w: 4, h: 4, filled: true, opacity: 0.7 } ],
-  // 市中心 — a fractured burst radiating from a single point: the city's
-  // center as the place everything converges and comes apart (失序).
-  [ { kind: 'polygon', points: '32.0,5.0 36.6,20.9 51.1,12.9 43.1,27.4 59.0,32.0 43.1,36.6 51.1,51.1 36.6,43.1 32.0,59.0 27.4,43.1 12.9,51.1 20.9,36.6 5.0,32.0 20.9,27.4 12.9,12.9 27.4,20.9', filled: false, sw: 1.6, opacity: 0.85 },
-    { kind: 'circle', cx: 32, cy: 32, r: 3.5, filled: true, opacity: 1 } ],
+  // 市中心 — a piano keyboard.
+  [ { kind: 'rect', x: 8, y: 20, w: 48, h: 30, filled: false, sw: 1.6, opacity: 0.85 },
+    { kind: 'rect', x: 14, y: 20, w: 6, h: 30, filled: false, sw: 1, opacity: 0.6 },
+    { kind: 'rect', x: 20, y: 20, w: 6, h: 30, filled: false, sw: 1, opacity: 0.6 },
+    { kind: 'rect', x: 26, y: 20, w: 6, h: 30, filled: false, sw: 1, opacity: 0.6 },
+    { kind: 'rect', x: 32, y: 20, w: 6, h: 30, filled: false, sw: 1, opacity: 0.6 },
+    { kind: 'rect', x: 38, y: 20, w: 6, h: 30, filled: false, sw: 1, opacity: 0.6 },
+    { kind: 'rect', x: 44, y: 20, w: 6, h: 30, filled: false, sw: 1, opacity: 0.6 },
+    { kind: 'rect', x: 12, y: 20, w: 5, h: 18, filled: true, opacity: 0.9 },
+    { kind: 'rect', x: 24, y: 20, w: 5, h: 18, filled: true, opacity: 0.9 },
+    { kind: 'rect', x: 35, y: 20, w: 5, h: 18, filled: true, opacity: 0.9 },
+    { kind: 'rect', x: 47, y: 20, w: 5, h: 18, filled: true, opacity: 0.9 } ],
   [ { kind: 'circle', cx: 32, cy: 32, r: 19, filled: false, sw: 1.4, opacity: 0.6 },
     { kind: 'circle', cx: 32, cy: 32, r: 11, filled: false, sw: 1.4, opacity: 0.8 },
     { kind: 'circle', cx: 32, cy: 32, r: 3.5, filled: true, opacity: 1 },
