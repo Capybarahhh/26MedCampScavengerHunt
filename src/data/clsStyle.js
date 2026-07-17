@@ -6,6 +6,7 @@ const CLS_STYLE = {
   mission: { color: 'var(--gold)', weight: 700, glow: '0 0 10px rgba(var(--gold-rgb),0.6)' },
   warn: { color: 'var(--pink-text)', weight: 600, glow: '0 0 8px rgba(var(--pink-rgb),0.5)' },
   key: { color: 'var(--teal-bright)', weight: 700, glow: '0 0 10px rgba(var(--teal-rgb),0.85)' },
+  sysalert: { color: 'var(--pink)', weight: 400, glow: '0 0 8px rgba(var(--pink-rgb),0.6)' },
 };
 
 export { CLS_STYLE };

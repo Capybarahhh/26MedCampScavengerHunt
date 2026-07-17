@@ -204,7 +204,7 @@ export function FoodGameBeat({ beat, startDone, onContinue }) {
               <div style={css('position:absolute;bottom:7px;right:7px;width:14px;height:14px;border-bottom:2px solid rgba(var(--gold-rgb),0.6);border-right:2px solid rgba(var(--gold-rgb),0.6);')} />
 
               <div style={css('position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;border-bottom:1px dashed rgba(var(--gold-rgb),0.4);padding-bottom:10px;margin-bottom:16px;')}>
-                <span style={css('color:var(--gold);font-size:10px;letter-spacing:3px;')}>MNEMO DELIVERY GUILD</span>
+                <span style={css('color:var(--gold);font-size:10px;letter-spacing:3px;')}>CP2157 DELIVERY GUILD</span>
                 <span style={css('width:7px;height:7px;border-radius:50%;background:var(--gold);color:var(--gold);animation:powerDotPulse 1.4s ease-in-out infinite;')} />
               </div>
 

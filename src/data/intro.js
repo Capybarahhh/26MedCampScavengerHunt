@@ -23,13 +23,15 @@ const INTRO_PAGES = [
     isRules: true,
     segs: [
       { cls: 'mission', text: '目標　找回那些屬於你的記憶碎片。\n' },
-      { cls: 'narr', text: '或許，走到最後，你就能回到正常快樂的生活——或許。\n\n' },
+      { cls: 'narr', text: '或許，走到最後，你就能回到正常快樂的生活。\n\n' },
       { cls: 'rule', text: '[01] ' },
       { cls: 'narr', text: '取得記憶碎片，才能解鎖前往下一處的印象。\n\n' },
       { cls: 'rule', text: '[02] ' },
       { cls: 'narr', text: '下一處的印象，僅在當前記憶尋回後解鎖——請依序前行。\n\n' },
       { cls: 'rule', text: '[03] ' },
-      { cls: 'narr', text: '此地，負面情緒的浮現並不尋常。若有所感，請自行承擔，系統不予介入。' },
+      { cls: 'narr', text: '此地，負面情緒的浮現並不尋常。若有所感，請自行承擔，系統不予介入。\n\n' },
+      { cls: 'rule', text: '[04] ' },
+      { cls: 'narr', text: '若在闖關過程遇到困難，可以尋找附近可信的角色，或許他們會指引你的道路。' },
     ],
   },
 ];

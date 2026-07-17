@@ -10,17 +10,17 @@ const STAGES = {
       { type: 'story', segs: [
         seg('narr', '這裡貌似是以前的圖書館，一處積累人類知識的長廊。\n\n系統的紀錄顯示，這棟樓已經閒置了四十三年。它從未告訴你這棟樓的存在，但線索把你帶到了這裡。\n\n你走進去。空氣裡有一種說不清楚的氣味，不是霉，是紙——真正被人翻閱過的紙。這裡的每一本書早已被掃描進資料庫，在這個時代，知識只需要幾秒鐘就能直接傳入你的意識，沒有人需要用手翻頁。\n\n但你的視線停在書架上，停住了。\n\n不是因為書，是因為某種你找不到名字的感覺——像是有什麼東西在你胸口輕輕撞了一下，告訴你，這裡或許有你記憶裡猶存的東西。\n\n根據你手中的線索，這裡某個角落藏著幾本特定的書。找到它，你才能繼續走下去。'),
       ]},
-      { type: 'story', segs: [
+      { type: 'story', taskGroup: 1, segs: [
         seg('narr', '書架比你想像的還要深。\n\n你沿著長廊走，手指無意識地掠過書脊——不是在找什麼，只是那個動作讓你覺得，自己好像曾經這樣做過。書架盡頭，有一排排的置物櫃，漆面早已斑駁，卻整齊地嵌在牆裡。每一格都只有一個編號，冷靜，簡單，什麼都沒有多說。\n\n'),
         seg('quote', '「這座圖書館最後的管理員，是一個只會說英文的盲人。記憶裡只剩下這樣一句話。或許他可以幫我找到那本書——但他藏在這棟樓的哪個角落，在這麼大的地方，該怎麼找？」'),
       ]},
-      { type: 'story', segs: [
+      { type: 'story', taskGroup: 1, segs: [
         seg('narr', '你繼續往前走。書庫的牆面上留著一排人為的印記，幾張書籤散落在角落的辦公桌上。\n\n'),
         seg('quote', '「這些編號……或許，這就是他自己看得懂的語言。找出他想說的話，就能知道他在哪裡。」'),
         seg('narr', '\n\n找出規律，補上他留下的空白。那串答案，會告訴你他在哪裡。\n\n'),
         seg('mission', '前往中山地下街的311置物櫃'),
       ]},
-      { type: 'puzzle',
+      { type: 'puzzle', taskGroup: 1,
         panel: { title: 'LIBRARY ARCHIVE // 書庫守則終端', accent: '#f0c030' },
         descSegs: [
           seg('rule', '01　'), seg('narr', '書籤是用來整理書櫃編號的重要工具。\n'),
@@ -33,12 +33,12 @@ const STAGES = {
         answer: 'MENSTOILET1',
         keypadInput: true,
       },
-      { type: 'puzzle',
+      { type: 'puzzle', taskGroup: 1,
         descSegs: [],
         inputLabel: '從館長口中問出他最喜歡的作者名字',
         answer: '黃山料',
       },
-      { type: 'story', segs: [
+      { type: 'story', taskGroup: 1, segs: [
         seg('quote', '「沒想到館長竟然躲在廁所裡。也罷，先不管他待了多少年。」'),
         seg('narr', '\n\n'),
         seg('quote', '「現在最重要的，是找到他——問問這座圖書館裡，是否還留著我記憶中的那本書。」'),
@@ -47,20 +47,20 @@ const STAGES = {
         seg('narr', '\n\n'),
         seg('quote', '「……沈迷？這個詞是從哪裡來的？好像，好久沒有這種感覺了。」'),
       ]},
-      { type: 'story', segs: [
+      { type: 'story', taskGroup: 2, segs: [
         seg('quote', '「嗯，這地方真大。感覺隨時都會在這裡迷路……」'),
         seg('narr', '\n\n'),
-        seg('quote', '「咦？前方怎麼有個人躺在那裡，身上破破爛爛的——看起來也不像是城市區的人。難不成，他就睡在這裡？」'),
+        seg('quote', '「咦？前方怎麼有個人躺在那裡，身上破破爛爛的，頭上還戴著一頂雞腿帽——看起來也不像是城市區的人。難不成，他就睡在這裡？」'),
         seg('narr', '\n\n'),
-        seg('mission', '前往中山捷運站尋找角落的遊民'),
+        seg('mission', '前往中山捷運站尋找戴著雞腿帽的遊民'),
       ]},
-      { type: 'puzzle',
+      { type: 'puzzle', taskGroup: 2,
         descSegs: [ seg('narr', '想盡辦法取悅遊民，由他親口說出那個只有他才知道的密碼。') ],
         inputLabel: '遊民說出的密碼 / 英文',
         answer: 'addiction',
         caseInsensitive: true,
       },
-      { type: 'story', segs: [
+      { type: 'story', taskGroup: 2, segs: [
         seg('quote', '「嗯，真是個貪吃的傢伙……」'),
         seg('narr', '\n\n'),
         seg('quote', '「是說……我以前是不是來過這個地方？書本的氣息、牆壁的紋路，一切都如此熟悉。」'),
@@ -105,19 +105,19 @@ const STAGES = {
         seg('narr', '街道在某個路口開始變得不一樣了。\n\n招牌舊了，字體是你沒見過的樣式，玻璃櫥窗裡擺的東西你叫不出名字。路面的磚縫裡長著細細的草，沒有人清理，但也沒有人覺得有什麼不對。幾個人坐在騎樓下乘涼，沒有戴任何裝置，只是坐著，看著街道發呆。\n\n'),
         seg('quote', '「這裡的人好像不太一樣。」'),
       ]},
-      { type: 'story', segs: [
+      { type: 'story', taskGroup: 1, segs: [
         seg('narr', '不是格格不入的那種不一樣——是自在的、不慌不忙的，像是這條街有自己的時間，跟外面的世界走得不太同步。你想，在這種地方生活的人，或許還留著一些舊的東西。記憶裡的那種。\n\n'),
         seg('quote', '「我竟然對這地方沒印象……」'),
         seg('narr', '\n\n巷子一條接著一條，每條看起來都差不多，你在原地站了一下，決定找個人問路。你掃視了一圈，目光落在一個看起來和藹可親的人身上，往他的方向走去。\n\n'),
         seg('mission', '前往台北地下街 Y-18 出口處'),
       ]},
-      { type: 'story', segs: [
+      { type: 'story', taskGroup: 1, segs: [
         seg('narr', '在某個商店轉角，有個人站在那裡。\n\n目光飄移，像在人群裡找什麼，又像什麼都沒在看。衣服洗得有些褪色，手裡捏著一疊泛黃的紙。\n\n跟在尋找過去的你一樣，這個人貌似也在尋找些什麼。\n\n'),
         seg('quote', '「那滄桑的眼神，消瘦的背影——有些孤獨。不知他到底經歷了什麼。」'),
         seg('narr', '\n\n'),
         seg('mission', '找到市井小民並與其對話'),
       ]},
-      { type: 'puzzle',
+      { type: 'puzzle', taskGroup: 1,
         descSegs: [
           seg('narr', '他把那疊泛黃的紙攤開來，是一份份手寫的尋人啟事，每一張都是同一張臉，每一張都寫著同一個名字。'),
           seg('quote', '「他走丟好幾年了。我一直在找。」'),
@@ -129,7 +129,7 @@ const STAGES = {
         answer: 'AIRPORTMETRO',
         caseInsensitive: true,
       },
-      { type: 'story', segs: [
+      { type: 'story', taskGroup: 1, segs: [
         seg('quote', '「想必這些影子待在舊城區這麼多年，也是在等待著他去找到他們吧。」'),
         seg('narr', '\n\n'),
         seg('quote', '「話說這裡雖舊，但看到這裡的城景，心裡有種說不出的懷念感。」'),
@@ -138,7 +138,7 @@ const STAGES = {
         seg('narr', '\n\n你在路口停了一下，望著眼前這座城。\n\n'),
         seg('quote', '「只是覺得——這座小城，給我帶來一種莫名的空洞感。」'),
       ]},
-      { type: 'story', segs: [
+      { type: 'story', taskGroup: 2, segs: [
         seg('quote', '「只覺得，這個地方我多少應該有來過。」'),
         seg('narr', '\n\n目光不自覺地落在某個占卜師攤販上。\n\n攤位前掛著一塊大牌子，字跡工整：'),
         seg('quote', '「導引你心中的過去之路。」'),
@@ -147,7 +147,7 @@ const STAGES = {
         seg('narr', '\n\n'),
         seg('mission', '找到占卜師並與其對話'),
       ]},
-      { type: 'puzzle',
+      { type: 'puzzle', taskGroup: 2,
         descSegs: [ seg('mission', '任務：透過占卜導引找出過去的記憶碎片。') ],
         inputLabel: '收集到的記憶碎片代碼',
         answer: 'AX',
@@ -180,10 +180,12 @@ const STAGES = {
         seg('quote', '「使用長泰空間公司、IL472 班次的旅客，您的躍遷閘口即將過期，請儘速完成傳送……」'),
         seg('narr', '\n\n廣播聲淹沒在人群裡，你站在原地，被人潮推來擠去，一時間也不知道該往哪走。\n\n'),
         seg('quote', '「詩意……這可太有詩意了……」'),
-        seg('narr', '\n\n窸窸窣窣的呢喃，從你身後傳來。\n\n你回頭。'),
+        seg('narr', '窸窸窣窣的呢喃從你身後傳來，你轉頭望去，只見一個人站在人群邊緣，拗口、迂迴，說話總繞著什麼詞打轉，不像這個時代該有的語言。'),
       ]},
       { type: 'story', segs: [
-        seg('narr', '是個詩人——拗口、迂迴，刻意繞著什麼詞打轉，不像這個時代該有的語言。\n\n你的腦中忽然閃過歷史課本上的一句話：文學和幻想，是舊人類的「毒藥」。自從情緒標準化以後，詩人就已經是非法的職業了。\n\n你不知道自己為什麼想追上去。也許太久沒有人這樣說話了。\n\n你想擠過去，想聽清楚他還說了什麼，可是人群把你們阻隔開來，一波接一波的旅客從中間穿過，把那個聲音的方向徹底淹沒。\n\n只看到一頂滑稽的帽子，在人海裡浮浮沉沉，漸漸淡出你的視線。'),
+        seg('narr', '你想起歷史課本上那句話——\n\n'),
+        seg('quote', '「文學和幻想，是舊人類的毒藥。」'),
+        seg('narr', '\n\n自從情緒標準化以後，詩人就已經是非法的職業了。你不知道自己為什麼想追上去，也許只是太久沒有人這樣說話了。\n\n可人群把你們阻隔開來，一波接一波的旅客從中間穿過，把那個聲音的方向徹底淹沒，只留下一頂滑稽的帽子，在人海裡浮浮沉沉，漸漸淡出視線。'),
       ]},
       { type: 'puzzle',
         descSegs: [
@@ -193,65 +195,53 @@ const STAGES = {
         answer: '失憶',
         caseInsensitive: true,
       },
+      { type: 'story', segs: [
+        seg('narr', '你擠過人群，總算在一根柱子旁邊追上他。他又喃喃了一次'),
+        seg('quote', '「詩意……」'),
+        seg('narr', '，才像是意識到你在等他說話，苦笑了一下，摘下帽子搔了搔頭。\n\n'),
+        seg('quote', '「我好像……忘記自己是誰了。」'),
+        seg('narr', '\n\n風從站台另一端灌進來，吹得廣播聲斷斷續續。他抬手指向那一整排跑馬燈似的看板，文字滾動閃過，密密麻麻。\n\n'),
+        seg('quote', '「我只記得，我的名字藏在看板裡。每一段都對著一個目的地和一些數字。可是我認不出哪些語言、哪些數字是我的了。我的名字是中文的，但我是個很國際化的人，對異國的語言也很有研究……」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「我在這裡應該有幾個朋友，應該還在這裡的某個地方，他們身上都帶著筆記。」'),
+        seg('narr', '\n\n他看著你，眼神裡充滿懇求。\n\n'),
+        seg('quote', '「可以幫我找找他們嗎？他們的資訊可能可以讓我想起來我的名字。」'),
+      ]},
       { type: 'puzzle',
-        descSegs: [ seg('mission', '任務：透過三條支線得到的線索，尋獲詩人之真名') ],
+        descSegs: [
+          seg('mission', '在傳送港裡找到詩人的三位朋友，收集線索，尋獲詩人之真名\n\n'),
+          seg('rule', '規則　'), seg('narr', '1. 先找到帶著筆記的人，從他們身上收集到足夠線索。\n2. 根據線索和看板，找到失憶詩人的名字。\n3. 如果不知道線索應該怎麼解讀，可以帶著線索回來找失憶詩人，或許他會想起一些事情。\n\n'),
+        ],
         inputLabel: '詩人的真名',
-        answer: '',
-        acceptAny: true,
+        answer: '流得飛',
+        caseInsensitive: true,
       },
       { type: 'story', segs: [
-        seg('narr', '你在看板之間來回穿梭，把他給的線索一組一組對上。三個字，一個一個從看板裡浮現出來，像是拼圖最後被按進正確的位置。\n\n'),
+        seg('narr', '你在看板之間來回穿梭，把線索一組一組對上，三個字漸漸從看板裡浮現出來。\n\n'),
         seg('key', '流。得。飛。'),
-        seg('narr', '\n\n你把這三個字唸給他聽。\n\n他愣住了，嘴唇動了動，沒有發出聲音。過了很久，他忽然笑了，帶著一絲酸楚。\n\n'),
-        seg('quote', '「流得飛……」'),
-        seg('narr', '他反覆唸著，像是在確認這個名字。'),
-        seg('quote', '「對，是我。我想起來了，我以前，好像舉辦了一個叫做智慧鐵人的比賽，後來又跑去寫詩。」'),
+        seg('narr', '\n\n你回到他身邊，把這三個字唸給他聽。他愣住了，嘴唇動了動，沒有發出聲音。過了很久，他忽然笑了，帶著一絲酸楚。\n\n'),
+        seg('quote', '「流得飛……對，是我。我想起來了，我以前好像舉辦了一個叫做智慧鐵人的比賽，後來又跑去寫詩。」'),
         seg('narr', '\n\n他抬頭看向頭頂那片看板，眼神空洞。\n\n'),
-        seg('quote', '「我記得，系統來抓我的那天，我正在寫一首詩。他們說，幻想是舊人類的病。我說，那我情願病著。」'),
-        seg('narr', '\n\n風從站台另一端灌進來，吹得廣播聲斷斷續續——\n\n'),
+        seg('quote', '「我記得，系統來抓我的那天，我正在寫一首詩。他們說，寫作是舊人類的病。我說，那我情願病著。」'),
+        seg('narr', '\n\n風從站台另一端灌進來，廣播聲又斷斷續續響起。\n\n'),
         seg('quote', '「使用長泰空間公司、IL472 班次的旅客，您的躍遷閘口即將過期……」'),
-        seg('narr', '\n\n他忽然停住，聽著那段廣播，神情逐漸僵住。'),
-      ]},
-      { type: 'story', segs: [
-        seg('quote', '「這班……」'),
-        seg('narr', '他低聲說，'),
+        seg('narr', '\n\n他忽然停住，聽著那段廣播，神情逐漸僵住，'),
         seg('quote', '「已經廣播多久了？」'),
-        seg('narr', '\n\n你想了想，從你踏進站台的那一刻，這句廣播好像已經播了十幾次，一遍又一遍，像是壞掉的錄音。\n\n他的臉色變了。\n\n他低頭看向自己手裡那張傳送券，你這才第一次注意到，上面的日期，已經模糊得幾乎認不出來，邊角泛著一種不自然的、久放的脆黃。\n\n'),
-        seg('quote', '「我……到底在這裡待了多久？」'),
-        seg('narr', '他喃喃地問，不是在問你，更像是在問自己。'),
-        seg('quote', '「這班機，我從來沒有搭上去過，對不對？」'),
-        seg('narr', '\n\n他抬起頭，眼神裡第一次沒有茫然。'),
       ]},
       { type: 'story', segs: [
-        seg('quote', '「我一直在這裡。」'),
-        seg('narr', '他說，'),
-        seg('quote', '「困在同一段廣播裡，一次又一次。也許我早就登機了，也許我從來沒有——我分不清楚了。像個永遠到不了站的旅客。」'),
+        seg('narr', '\n\n你想了想，從你踏進站台的那一刻，這句廣播好像已經播了十幾次，一遍又一遍，像壞掉的錄音。\n\n他的臉色變了，低頭看向手裡那張傳送券，這時你才注意到，上面的日期已經模糊得幾乎認不出來，邊角泛著一種不自然的、久放的脆黃。\n\n'),
+        seg('quote', '「我到底在這裡待了多久？這些班次，我和我的朋友從來沒有搭上去過，對不對？」'),
       ]},
       { type: 'story', segs: [
-        seg('narr', '他忽然抓住你的手腕，力道很輕，卻很急。\n\n'),
-        seg('quote', '「你也是，對不對？」'),
-        seg('narr', '他盯著你，'),
-        seg('quote', '「你也慢了零點三秒。」'),
-        seg('narr', '\n\n你愣住了。\n\n'),
-        seg('quote', '「那句話，是我寫的。」'),
-        seg('narr', '他說，聲音發抖，'),
-        seg('quote', '「很久以前，在我還記得自己是誰之前，我把它刻在一本書的扉頁上——我想留一句話，給下一個跟我一樣『慢了』的人。」'),
-        seg('narr', '\n\n風停了。廣播還在重複同一句話。\n\n'),
-        seg('quote', '「原來你不是第一個找到這裡的人。」'),
-        seg('narr', '他慢慢鬆開手，退後一步，像是終於看懂了什麼，'),
-        seg('quote', '「也不會是最後一個。」'),
-      ]},
-      { type: 'story', segs: [
-        seg('narr', '他慌張地從口袋裡摸出一張碎紙片塞進你手裡，動作很急。\n\n'),
-        seg('quote', '「拿去，這些也許能幫你找到下一個地方。我不知道這是什麼，可是我感覺得到，你會用得到這個。」'),
-        seg('narr', '\n\n就在他鬆手的瞬間，他忽然頓住了。他的手緩緩抬起，拿起原本摘下、一直握在手裡的那頂滑稽帽子，慢慢地，重新戴回頭上。那雙眼睛裡的恐懼，像被人一鍵按掉，瞬間褪成一片空白。\n\n'),
+        seg('quote', '「我一直在這裡，困在同一段廣播裡，一次又一次。也許我早就登機了，也許我從來沒有，我分不清楚了。像個永遠到不了站的旅客。」'),
+        seg('narr', '\n\n他慌張地從口袋裡摸出一張碎紙片塞進你手裡。\n\n'),
+        seg('quote', '「用這個找到出……」'),
+        seg('narr', '\n\n紙片離手的瞬間，他忽然頓住了。他低頭看著自己手心裡那頂滑稽的帽子，像是第一次看見它，又像是隱約認得，手緩緩抬起，慢慢戴回頭上。\n\n'),
         seg('quote', '「使用長泰空間公司、IL472 班次的旅客，您的躍遷閘口即將過期，請儘速完成傳送……」'),
-      ]},
-      { type: 'story', segs: [
-        seg('narr', '風停了。\n\n'),
+        seg('narr', '\n\n他重新開口時語氣已經完全變了樣，平板，溫順，覆誦廣播的一部分。\n\n'),
         seg('quote', '「詩意……這可太有詩意了……」'),
-        seg('narr', '\n\n他轉過身，慢慢走回人群裡，腳步一如你第一次看見他時那樣，毫無方向。\n\n'),
-        seg('mission', '用黑色碎片蓋住那道光，或許就是出口的方向'),
+        seg('narr', '\n\n他看起來甚至不記得自己曾經有過一個名字。\n\n'),
+        seg('mission', '用黑色碎片蓋住地上的那道光，或許就是出口的方向'),
       ]},
       { type: 'puzzle',
         descSegs: [],
@@ -259,7 +249,11 @@ const STAGES = {
         answer: 'JI',
         caseInsensitive: true,
       },
-      { type: 'fragment', letter: 'JI', source: '傳送港', emotion: '無知', isLast: true },
+      { type: 'fragment', letter: 'JI', source: '傳送港', emotion: '無知' },
+      { type: 'story', isLast: true, segs: [
+        seg('sysalert', '「使用長泰空間公司、IL472 班次的旅客，忘掉你的躍遷，立刻抓捕XXX。」'),
+        seg('narr', '\n\n整個傳送港毫無預警地閃起刺眼的紅光，連空氣都像被染紅了。你還沒反應過來，四周原本各自低頭趕路、對你視若無睹的旅客，竟同時停下腳步，齊刷刷地轉過頭，目光直直落在你身上。\n\n沒有人說話，沒有人動作，只是那樣看著你，眼神裡沒有情緒，像是等著某個指令下達。\n\n系統認出你了。\n\n你不敢多想，轉身就往人群縫隙裡鑽，腳步踉蹌地撞開一個又一個一動不動的旅客。廣播還在重複著那句話，一遍又一遍，紅光刷過站台的每一根柱子、每一塊看板，把原本潔白明亮的傳送港，照得像一整片正在收網的陷阱。\n\n你看見站台的牆後有一條暗巷，連著港外破敗的建築群。你什麼都顧不上了，拔腿衝了過去，身後傳來旅客們整齊劃一的腳步聲，穩穩地跟著你。\n\n你一頭爬牆翻進巷弄裡，紅光和廣播聲被磚牆隔在身後，漸漸模糊。'),
+      ]},
     ],
   },
   M: {
@@ -277,7 +271,7 @@ const STAGES = {
         seg('quote', '「這種地方……我還是趕快離開比較好。」'),
         seg('narr', '\n\n但腦海深處，有個聲音隱隱告訴你——有一部分的記憶，就藏在這裡。'),
       ]},
-      { type: 'story', segs: [
+      { type: 'story', taskGroup: 1, segs: [
         seg('narr', '才剛準備逛逛這個市集，前方就有一位婦人叫住了你。\n\n'),
         seg('quote', '「咦，你大概就是我叫的外送員了吧？怎麼這麼慢才來？」'),
         seg('narr', '\n\n'),
@@ -293,13 +287,13 @@ const STAGES = {
         seg('narr', '\n\n'),
         seg('mission', '前往K區美食街'),
       ]},
-      { type: 'foodgame', gameName: '天下沒有你的午餐', rulesSegs: [
+      { type: 'foodgame', taskGroup: 1, gameName: '天下沒有你的午餐', rulesSegs: [
         seg('rule', '目標　'), seg('narr', '玩家必須在 300 秒內完成五張訂單。\n\n'),
         seg('rule', '訂單機制　'), seg('narr', '一次最多同時出現四張訂單，若超過 60 秒未完成，該筆訂單即視為失敗。\n\n'),
         seg('rule', '完成方式　'), seg('narr', '玩家需在美食街中找到訂單對應的食物，並正確輸入該餐點的價錢，才算送餐成功。\n\n'),
         seg('warn', '注意事項　'), seg('narr', '地下市集相當擁擠，請勿奔跑，並小心與他人碰撞。'),
       ]},
-      { type: 'story', segs: [
+      { type: 'story', taskGroup: 1, segs: [
         seg('narr', '「結果只是來這裡跑腿。」\n\n'),
         seg('quote', '「不知道為什麼，如果搞砸了，很可能會被那個婦人追著跑吧……」'),
         seg('narr', '\n\n商店街兩側，充斥著許多不懷好意的商人，眼神在你身上打量來打量去，像在估算著什麼。\n\n有人朝你招手，笑得過分熱情；有人只是靜靜盯著，一句話也不說。你加快腳步，不敢和任何人對到眼。\n\n'),
@@ -308,7 +302,7 @@ const STAGES = {
         seg('quote', '「我卻一心只想趕緊離開這裡。到底是為什麼呢？」'),
         seg('narr', '\n\n那種感覺，很難形容——像是身體比腦袋更早知道答案，卻怎麼也想不起來，自己究竟在害怕什麼。'),
       ]},
-      { type: 'story', segs: [
+      { type: 'story', taskGroup: 2, segs: [
         seg('narr', '沿路傳來各種吆喝聲——該說是市集的生命力旺盛，還是這裡的人特別血氣方剛呢？\n\n'),
         seg('quote', '「你，給我停下。你看起來是個新面孔。」'),
         seg('narr', '\n\n一位陌生的男子擋在眼前。\n\n'),
@@ -320,7 +314,7 @@ const STAGES = {
         seg('narr', '\n\n'),
         seg('quote', '「（該不會記憶碎片在這大叔手上？不太可能啊，我又不認識他……）」'),
       ]},
-      { type: 'story', segs: [
+      { type: 'story', taskGroup: 2, segs: [
         seg('quote', '「可是我手上一隻寶可夢都沒有，這樣不就直接輸了嗎？」'),
         seg('narr', '\n\n'),
         seg('quote', '「那就自己去抓，抓到了再來找我打。」'),
@@ -329,14 +323,14 @@ const STAGES = {
         seg('narr', '\n\n'),
         seg('mission', '找到位於Y區中央市集的小智Chang'),
       ]},
-      { type: 'story', duelRules: true, duelTitle: '寶可夢聯盟', segs: [
+      { type: 'story', taskGroup: 2, duelRules: true, duelTitle: '寶可夢聯盟', segs: [
         seg('rule', '01　'), seg('narr', '必須要有五隻寶可夢才能參賽，採'), seg('key', '五戰三勝'), seg('narr', '。\n\n'),
         seg('rule', '02　'), seg('narr', '一個隊伍的戰力值最高為 '), seg('key', '500'), seg('narr', '。\n\n'),
         seg('rule', '03　'), seg('narr', '面對兩個對手，你必須組成'), seg('key', '兩支'), seg('narr', '隊伍。\n\n'),
         seg('rule', '04　'), seg('narr', '勝負判定：先比'), seg('key', '屬性克制'), seg('narr', '，再比'), seg('key', '戰力點大小'), seg('narr', '。\n\n'),
         seg('rule', '05　'), seg('narr', '屬性克制計算：計算某寶可夢的有幾種屬性可被對面克制，較少者即為勝方。'),
       ]},
-      { type: 'puzzle',
+      { type: 'puzzle', taskGroup: 2,
         descSegs: [
           seg('mission', '任務：戰勝小智Chang與他的皮卡丘，奪回記憶碎片。'),
         ],
@@ -344,7 +338,7 @@ const STAGES = {
         answer: 'SO',
         caseInsensitive: true,
       },
-      { type: 'story', segs: [
+      { type: 'story', taskGroup: 2, segs: [
         seg('quote', '「到底為什麼要對戰啊……」'),
         seg('narr', '\n\n嘴上這麼抱怨著，手卻已經很自然地做出投擲的動作，彷彿身體比意識更早記得該怎麼做。\n\n'),
         seg('quote', '「而且，為什麼用寶可夢對戰的感覺，如此熟悉……」'),
@@ -394,7 +388,7 @@ const STAGES = {
         panel: { title: 'SALVAGE TERMINAL // 垃圾場終端', accent: '#8fe23c' },
         descSegs: [],
         inputLabel: '通關密語',
-        answer: 'TODO第一段密語答案',
+        answer: 'AI機器人',
         caseInsensitive: true,
       },
 
@@ -433,8 +427,20 @@ const STAGES = {
           '#4fe23c', '#3ce27a', '#3ce2c0', '#3cc0e2', '#3c86e2', '#3c4fe2',
           '#7a3ce2', '#b03ce2', '#e23cc9', '#e23c86', '#8a8a8a',
         ],
-        // TODO: 從上面 colors 裡挑出正確的 5 個,貼到這裡(目前先沿用預設值)
-        answerColors: ['#e23c3c', '#c9e23c', '#3ce2c0', '#7a3ce2', '#8a8a8a'],
+        // 正確顏色為 colors 陣列中第 1,6,11,12,17 個(1-indexed)
+        answerColors: ['#e23c3c', '#8fe23c', '#3c86e2', '#3c4fe2', '#8a8a8a'],
+      },
+
+      // 5b) 零件確認後的通關密語 (中文密語,不用碎片字母鍵盤,用一般文字輸入)
+      { type: 'puzzle',
+        panel: { title: 'SALVAGE TERMINAL // 零件確認終端', accent: '#8fe23c' },
+        descSegs: [
+          seg('narr', '請找到AI機器人，把你找到的零件拿給他看，如果成功他會告訴你應該輸入什麼。'),
+        ],
+        inputLabel: '通關密語',
+        answer: '挖到寶了',
+        caseInsensitive: true,
+        fragmentKeypad: false,
       },
 
       // 6) 機器人回憶起自己曾是照護型機器人,交出記憶碎片
@@ -473,16 +479,16 @@ const STAGES = {
         seg('mission', '走到大廳的公共鋼琴區'),
       ]},
       { type: 'story', segs: [
-        seg('narr', '你走近那架鋼琴，伸手碰了一下琴蓋邊緣。\n木頭很涼，表面有一層薄灰，指腹劃過去，留下一道乾淨的痕跡。\n\n低頭時，你注意到琴腳旁邊有片黑色地磚破了一角，像是很久以前被人硬撬開過，又隨便蓋回去。你蹲下來，伸手進那道縫隙裡摸了摸，碰到一疊薄薄的東西，邊緣已經發脆。\n\n抽出來一看，是幾張黑白的底片。你舉高，對著天窗透下來的光瞇眼看。\n上面是一群人，擠在同一片黑白格子上，好多群人一團團的散落在整個地方。\n\n看起來好混亂，好沒秩序，卻又都好快樂。'),
+        seg('narr', '就在這時，你瞥見一個身影，從大鐘後方繞了出來，蹲在琴腳旁邊，動作很快，像是在藏什麼東西。他察覺到你的視線，猛地站起身，頭也不回地鑽進人群，幾步之間就消失在人潮裡，再也找不到蹤影。\n\n你走過去，低頭看，琴腳旁邊有片黑色地磚破了一角，像是很久以前被人硬撬開過，又隨便蓋回去——而現在，那道縫隙的邊緣還留著剛被撬動過的、新鮮的碎屑。你蹲下來，伸手進那道縫隙裡摸了摸，碰到一疊薄薄的東西，邊緣已經發脆。\n\n抽出來一看，是幾張黑白的底片。你舉高，對著天窗透下來的光瞇眼看。\n上面是一群人，擠在同一片黑白格子上，好多群人一團團的散落在整個地方。\n\n看起來好混亂，好沒秩序，卻又都好快樂。'),
       ]},
       { type: 'story', segs: [
         seg('quote', '「如果要找回快樂的話，就從😆背對著時鐘，順著消失的箭頭走吧。」'),
-        seg('narr', '\n\n你抬頭看了看四周。此刻大廳裡的人群，每一步都精確踩在格心，彼此隔著一樣的距離走過，沒有人靠近誰，就像流水線上的產品一樣。\n\n光從天窗縫隙灌進來，你把底片收進口袋，看了一眼地上的棋盤格。\n\n'),
-        seg('mission', '找出消失的箭頭，找到棋盤上的終點吧。'),
+        seg('narr', '\n\n你抬頭看了看四周。此刻大廳裡的人群，每一步都精確踩在格心，彼此隔著一樣的距離走過，沒有人靠近誰，就像在流水線一樣。\n\n光從天窗縫隙灌進來，你把底片收進口袋，看了一眼地上的棋盤格。\n\n'),
+        seg('mission', '在市中心找出消失的箭頭，找到黑白棋盤上的終點吧。'),
       ]},
       { type: 'puzzle',
         descSegs: [
-          seg('rule', '規則　'), seg('narr', '人面朝的方向，以前一次走的方向為前方。\n\n'),
+          seg('rule', '規則　'), seg('narr', '1. 以前一次走的方向做為下一步的面朝方向。\n2. 消失的箭頭離你最近，而且每次只走一步。\n\n'),
           seg('warn', '警告：連續答錯三次，即視為闖關失敗。'),
         ],
         inputLabel: '密碼',
@@ -615,4 +621,25 @@ for (const stage of Object.values(STAGES)) {
   }
 }
 
-export { STAGES, FRAGMENT_META };
+// Some stages (R/Y/M) contain two independently-findable physical tasks,
+// tagged `taskGroup: 1`/`taskGroup: 2` on their beats, sitting back-to-back
+// in the array. `swap` flips which one the team encounters first — used so
+// two teams converging on the same stage at once don't queue up at the same
+// physical station. Stages without any tagged beats (A/G/C) are unaffected.
+function getStageBeats(stageKey, swap) {
+  const beats = STAGES[stageKey].beats;
+  if (!swap) return beats;
+  const g1Start = beats.findIndex((b) => b.taskGroup === 1);
+  if (g1Start === -1) return beats;
+  const g1End = beats.map((b) => b.taskGroup).lastIndexOf(1);
+  const g2Start = beats.findIndex((b) => b.taskGroup === 2);
+  const g2End = beats.map((b) => b.taskGroup).lastIndexOf(2);
+  return [
+    ...beats.slice(0, g1Start),
+    ...beats.slice(g2Start, g2End + 1),
+    ...beats.slice(g1Start, g1End + 1),
+    ...beats.slice(g2End + 1),
+  ];
+}
+
+export { STAGES, FRAGMENT_META, getStageBeats };

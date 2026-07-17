@@ -29,14 +29,19 @@
    *                   Monospace Latin (JetBrains Mono, engineered feel) +
    *                   system Chinese sans (never monospace CJK — it wrecks
    *                   tracking/line-height).
-   *   --font-display  large titles and the logo only — geometric condensed
-   *                   Latin (Chakra Petch); Chinese titles use the system
-   *                   font at whatever bold weight the element sets. Never
-   *                   use for body copy.
+   *   --font-display  large titles — geometric condensed Latin (Chakra
+   *                   Petch); Chinese titles use the system font at
+   *                   whatever bold weight the element sets. Never use
+   *                   for body copy.
+   *   --font-logo     the CYBERPUNK2157 wordmark on the entry screen only —
+   *                   a wider, more distinct retro-futurist face (Audiowide)
+   *                   so the one true logo moment doesn't just look like a
+   *                   bigger version of every other heading.
    */
   --font-cjk: 'PingFang TC', 'PingFang SC', 'Microsoft JhengHei', 'Heiti TC', sans-serif;
   --font-ui: 'JetBrains Mono', var(--font-cjk);
   --font-display: 'Chakra Petch', var(--font-cjk);
+  --font-logo: 'Audiowide', var(--font-display);
 
   /* grounds */
   --bg: #08030f;            --bg-rgb: 8, 3, 15;

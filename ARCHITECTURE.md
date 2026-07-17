@@ -1,4 +1,4 @@
-# MNEMO City Scavenger Hunt — Architecture
+# CYBERPUNK2157 City Scavenger Hunt — Architecture
 
 A Vite + React 18 single-page game for the 2026 med-camp city scavenger hunt.
 This replaces the original single-file DC artifact (kept in `.dev/legacy/` for
@@ -75,17 +75,19 @@ The palette lives in **`src/styles/tokens.css`** as CSS custom properties on
 - `.dev/smoke.mjs` (`node .dev/smoke.mjs` after `npm run build`) mounts the
   built bundle in happy-dom and walks map → stage as a crash check.
 
-**Fonts** are two role-based stacks, also in `tokens.css`. Only the Latin
-faces are downloaded (Google Fonts in `index.html`); Chinese uses the
-reader's **system** font via `--font-cjk` (PingFang / Microsoft JhengHei).
-This is deliberate: a downloaded CJK webfont forces per-glyph rasterization
-as the typewriter reveals characters one at a time — that was a real source
-of in-story jank. System CJK is native, cached, and instant.
+**Fonts** are role-based stacks in `tokens.css`. Only the Latin faces are
+downloaded (Google Fonts in `index.html`); Chinese uses the reader's
+**system** font via `--font-cjk` (PingFang / Microsoft JhengHei). This is
+deliberate: a downloaded CJK webfont forces per-glyph rasterization as the
+typewriter reveals characters one at a time — that was a real source of
+in-story jank. System CJK is native, cached, and instant.
 - `var(--font-ui)` — JetBrains Mono for Latin, system CJK for Chinese. The
   default for everything: body text, narration, HUD labels, inputs, codes.
 - `var(--font-display)` — Chakra Petch for Latin, system CJK (bold) for
-  Chinese. Reserved for large one-off titles (the MNEMO logo,
-  duel/food-game names) — never body copy.
+  Chinese. Large one-off titles (duel/food-game names) — never body copy.
+- `var(--font-logo)` — Audiowide, falling back to `--font-display`. Only
+  the CYBERPUNK2157 wordmark on the entry screen uses this; it's meant to
+  look distinct from every other heading, not reused elsewhere.
 
 **`src/App.jsx` — the controller.** Owns the screen router and all
 cross-screen progress (unlocked stage index, collected fragments, current
@@ -98,8 +100,8 @@ entry → intro → map → stage (beats: story/puzzle/foodgame/fragment) → �
 END stage → assembly → final puzzle → ending choice → ending1/ending2.
 
 - Room code `000000` enables **creator mode**: all map nodes unlocked.
-- Progress persists in localStorage key `mnemo_progress` (same shape as the
-  legacy app, so old saves still load). Session id in `mnemo_session`.
+- Progress persists in localStorage key `cp2157_progress` (same shape as the
+  legacy app, so old saves still load). Session id in `cp2157_session`.
 
 ## Interaction tracking
 

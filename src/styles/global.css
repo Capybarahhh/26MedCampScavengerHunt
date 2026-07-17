@@ -144,3 +144,39 @@ button:not(:disabled):active { filter: brightness(0.92); }
   90% { transform: translateX(-2px); filter: brightness(1.4) hue-rotate(8deg); }
   94% { transform: translateX(2px); filter: brightness(0.85); }
 }
+/* 傳送港: a gateway seam flickers open, light streaks get sucked right→left
+ * into it, then it snaps shut — the "matter sent elsewhere" read. */
+@keyframes portalSeamOpen {
+  0%   { opacity: 0; transform: scaleY(0.15) scaleX(0.6); }
+  18%  { opacity: 1; transform: scaleY(1) scaleX(1); }
+  66%  { opacity: 0.85; transform: scaleY(1) scaleX(1); }
+  100% { opacity: 0; transform: scaleY(0.04) scaleX(1.7); }
+}
+@keyframes portalBloom {
+  0%   { opacity: 0; transform: scale(0.5); }
+  25%  { opacity: 0.6; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.5); }
+}
+@keyframes portalStreakPull {
+  0%   { opacity: 0; transform: translateX(-60px) scaleX(1); }
+  30%  { opacity: 0.9; }
+  100% { opacity: 0; transform: translateX(0) scaleX(0.05); }
+}
+/* 垃圾山: small scrap fragments crumble down the heap. Each fragment's
+ * trajectory/spin comes from CSS vars so one keyframe serves all; ease-in
+ * timing gives the slow-then-fast fall of gravity. */
+@keyframes junkTumble {
+  0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  10%  { opacity: 0.85; }
+  78%  { opacity: 0.85; }
+  100% { transform: translate(var(--dx), var(--dy)) rotate(var(--spin)); opacity: 0; }
+}
+/* JUNK sign: the P trembles slightly while it's glitched in. */
+@keyframes junkSignJitter {
+  0%   { transform: translate(-1.4px, 0.4px); }
+  20%  { transform: translate(0.8px, -0.5px); }
+  40%  { transform: translate(-0.6px, 0.6px); }
+  60%  { transform: translate(1.2px, 0.2px); }
+  80%  { transform: translate(-1px, -0.4px); }
+  100% { transform: translate(-1.4px, 0.4px); }
+}

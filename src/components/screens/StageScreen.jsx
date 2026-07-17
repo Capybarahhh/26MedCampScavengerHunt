@@ -1,4 +1,4 @@
-import { STAGES } from '../../data/stages.js';
+import { STAGES, getStageBeats } from '../../data/stages.js';
 import { makeStageGlyphs } from '../../lib/backdrop.js';
 import { StoryBeat } from '../beats/StoryBeat.jsx';
 import { PuzzleBeat } from '../beats/PuzzleBeat.jsx';
@@ -12,11 +12,11 @@ const GLYPHS = makeStageGlyphs(14);
 // A puzzle whose answer is the fragment code gets the letter-blank keypad UI:
 // true when the next non-story beat is a fragment beat. A puzzle can opt out
 // with `fragmentKeypad: false` to use a plain passphrase input instead.
-function isFragmentAnswer(stage, beatIndex) {
-  if (stage.beats[beatIndex].fragmentKeypad === false) return false;
+function isFragmentAnswer(beats, beatIndex) {
+  if (beats[beatIndex].fragmentKeypad === false) return false;
   let i = beatIndex + 1;
-  while (stage.beats[i] && stage.beats[i].type === 'story') i++;
-  return !!(stage.beats[i] && stage.beats[i].type === 'fragment');
+  while (beats[i] && beats[i].type === 'story') i++;
+  return !!(beats[i] && beats[i].type === 'fragment');
 }
 
 /**
@@ -25,11 +25,12 @@ function isFragmentAnswer(stage, beatIndex) {
  * navigation (keyed by stage+index) so its local state starts fresh.
  * `arrivedBack` renders the beat's text fully typed (came via 上一頁).
  */
-export function StageScreen({ stageKey, beatIndex, arrivedBack, onAdvance, onPrev, onChooseEnding, onCollectFragment }) {
+export function StageScreen({ stageKey, beatIndex, arrivedBack, swapTasks, onAdvance, onPrev, onChooseEnding, onCollectFragment }) {
   const stage = STAGES[stageKey];
-  const beat = stage.beats[beatIndex];
+  const beats = getStageBeats(stageKey, swapTasks);
+  const beat = beats[beatIndex];
   // Can't navigate back INTO an already-solved puzzle/colorpick.
-  const prevType = beatIndex > 0 ? stage.beats[beatIndex - 1].type : null;
+  const prevType = beatIndex > 0 ? beats[beatIndex - 1].type : null;
   const hasPrev = beatIndex > 0 && prevType !== 'puzzle' && prevType !== 'colorpick';
   const beatKey = `${stageKey}-${beatIndex}`;
 
@@ -49,7 +50,7 @@ export function StageScreen({ stageKey, beatIndex, arrivedBack, onAdvance, onPre
           stageKey={stageKey}
           beat={beat}
           beatIndex={beatIndex}
-          isFragmentAnswer={isFragmentAnswer(stage, beatIndex)}
+          isFragmentAnswer={isFragmentAnswer(beats, beatIndex)}
           hasPrev={hasPrev}
           startDone={arrivedBack}
           onAdvance={onAdvance}

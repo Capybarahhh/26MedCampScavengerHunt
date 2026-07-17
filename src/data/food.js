@@ -18,6 +18,9 @@ const FOOD_ORDER_POOL = [
   { customer: '跳完舞的高小蝸', item: '銷魂豚骨拉麵+滷鴨血', price: 280 },
   { customer: '皮卡丘的小智', item: '奶香茶咖喱+豆花吃到飽', price: 138 },
   { customer: '小智的皮卡丘', item: '銷魂麵舖五號餐+A套餐', price: 368 },
+  { customer: 'dua威', item: '豬肉椒香麻辣酸菜魚', price: 288 },
+  { customer: '格魯', item: '小小兵漢堡排壽司', price: 60 },
+  { customer: '料老大', item: '桂香輕蕎麥', price: 60 },
 ];
 
 const FOOD_ACCENTS = ['var(--gold)', 'var(--teal)', 'var(--purple)', 'var(--pink)'];

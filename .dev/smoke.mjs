@@ -13,7 +13,7 @@ for (const k of ['window', 'document', 'localStorage', 'navigator', 'location', 
 globalThis.fetch = () => Promise.resolve({ ok: true });
 
 // Pre-seed progress so App restores straight into the map with G current.
-win.localStorage.setItem('mnemo_progress', JSON.stringify({
+win.localStorage.setItem('cp2157_progress', JSON.stringify({
   room: ['1','2','3','4','5','6'], screen: 'map', startStageKey: 'G', completedStages: [], collectedFragments: ['MF','AX'],
 }));
 
@@ -39,3 +39,6 @@ if (!html().includes('垃圾山')) throw new Error('stage screen did not render'
 if (!html().includes('沒有導航')) throw new Error('story beat text not typing: ' + html().slice(0, 400));
 console.log('stage story beat OK (typewriter running)');
 console.log('window errors:', errors.length ? errors : 'none');
+// Some stage backdrops (垃圾山 debris, 傳送港 portal) run perpetual timer
+// loops that keep Node's event loop alive; exit explicitly once checks pass.
+process.exit(errors.length ? 1 : 0);

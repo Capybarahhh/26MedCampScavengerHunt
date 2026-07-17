@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { STAGES } from './data/stages.js';
+import { STAGES, getStageBeats } from './data/stages.js';
 import { STAGE_META, STAGE_ORDER } from './data/stageMeta.js';
 import { findTeam, CREATOR_CODE } from './data/teams.js';
 import { FRAGMENT_ORDER } from './lib/pieces.js';
@@ -38,6 +38,12 @@ function computeCurrentStageKey(startStageKey, completedStages) {
 
 function stageName(key) {
   return STAGE_META.find((m) => m.key === key)?.name || key;
+}
+
+// Derived straight from the room code rather than stored in game state —
+// it's a pure function of which team this is, so there's nothing to persist.
+function swapTasksFor(roomCode) {
+  return !!findTeam(roomCode)?.swapTasks;
 }
 
 /**
@@ -158,7 +164,7 @@ export default function App() {
   };
 
   const advanceBeat = () => setGame((g) => {
-    const beat = STAGES[g.stageKey].beats[g.beatIndex];
+    const beat = getStageBeats(g.stageKey, swapTasksFor(g.roomCode))[g.beatIndex];
     if (beat.leadsToAssembly) return { ...g, beatIndex: g.beatIndex + 1, screen: 'assembly', arrivedBack: false };
     if (beat.endingChoice) return g;
     if (beat.isLast) {
@@ -220,7 +226,7 @@ export default function App() {
     if (game.screen === 'backpack') { setGame((g) => ({ ...g, screen: 'map' })); return; }
     if (game.screen === 'assembly') { onAssemblyComplete(); return; }
     if (game.screen === 'stage' && game.stageKey) {
-      const beat = STAGES[game.stageKey].beats[game.beatIndex];
+      const beat = getStageBeats(game.stageKey, swapTasksFor(game.roomCode))[game.beatIndex];
       if (beat.endingChoice) { chooseEnding('keep'); return; }
       if (beat.type === 'fragment') { collectFragment(beat.letter); return; }
       advanceBeat();
@@ -271,6 +277,7 @@ export default function App() {
             stageKey={game.stageKey}
             beatIndex={game.beatIndex}
             arrivedBack={game.arrivedBack}
+            swapTasks={swapTasksFor(game.roomCode)}
             onAdvance={advanceBeat}
             onPrev={prevBeat}
             onChooseEnding={chooseEnding}
