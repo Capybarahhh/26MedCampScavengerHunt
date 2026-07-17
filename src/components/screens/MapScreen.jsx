@@ -75,7 +75,9 @@ export function MapScreen({ startStageKey, completedStages, creatorMode, onNodeC
             </div>
             <div style={css('color:var(--purple-dim);font-size:10px;letter-spacing:2px;margin-top:3px;margin-left:14px;')}>SIGNAL MAP // 記憶路徑追蹤中</div>
           </div>
-          <button onClick={onReset} style={css("background:none;border:1px solid var(--purple-dim);color:var(--purple-text-faint);border-radius:14px;height:26px;padding:0 10px;font-size:10px;letter-spacing:1px;cursor:pointer;")}>重新開始</button>
+          {creatorMode && (
+            <button onClick={onReset} style={css("background:none;border:1px solid var(--purple-dim);color:var(--purple-text-faint);border-radius:14px;height:26px;padding:0 10px;font-size:10px;letter-spacing:1px;cursor:pointer;")}>重新開始</button>
+          )}
         </div>
         <div style={css('display:flex;align-items:center;gap:8px;')}>
           <div style={css('display:flex;align-items:center;gap:8px;background:var(--purple-panel);border:2px solid var(--purple-dim);border-radius:20px;padding:8px 14px;min-height:44px;')}>

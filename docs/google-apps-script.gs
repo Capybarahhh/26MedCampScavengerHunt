@@ -9,11 +9,11 @@
  *   4. 把網址填進專案的 .env.production 的 VITE_TRACK_ENDPOINT
  *
  * 收到的每一筆事件會：
- *   a. 追加到「事件記錄」工作表（完整原始資料，一列一事件）
+ *   a. 追加到「該小隊自己的分頁」（每個小隊一張分頁，各自記錄自己的每個行動；
+ *      尚未登入 / 登入失敗的事件歸到「未分類」分頁）
  *   b. 即時更新「小隊看板」工作表（一隊一列的進度總覽）
  */
 
-const SHEET_EVENTS = '事件記錄';
 const SHEET_BOARD = '小隊看板';
 const CREATOR_CODE = '000000'; // 工作人員測試碼——看板會略過它
 
@@ -97,17 +97,29 @@ function summarize_(d) {
   }
 }
 
+// 每個小隊各自一張分頁的表頭（分頁名稱就是隊名，所以列裡不再重複放隊名）
+const EVENT_HEADERS = ['時間', '事件', '關卡', '內容', '房間碼', 'sessionId', '原始JSON'];
+
+// 這筆事件該記到哪張分頁：已登入的小隊 → 隊名；其餘（開頁面、登入失敗等
+// 還沒有隊伍身分的）→「未分類」。用隊名而非房間碼，避免有人亂打一堆錯碼就
+// 生出一堆垃圾分頁。
+function sheetNameFor_(d) {
+  return d.team ? String(d.team) : '未分類';
+}
+
+// Google Sheet 分頁名稱不可含 : \ / ? * [ ]，長度上限 100。
+function safeSheetName_(name) {
+  return name.replace(/[:\\\/?*\[\]]/g, ' ').slice(0, 90).trim() || '未分類';
+}
+
 function appendEvent_(d) {
-  const sh = sheet_(SHEET_EVENTS, [
-    '時間', '小隊', '房間碼', '事件', '關卡', '內容', 'sessionId', '原始JSON',
-  ]);
+  const sh = sheet_(safeSheetName_(sheetNameFor_(d)), EVENT_HEADERS);
   sh.appendRow([
     new Date(d.ts || Date.now()),
-    d.team || '',
-    d.roomCode || '',
     EVENT_LABELS[d.event] || d.event,
     STAGE_LABELS[d.stageKey] || d.stageKey || '',
     summarize_(d),
+    d.roomCode || '',
     d.sessionId || '',
     JSON.stringify(d),
   ]);
