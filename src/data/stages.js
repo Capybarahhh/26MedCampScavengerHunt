@@ -627,9 +627,11 @@ for (const stage of Object.values(STAGES)) {
 // in the array. `swap` flips which one the team encounters first — used so
 // two teams converging on the same stage at once don't queue up at the same
 // physical station. Stages without any tagged beats (A/G/C) are unaffected.
+// R is pinned to always task-1-first (館長 before 雞腿帽遊民) regardless of
+// `swap` — every team gets the same order there now.
 function getStageBeats(stageKey, swap) {
   const beats = STAGES[stageKey].beats;
-  if (!swap) return beats;
+  if (!swap || stageKey === 'R') return beats;
   const g1Start = beats.findIndex((b) => b.taskGroup === 1);
   if (g1Start === -1) return beats;
   const g1End = beats.map((b) => b.taskGroup).lastIndexOf(1);

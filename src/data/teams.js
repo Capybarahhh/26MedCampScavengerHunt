@@ -10,10 +10,12 @@
 // as an opening puzzle.
 //
 // `swapTasks` flips the encounter order of the two physical sub-tasks inside
-// R/Y/M (see `taskGroup`-tagged beats + `getStageBeats` in data/stages.js).
-// A/G/C have no such split and ignore this flag. Alternating true/false down
-// the list means any two teams sharing a starting stage — who'd otherwise
-// hit the same physical station at the same time — go in opposite orders.
+// Y/M (see `taskGroup`-tagged beats + `getStageBeats` in data/stages.js).
+// R ignores this flag — pinned to always task-1-first (館長 before 雞腿帽
+// 遊民) for every team. A/G/C have no such split and ignore this flag too.
+// Alternating true/false down the list means any two teams sharing a
+// starting stage — who'd otherwise hit the same physical station at the
+// same time — go in opposite orders (for Y/M).
 const TEAMS = [
   { code: 'RX7K2M', name: '第1小隊', startStage: 'R', swapTasks: false },
   { code: 'QW4TN8', name: '第2小隊', startStage: 'R', swapTasks: true },
