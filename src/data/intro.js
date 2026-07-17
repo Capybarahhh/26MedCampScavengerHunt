@@ -23,7 +23,7 @@ const INTRO_PAGES = [
     isRules: true,
     segs: [
       { cls: 'mission', text: '目標　找回那些屬於你的記憶碎片。\n' },
-      { cls: 'narr', text: '或許，走到最後，你就能回到正常快樂的生活——或許。\n\n' },
+      { cls: 'narr', text: '或許，走到最後，你就能回到正常快樂的生活。\n\n' },
       { cls: 'rule', text: '[01] ' },
       { cls: 'narr', text: '取得記憶碎片，才能解鎖前往下一處的印象。\n\n' },
       { cls: 'rule', text: '[02] ' },

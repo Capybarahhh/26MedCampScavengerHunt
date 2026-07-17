@@ -101,7 +101,7 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
   }));
 
   return (
-    <div style={css('flex:1;display:flex;flex-direction:column;justify-content:flex-start;gap:18px;overflow-y:auto;min-height:0;padding:4px 2px;')}>
+    <div style={css('flex:1;display:flex;flex-direction:column;justify-content:flex-start;gap:18px;overflow-y:auto;min-height:0;padding:22px 2px 4px;')}>
       <div style={css('margin:auto 0;display:flex;flex-direction:column;gap:18px;')}>
 
         {beat.descSegs.length > 0 && (

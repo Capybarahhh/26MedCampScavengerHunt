@@ -58,7 +58,7 @@ export function IntroScreen({ onDone, pages = INTRO_PAGES, finalLabel = '進入�
             {body}
           </TerminalPanel>
         ) : (
-          <div style={css('font-size:19px;line-height:2.1;text-align:left;width:100%;')}>{body}</div>
+          <div style={css('margin:auto 0;font-size:19px;line-height:2.1;text-align:left;width:100%;')}>{body}</div>
         )}
       </div>
 

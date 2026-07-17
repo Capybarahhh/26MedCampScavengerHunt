@@ -54,10 +54,12 @@ const STAGE_THEMES = {
     rain: true, mist: false, embers: false, jagged: false, glitch: false,
   },
   G: {
+    // embers off: the upward-drifting embers visually fought the JunkyardScene
+    // scrap falling DOWN the heap, so the two motions read as noise together.
     shape: 'jagged', buildingA: '#141c0c', buildingB: '#1a220e',
     windowColors: ['rgba(180,200,80,0.4)', 'rgba(150,170,60,0.32)', 'rgba(200,190,100,0.3)'],
     particleColors: ['#8fe23c', '#6ab02a', '#a8d060'],
-    rain: false, mist: false, embers: true, jagged: true, glitch: false,
+    rain: false, mist: false, embers: false, jagged: true, glitch: false,
   },
   C: {
     shape: 'chaotic', buildingA: '#1a0a20', buildingB: '#22102a',

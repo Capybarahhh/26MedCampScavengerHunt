@@ -171,3 +171,12 @@ button:not(:disabled):active { filter: brightness(0.92); }
   78%  { opacity: 0.85; }
   100% { transform: translate(var(--dx), var(--dy)) rotate(var(--spin)); opacity: 0; }
 }
+/* JUNK sign: the P trembles slightly while it's glitched in. */
+@keyframes junkSignJitter {
+  0%   { transform: translate(-1.4px, 0.4px); }
+  20%  { transform: translate(0.8px, -0.5px); }
+  40%  { transform: translate(-0.6px, 0.6px); }
+  60%  { transform: translate(1.2px, 0.2px); }
+  80%  { transform: translate(-1px, -0.4px); }
+  100% { transform: translate(-1.4px, 0.4px); }
+}
