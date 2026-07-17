@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import { FRAGMENT_COLORS, FRAGMENT_ORDER, makePieceNode } from '../../lib/pieces.js';
 import { FRAGMENT_META } from '../../data/stages.js';
 import { css, mix } from '../../lib/css.js';
 
 // Collected memory fragments, one slot per fragment in canonical order.
-export function BackpackScreen({ collectedFragments, onClose }) {
+export function BackpackScreen({ collectedFragments, onClose, onReset }) {
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
+
   return (
     <div style={css('position:absolute;inset:0;z-index:10;padding:26px 24px;display:flex;flex-direction:column;')}>
       <div style={css('display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;')}>
@@ -56,6 +59,24 @@ export function BackpackScreen({ collectedFragments, onClose }) {
           );
         })}
       </div>
+
+      <button
+        className="press97"
+        onClick={() => setShowResetConfirm(true)}
+        style={css("margin-top:16px;height:44px;background:none;border:1px solid var(--purple-dim);color:var(--purple-text-faint);border-radius:8px;font-size:12px;letter-spacing:2px;cursor:pointer;")}
+      >重新開始</button>
+
+      {showResetConfirm && (
+        <div style={css('position:absolute;inset:0;z-index:20;background:rgba(3,4,9,0.8);display:flex;align-items:center;justify-content:center;animation:foodOverlayIn 0.2s ease both;')}>
+          <div style={css('width:260px;border-radius:14px;background:var(--modal-bg);border:2px solid var(--purple-border);box-shadow:0 20px 44px rgba(0,0,0,0.6), 0 0 24px rgba(var(--purple-border-rgb),0.25);padding:22px 20px;text-align:center;animation:foodCheckPop 0.35s cubic-bezier(0.34,1.56,0.64,1) both;')}>
+            <div style={css('color:var(--purple-text);font-size:15px;letter-spacing:1px;line-height:1.7;margin-bottom:18px;')}>確定要重新開始嗎？<br />這會清除小隊目前的所有進度，回到房間碼輸入畫面。</div>
+            <div style={css('display:flex;gap:10px;')}>
+              <button className="press97" onClick={() => setShowResetConfirm(false)} style={css("flex:1;height:46px;background:var(--purple-panel);border:1px solid var(--purple-dim);color:var(--purple-text-dim);border-radius:8px;font-size:13px;letter-spacing:2px;cursor:pointer;")}>取消</button>
+              <button className="press97" onClick={onReset} style={css("flex:1;height:46px;background:var(--pink-bg);border:1px solid var(--pink);color:var(--pink-text);border-radius:8px;font-size:13px;letter-spacing:2px;cursor:pointer;")}>確定重來</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

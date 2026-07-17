@@ -137,6 +137,15 @@ export function useFoodGame() {
 
   const inputChange = (idx, val) => setSlot(idx, { input: val, status: 'idle' });
 
+  // Player-triggered "give me a different order" — reuses the same
+  // poweroff → empty → entering → idle cycle a completed order already goes
+  // through, just without incrementing `completed`.
+  const reshuffle = (idx) => {
+    const slot = stateRef.current.slots[idx];
+    if (!slot || (slot.status !== 'idle' && slot.status !== 'wrong')) return;
+    powerOffChain(idx);
+  };
+
   const retry = () => {
     clearAllTimers();
     setGame((s) => initialState(s.run + 1));
@@ -148,6 +157,7 @@ export function useFoodGame() {
     start,
     submit,
     inputChange,
+    reshuffle,
     retry,
     openResetConfirm: () => setGame((s) => ({ ...s, showResetConfirm: true })),
     cancelResetConfirm: () => setGame((s) => ({ ...s, showResetConfirm: false })),

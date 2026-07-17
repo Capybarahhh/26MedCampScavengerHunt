@@ -48,7 +48,7 @@ function fitFontSize(text, { base, steps }) {
   return base;
 }
 
-function OrderSlot({ slot, idx, onInput, onSubmit }) {
+function OrderSlot({ slot, idx, onInput, onSubmit, onReshuffle }) {
   const accent = FOOD_ACCENTS[idx % 4];
   const customerSize = fitFontSize(slot.order.customer, { base: 11, steps: [[7, 9.5]] });
   const itemSize = fitFontSize(slot.order.item, { base: 16, steps: [[11, 13], [8, 14.5]] });
@@ -78,6 +78,18 @@ function OrderSlot({ slot, idx, onInput, onSubmit }) {
           <div style={{ ...css('position:absolute;left:0;right:0;height:50px;z-index:1;pointer-events:none;animation:scanlineMove 4s linear infinite;'), background: `linear-gradient(to bottom, transparent, ${mix(accent, 16)}, transparent)` }} />
           {slot.status === 'entering' && (
             <div style={{ ...css('position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;animation:screenFlash 0.6s ease-out both;'), background: accent }} />
+          )}
+
+          {(slot.status === 'idle' || slot.status === 'wrong') && (
+            <button
+              className="press95"
+              onClick={() => onReshuffle(idx)}
+              title="換一張訂單"
+              style={{
+                ...css('position:absolute;top:6px;right:6px;z-index:4;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;line-height:1;cursor:pointer;'),
+                background: mix(accent, 15), border: `1px solid ${mix(accent, 45)}`, color: accent,
+              }}
+            >⟳</button>
           )}
 
           <div style={css('position:relative;z-index:2;text-align:center;padding-top:10px;')}>
@@ -166,7 +178,7 @@ export function FoodGameBeat({ beat, startDone, onContinue }) {
               <div key={ri} style={css('position:relative;display:grid;grid-template-columns:repeat(2, 1fr);gap:18px;')}>
                 <div style={css('position:absolute;top:9px;left:6%;right:6%;height:1px;background:linear-gradient(to right, transparent, var(--gold-line), var(--gold-line), transparent);')} />
                 {row.map((slot, ci) => (
-                  <OrderSlot key={slot.id} slot={slot} idx={ri * 2 + ci} onInput={game.inputChange} onSubmit={game.submit} />
+                  <OrderSlot key={slot.id} slot={slot} idx={ri * 2 + ci} onInput={game.inputChange} onSubmit={game.submit} onReshuffle={game.reshuffle} />
                 ))}
               </div>
             ))}

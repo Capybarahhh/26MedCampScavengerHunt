@@ -285,7 +285,7 @@ export default function App() {
           />
         )}
         {game.screen === 'backpack' && (
-          <BackpackScreen collectedFragments={game.collectedFragments} onClose={() => setGame((g) => ({ ...g, screen: 'map' }))} />
+          <BackpackScreen collectedFragments={game.collectedFragments} onClose={() => setGame((g) => ({ ...g, screen: 'map' }))} onReset={reset} />
         )}
         {game.screen === 'assembly' && (
           <AssemblyScreen letters={assemblyLetters} scale={scale} onComplete={onAssemblyComplete} />
