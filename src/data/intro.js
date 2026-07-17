@@ -15,8 +15,8 @@ const INTRO_PAGES = [
   },
   {
     segs: [
-      { cls: 'mission', text: '跟著這本書留下的線索走。' },
-      { cls: 'narr', text: '那些在你之前就已經消失的人，有些話想對你說。' },
+      { cls: 'mission', text: '跟著系統給予你的指示。\n' },
+      { cls: 'quote', text: '「你難道不好奇，這不斷從大腦裡浮現的畫面是從何而來的嗎？」' },
     ],
   },
   {
