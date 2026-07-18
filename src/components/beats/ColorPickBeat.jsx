@@ -5,6 +5,7 @@ import { TerminalPanel } from '../ui/TerminalPanel.jsx';
 import { AnswerTerminal } from '../ui/AnswerTerminal.jsx';
 import { NavButtons } from '../ui/NavButtons.jsx';
 import { ScorePopup } from '../ui/ScorePopup.jsx';
+import { HintButton } from '../ui/HintButton.jsx';
 import { track } from '../../lib/track.js';
 import { css, mix } from '../../lib/css.js';
 
@@ -22,10 +23,9 @@ import { css, mix } from '../../lib/css.js';
  *     answerColors: ['#hex', ...5...], // the correct subset of `colors`
  *   }
  */
-export function ColorPickBeat({ stageKey, beat, beatIndex, hasPrev, startDone, onAdvance, onPrev, onCorrect, onWrong }) {
+export function ColorPickBeat({ stageKey, beat, beatIndex, hasPrev, startDone, onAdvance, onPrev, onCorrect, onWrong, wrongCount, hintUsed, onUseHint }) {
   const [selected, setSelected] = useState([]); // indices into beat.colors
   const [status, setStatus] = useState('idle'); // idle | wrong | correct
-  const [wrongCount, setWrongCount] = useState(0);
   const [scoreGain, setScoreGain] = useState(null);
   const wrongTimer = useRef(null);
   useEffect(() => () => clearTimeout(wrongTimer.current), []);
@@ -56,7 +56,6 @@ export function ColorPickBeat({ stageKey, beat, beatIndex, hasPrev, startDone, o
       setStatus('correct');
     } else {
       const forcePass = onWrong();
-      setWrongCount((c) => c + 1);
       if (forcePass) {
         setStatus('correct');
       } else {
@@ -85,6 +84,7 @@ export function ColorPickBeat({ stageKey, beat, beatIndex, hasPrev, startDone, o
 
         <div style={css('position:relative;')}>
         {scoreGain != null && <ScorePopup amount={scoreGain} />}
+        {beat.points > 100 && <HintButton hint={beat.hint} used={hintUsed} onUse={onUseHint} />}
         <AnswerTerminal
           borderColor={borderColor}
           status={status}

@@ -27,6 +27,8 @@ const initialGame = {
   arrivedBack: false, // current beat reached via 上一頁 → render text fully typed
   score: 0, // shown on the map's scoreboard
   scoredBeats: [], // beat keys already awarded points, so re-visiting never double-scores
+  wrongCounts: {}, // beat key -> wrong-attempt count, survives reload so it can't be reset by refreshing
+  hintsUsed: [], // beat keys whose hint has already been paid for (100 pts, charged once)
 };
 
 // The team's next playable stage: STAGE_ORDER stepped forward from their
@@ -76,6 +78,8 @@ export default function App() {
         creatorMode: roomCode === CREATOR_CODE,
         score: saved.score || 0,
         scoredBeats: saved.scoredBeats || [],
+        wrongCounts: saved.wrongCounts || {},
+        hintsUsed: saved.hintsUsed || [],
       };
     }
     return initialGame;
@@ -98,6 +102,8 @@ export default function App() {
     collectedFragments: g.collectedFragments,
     score: g.score,
     scoredBeats: g.scoredBeats,
+    wrongCounts: g.wrongCounts,
+    hintsUsed: g.hintsUsed,
   });
 
   const showToast = (msg) => {
@@ -193,11 +199,14 @@ export default function App() {
   // `points` in stages.js — awarded once (scoredBeats dedups by a
   // `stageKey-beatIndex` key so re-entering an already-solved beat, which
   // normal navigation shouldn't allow anyway, never double-scores). Wrong
-  // answers cost a flat 40 regardless of which beat, floored at 0 overall —
-  // once a team is AT that floor, the beat they're currently stuck on gets
-  // waved through on the next wrong attempt instead of blocking them forever
-  // (they don't get its points, they just aren't stuck).
+  // answers cost a flat 40 regardless of which beat, floored at 0 overall.
+  // A beat that's wrong 10 times gets waved through on that 10th attempt
+  // instead of blocking the team forever — but earns zero points for it
+  // (permanently: it's added to scoredBeats too, so a hypothetical later
+  // correct answer on the same beat couldn't retroactively score it).
   const WRONG_PENALTY = 40;
+  const HINT_COST = 100;
+  const FORCE_PASS_WRONG_COUNT = 10;
 
   const awardCorrect = () => setGame((g) => {
     const beat = getStageBeats(g.stageKey, swapTasksFor(g.roomCode))[g.beatIndex];
@@ -221,19 +230,34 @@ export default function App() {
     return next;
   });
 
-  // Returns whether the score is now at the floor (0) — the caller should
-  // treat this specific wrong attempt as a forced pass-through when true.
+  // Returns whether this was the beat's 10th wrong attempt — the caller
+  // should treat it as a forced pass-through when true.
   const recordWrongAnswer = () => {
-    let atFloor = false;
+    let forcePass = false;
     setGame((g) => {
+      const key = `${g.stageKey}-${g.beatIndex}`;
+      const count = (g.wrongCounts[key] || 0) + 1;
+      const wrongCounts = { ...g.wrongCounts, [key]: count };
       const score = Math.max(0, g.score - WRONG_PENALTY);
-      atFloor = score === 0;
-      const next = { ...g, score };
+      forcePass = count >= FORCE_PASS_WRONG_COUNT;
+      const scoredBeats = forcePass && !g.scoredBeats.includes(key) ? [...g.scoredBeats, key] : g.scoredBeats;
+      const next = { ...g, score, wrongCounts, scoredBeats };
       persist(next);
       return next;
     });
-    return atFloor;
+    return forcePass;
   };
+
+  // Viewing a beat's hint costs 100 points, charged once (re-opening an
+  // already-paid-for hint is free) — see hintsUsed.
+  const useHint = () => setGame((g) => {
+    const key = `${g.stageKey}-${g.beatIndex}`;
+    if (g.hintsUsed.includes(key)) return g;
+    const score = Math.max(0, g.score - HINT_COST);
+    const next = { ...g, score, hintsUsed: [...g.hintsUsed, key] };
+    persist(next);
+    return next;
+  });
 
   // Food-court order-price guesses don't cost anything per attempt — only
   // the whole minigame run failing does, and only that (no -40 stacks on
@@ -305,6 +329,13 @@ export default function App() {
     ? FRAGMENT_ORDER.filter((l) => game.collectedFragments.includes(l))
     : [...FRAGMENT_ORDER];
 
+  // Derived for whichever beat is currently on screen, so PuzzleBeat/
+  // ColorPickBeat just receive plain values instead of re-deriving their own
+  // key from the full wrongCounts/hintsUsed maps.
+  const currentBeatKey = game.screen === 'stage' && game.stageKey ? `${game.stageKey}-${game.beatIndex}` : null;
+  const currentWrongCount = currentBeatKey ? (game.wrongCounts[currentBeatKey] || 0) : 0;
+  const currentHintUsed = currentBeatKey ? game.hintsUsed.includes(currentBeatKey) : false;
+
   return (
     <div className="game-viewport" style={{
       background: 'var(--bg)', display: 'flex',
@@ -351,6 +382,9 @@ export default function App() {
             onCorrect={awardCorrect}
             onWrong={recordWrongAnswer}
             onFoodGameFail={deductFoodGameFail}
+            wrongCount={currentWrongCount}
+            hintUsed={currentHintUsed}
+            onUseHint={useHint}
           />
         )}
         {game.screen === 'backpack' && (

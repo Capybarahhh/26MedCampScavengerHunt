@@ -8,6 +8,7 @@ import { TerminalPanel } from '../ui/TerminalPanel.jsx';
 import { AnswerTerminal } from '../ui/AnswerTerminal.jsx';
 import { NavButtons } from '../ui/NavButtons.jsx';
 import { ScorePopup } from '../ui/ScorePopup.jsx';
+import { HintButton } from '../ui/HintButton.jsx';
 import { track } from '../../lib/track.js';
 import { css, mix } from '../../lib/css.js';
 
@@ -48,10 +49,9 @@ function Brackets({ color, size = 10, weight = 1.5 }) {
  * - hi-tech cells (beat.hiTechInput → per-letter cells over an invisible input)
  * - plain text input
  */
-export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPrev, startDone, onAdvance, onPrev, onCorrect, onWrong }) {
+export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPrev, startDone, onAdvance, onPrev, onCorrect, onWrong, wrongCount, hintUsed, onUseHint }) {
   const [input, setInput] = useState('');
   const [status, setStatus] = useState('idle'); // idle | wrong | correct
-  const [wrongCount, setWrongCount] = useState(0);
   const [scoreGain, setScoreGain] = useState(null); // set once, on the correct answer, to pop the ScorePopup
   const wrongTimer = useRef(null);
   useEffect(() => () => clearTimeout(wrongTimer.current), []);
@@ -91,11 +91,9 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
       if (beat.points) setScoreGain(beat.points - 40 * wrongCount);
       setStatus('correct');
     } else {
-      // Once the team's overall score is already at the floor, this wrong
-      // attempt gets waved through instead of leaving them stuck forever —
-      // they just don't get this beat's points.
+      // The 10th wrong attempt on THIS beat gets waved through instead of
+      // leaving the team stuck forever — they just don't get its points.
       const forcePass = onWrong();
-      setWrongCount((c) => c + 1);
       if (forcePass) {
         setStatus('correct');
       } else {
@@ -138,6 +136,7 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
 
         <div style={css('position:relative;')}>
           {scoreGain != null && <ScorePopup amount={scoreGain} />}
+          {beat.points > 100 && <HintButton hint={beat.hint} used={hintUsed} onUse={onUseHint} />}
           <AnswerTerminal
             borderColor={borderColor}
             status={status}

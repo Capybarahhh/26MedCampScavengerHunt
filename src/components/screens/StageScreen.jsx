@@ -25,7 +25,7 @@ function isFragmentAnswer(beats, beatIndex) {
  * navigation (keyed by stage+index) so its local state starts fresh.
  * `arrivedBack` renders the beat's text fully typed (came via 上一頁).
  */
-export function StageScreen({ stageKey, beatIndex, arrivedBack, swapTasks, onAdvance, onPrev, onChooseEnding, onCollectFragment, onCorrect, onWrong, onFoodGameFail }) {
+export function StageScreen({ stageKey, beatIndex, arrivedBack, swapTasks, onAdvance, onPrev, onChooseEnding, onCollectFragment, onCorrect, onWrong, onFoodGameFail, wrongCount, hintUsed, onUseHint }) {
   const stage = STAGES[stageKey];
   const beats = getStageBeats(stageKey, swapTasks);
   const beat = beats[beatIndex];
@@ -57,6 +57,9 @@ export function StageScreen({ stageKey, beatIndex, arrivedBack, swapTasks, onAdv
           onPrev={onPrev}
           onCorrect={onCorrect}
           onWrong={onWrong}
+          wrongCount={wrongCount}
+          hintUsed={hintUsed}
+          onUseHint={onUseHint}
         />
       )}
       {beat.type === 'colorpick' && (
@@ -71,6 +74,9 @@ export function StageScreen({ stageKey, beatIndex, arrivedBack, swapTasks, onAdv
           onPrev={onPrev}
           onCorrect={onCorrect}
           onWrong={onWrong}
+          wrongCount={wrongCount}
+          hintUsed={hintUsed}
+          onUseHint={onUseHint}
         />
       )}
       {beat.type === 'foodgame' && (
