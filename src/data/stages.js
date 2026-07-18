@@ -37,6 +37,13 @@ const STAGES = {
         hint: '透過『盲人英文點字』便可解讀出書庫的暗號',
         points: 300,
       },
+      { type: 'story', taskGroup: 1, segs: [
+        seg('quote', '「MENTOILETONE？」'),
+        seg('narr', '\n\n'),
+        seg('quote', '「難不成是指第一間男廁嗎？館長竟然在這種位置。」'),
+        seg('narr', '\n\n'),
+        seg('mission', '請往中山地下街移動，並進入最先看到的男廁，使用Jingle Bells的節奏敲門'),
+      ]},
       { type: 'puzzle', taskGroup: 1,
         descSegs: [],
         inputLabel: '從館長口中問出他最喜歡的作者名字',
@@ -279,6 +286,7 @@ const STAGES = {
         inputLabel: '收集到的記憶碎片 / 兩個字母',
         answer: 'JI',
         caseInsensitive: true,
+        hint: '把黑色碎片數字朝上放在地上的逃生出口標示看看，白色地方或許會有兩個字母喔！',
         points: 500,
       },
       { type: 'fragment', letter: 'JI', source: '傳送港', emotion: '無知' },
@@ -320,10 +328,10 @@ const STAGES = {
         seg('mission', '前往K區美食街'),
       ]},
       { type: 'foodgame', taskGroup: 1, gameName: '天下沒有你的午餐', points: 700, failPenalty: 100, rulesSegs: [
-        seg('rule', '目標　'), seg('narr', '玩家必須在 300 秒內完成五張訂單。\n\n'),
-        seg('rule', '訂單機制　'), seg('narr', '一次最多同時出現四張訂單，若超過 60 秒未完成，該筆訂單即視為失敗。\n\n'),
+        seg('rule', '目標　'), seg('narr', '玩家必須在 300 秒內完成六張訂單。\n\n'),
+        seg('rule', '訂單機制　'), seg('narr', '一次最多同時出現四張訂單，若超過 120 秒未完成，該筆訂單即視為失敗。\n\n'),
         seg('rule', '完成方式　'), seg('narr', '玩家需在美食街中找到訂單對應的食物，並正確輸入該餐點的價錢，才算送餐成功。\n\n'),
-        seg('warn', '注意事項　'), seg('narr', '地下市集相當擁擠，請勿奔跑，並小心與他人碰撞。'),
+        seg('warn', '注意事項　'), seg('narr', '地下市集相當擁擠，請勿奔跑，並小心與他人碰撞。\n\n訂單上的餐廳僅位於單條商店街中，且菜單位置皆位於可視範圍內。'),
       ]},
       { type: 'story', taskGroup: 1, segs: [
         seg('quote', '「結果只是來這裡跑腿。」\n\n'),
@@ -369,6 +377,7 @@ const STAGES = {
         inputLabel: '收集到的記憶碎片 / 兩個字母',
         answer: 'SO',
         caseInsensitive: true,
+        hint: '額……不然你抓強一點的寶可夢？',
         points: 300,
       },
       { type: 'story', taskGroup: 2, segs: [

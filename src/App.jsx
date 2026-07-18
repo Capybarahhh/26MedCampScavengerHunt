@@ -5,6 +5,7 @@ import { findTeam, CREATOR_CODE } from './data/teams.js';
 import { FRAGMENT_ORDER } from './lib/pieces.js';
 import { loadProgress, saveProgress, clearProgress } from './lib/progress.js';
 import { track, setTrackedRoom } from './lib/track.js';
+import { WRONG_PENALTY, HINT_COST, FORCE_PASS_WRONG_COUNT } from './lib/scoring.js';
 import { useScale } from './hooks/useScale.js';
 import { CityBackdrop } from './components/CityBackdrop.jsx';
 import { EntryScreen } from './components/screens/EntryScreen.jsx';
@@ -199,14 +200,14 @@ export default function App() {
   // `points` in stages.js — awarded once (scoredBeats dedups by a
   // `stageKey-beatIndex` key so re-entering an already-solved beat, which
   // normal navigation shouldn't allow anyway, never double-scores). Wrong
-  // answers cost a flat 40 regardless of which beat, floored at 0 overall.
-  // A beat that's wrong 10 times gets waved through on that 10th attempt
-  // instead of blocking the team forever — but earns zero points for it
-  // (permanently: it's added to scoredBeats too, so a hypothetical later
-  // correct answer on the same beat couldn't retroactively score it).
-  const WRONG_PENALTY = 40;
-  const HINT_COST = 100;
-  const FORCE_PASS_WRONG_COUNT = 10;
+  // answers cost a flat WRONG_PENALTY regardless of which beat, floored at 0
+  // overall. A beat that's wrong FORCE_PASS_WRONG_COUNT times gets waved
+  // through on that attempt instead of blocking the team forever — but
+  // earns zero points for it (permanently: it's added to scoredBeats too,
+  // so a hypothetical later correct answer on the same beat couldn't
+  // retroactively score it). Constants live in lib/scoring.js, not here —
+  // PuzzleBeat/ColorPickBeat need WRONG_PENALTY too, for their score-popup
+  // "net gain" display.
 
   const awardCorrect = () => setGame((g) => {
     const beat = getStageBeats(g.stageKey, swapTasksFor(g.roomCode))[g.beatIndex];
@@ -248,7 +249,7 @@ export default function App() {
     return forcePass;
   };
 
-  // Viewing a beat's hint costs 100 points, charged once (re-opening an
+  // Viewing a beat's hint costs HINT_COST, charged once (re-opening an
   // already-paid-for hint is free) — see hintsUsed.
   const useHint = () => setGame((g) => {
     const key = `${g.stageKey}-${g.beatIndex}`;
@@ -260,8 +261,8 @@ export default function App() {
   });
 
   // Food-court order-price guesses don't cost anything per attempt — only
-  // the whole minigame run failing does, and only that (no -40 stacks on
-  // top of it).
+  // the whole minigame run failing does, and only that (no WRONG_PENALTY
+  // stacks on top of it).
   const deductFoodGameFail = () => setGame((g) => {
     const beat = getStageBeats(g.stageKey, swapTasksFor(g.roomCode))[g.beatIndex];
     const score = Math.max(0, g.score - (beat?.failPenalty || 0));

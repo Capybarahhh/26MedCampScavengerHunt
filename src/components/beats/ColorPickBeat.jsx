@@ -7,6 +7,7 @@ import { NavButtons } from '../ui/NavButtons.jsx';
 import { ScorePopup } from '../ui/ScorePopup.jsx';
 import { HintButton } from '../ui/HintButton.jsx';
 import { track } from '../../lib/track.js';
+import { WRONG_PENALTY } from '../../lib/scoring.js';
 import { css, mix } from '../../lib/css.js';
 
 /**
@@ -52,7 +53,7 @@ export function ColorPickBeat({ stageKey, beat, beatIndex, hasPrev, startDone, o
     clearTimeout(wrongTimer.current);
     if (correct) {
       onCorrect();
-      if (beat.points) setScoreGain(beat.points - 40 * wrongCount);
+      if (beat.points) setScoreGain(beat.points - WRONG_PENALTY * wrongCount);
       setStatus('correct');
     } else {
       const forcePass = onWrong();
@@ -84,7 +85,7 @@ export function ColorPickBeat({ stageKey, beat, beatIndex, hasPrev, startDone, o
 
         <div style={css('position:relative;')}>
         {scoreGain != null && <ScorePopup amount={scoreGain} />}
-        {beat.points > 100 && <HintButton hint={beat.hint} used={hintUsed} onUse={onUseHint} />}
+        {beat.points > 100 && <HintButton hint={beat.hint} used={hintUsed || status === 'correct'} onUse={onUseHint} />}
         <AnswerTerminal
           borderColor={borderColor}
           status={status}

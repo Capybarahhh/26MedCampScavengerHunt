@@ -126,25 +126,36 @@ function renderHint(hint) {
 /**
  * Three bulbs socketed into the top of the casing, wired together on a
  * shared festoon line — a nod to marquee/theater lighting where only one
- * bulb in the string actually works. Only the CENTER bulb is real: it's
- * the hint control (flickering while unpaid — an invitation to click — then
- * holding a constant full glow once opened, staying lit rather than
- * dimming down). The two flanking bulbs are decorative dead glass, always
- * off, non-interactive.
+ * bulb in the string actually works. Only the CENTER bulb is interactive:
+ * it's the hint control (flickering while unpaid — an invitation to click —
+ * then holding a constant full glow once opened, staying lit rather than
+ * dimming down). The two flanking bulbs are decorative, but light up
+ * together with the center one once it's revealed, instead of staying
+ * dead forever.
  *
- * Only rendered by the caller when `beat.points > 100`. First open charges
- * HINT_COST (see App.jsx `useHint`); re-opening the same beat's hint is
- * free (`used` is already true by then). The cost itself is silent by
- * design — the score system records it, but the UI doesn't surface a
- * "− 100" or "already charged" note. Hint copy lives in `beat.hint`,
- * filled in per-puzzle later — shows a placeholder until then so the
- * interaction is fully testable ahead of that content.
+ * `used` means "free to view" — either the hint was already paid for
+ * (hintsUsed persisted), OR the caller passes it as already-true because
+ * the beat is already answered correctly (see PuzzleBeat/ColorPickBeat:
+ * `used={hintUsed || status === 'correct'}` — no point charging for a
+ * hint on a puzzle you've already solved). A first, chargeable open asks
+ * for confirmation before spending HINT_COST (see App.jsx `useHint`); a
+ * free open skips straight to the hint. The cost itself is silent by
+ * design — the score system records it, but neither modal surfaces a
+ * "− 100"/"already charged" note. Hint copy lives in `beat.hint`, filled
+ * in per-puzzle later — shows a placeholder until then so the interaction
+ * is fully testable ahead of that content.
  */
 export function HintButton({ hint, used, onUse }) {
   const [open, setOpen] = useState(false);
+  const [confirming, setConfirming] = useState(false);
 
-  const openPopup = () => {
-    if (!used) onUse();
+  const handleBulbClick = () => {
+    if (used) { setOpen(true); return; }
+    setConfirming(true);
+  };
+  const confirmUse = () => {
+    onUse();
+    setConfirming(false);
     setOpen(true);
   };
 
@@ -156,15 +167,47 @@ export function HintButton({ hint, used, onUse }) {
           <path d="M4 3 Q 25 15 50 5 Q 75 -5 96 3" fill="none" stroke="var(--gold-dim)" strokeWidth="1.4" strokeLinecap="round" />
         </svg>
 
-        <BulbSlot variant="off" scale={0.7} />
+        <BulbSlot variant={used ? 'steady' : 'off'} scale={0.7} />
         <BulbSlot
           variant={used ? 'steady' : 'lit'}
           interactive
-          onClick={openPopup}
+          onClick={handleBulbClick}
           title="查看提示"
         />
-        <BulbSlot variant="off" scale={0.7} />
+        <BulbSlot variant={used ? 'steady' : 'off'} scale={0.7} />
       </div>
+
+      {confirming && (
+        <div
+          style={css('position:absolute;inset:0;z-index:20;border-radius:14px;background:rgba(3,4,9,0.84);display:flex;align-items:center;justify-content:center;padding:16px;animation:foodOverlayIn 0.2s ease both;')}
+          onClick={() => setConfirming(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={css('width:100%;max-width:320px;border-radius:12px;background:var(--modal-bg);border:2px solid var(--gold);box-shadow:0 20px 40px rgba(0,0,0,0.6), 0 0 24px rgba(var(--gold-rgb),0.25);padding:18px 18px 16px;text-align:center;animation:foodCheckPop 0.3s cubic-bezier(0.34,1.56,0.64,1) both;')}
+          >
+            <div style={css('display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;')}>
+              <BulbGlyph color="var(--gold-bright)" size={18} />
+              <span style={css('color:var(--gold-text);font-size:11px;letter-spacing:3px;')}>HINT // 提示</span>
+            </div>
+            <div style={css('color:var(--cream-text);font-size:14px;line-height:1.8;')}>
+              要查看提示嗎？<br />將扣除 200 分。
+            </div>
+            <div style={css('display:flex;gap:10px;margin-top:18px;')}>
+              <button
+                className="press96"
+                onClick={() => setConfirming(false)}
+                style={css("flex:1;height:38px;background:var(--purple-btn);border:1px solid var(--purple-border);color:var(--purple-text);border-radius:8px;font-size:12px;letter-spacing:2px;cursor:pointer;")}
+              >取消</button>
+              <button
+                className="press96"
+                onClick={confirmUse}
+                style={css("flex:1;height:38px;background:var(--gold-bg);border:1px solid var(--gold);color:var(--gold-text);border-radius:8px;font-size:12px;letter-spacing:2px;cursor:pointer;")}
+              >確認查看</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {open && (
         <div

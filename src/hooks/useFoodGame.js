@@ -3,8 +3,8 @@ import { pickFoodOrder, makeFoodConfetti } from '../data/food.js';
 import { track } from '../lib/track.js';
 
 const TOTAL_TIME = 300;
-const ORDER_TIME = 60;
-const TARGET = 5;
+const ORDER_TIME = 120;
+const TARGET = 6;
 
 const initialState = (run = 0) => ({
   phase: 'rules', // rules | playing | passed | failed

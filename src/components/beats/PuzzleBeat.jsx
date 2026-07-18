@@ -9,6 +9,7 @@ import { NavButtons } from '../ui/NavButtons.jsx';
 import { ScorePopup } from '../ui/ScorePopup.jsx';
 import { HintButton } from '../ui/HintButton.jsx';
 import { track } from '../../lib/track.js';
+import { WRONG_PENALTY } from '../../lib/scoring.js';
 import { css, mix } from '../../lib/css.js';
 
 function CipherTable() {
@@ -103,7 +104,7 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
       // What this beat actually nets out to: its full value minus the 40
       // already docked for each wrong attempt along the way (those already
       // hit the score in real time) — not just its flat listed points.
-      if (beat.points) setScoreGain(beat.points - 40 * wrongCount);
+      if (beat.points) setScoreGain(beat.points - WRONG_PENALTY * wrongCount);
       setStatus('correct');
     } else {
       // The 10th wrong attempt on THIS beat gets waved through instead of
@@ -151,7 +152,7 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
 
         <div style={css('position:relative;')}>
           {scoreGain != null && <ScorePopup amount={scoreGain} />}
-          {beat.points > 100 && <HintButton hint={beat.hint} used={hintUsed} onUse={onUseHint} />}
+          {beat.points > 100 && <HintButton hint={beat.hint} used={hintUsed || status === 'correct'} onUse={onUseHint} />}
           <AnswerTerminal
             borderColor={borderColor}
             status={status}
