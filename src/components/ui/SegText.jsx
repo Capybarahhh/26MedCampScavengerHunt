@@ -41,7 +41,7 @@ function RuleRow({ para, accent, isActive, showCursor }) {
         textShadow: label.glow, marginTop: 1,
         boxShadow: `0 0 ${isActive ? 14 : 7}px ${mix(accent, isActive ? 48 : 22)}`,
       }}>{label.text.trim()}</span>
-      <span style={{ position: 'relative', flex: 1, minWidth: 0, textAlign: 'left' }}>
+      <span className="text-wrap-pretty" style={{ position: 'relative', flex: 1, minWidth: 0, textAlign: 'left' }}>
         {body.map((r, ri) => (
           r.isBr ? <br key={ri} /> : (
             <span key={ri} style={{ color: r.color, fontWeight: r.weight, textShadow: r.glow }}>{r.text}</span>
@@ -113,7 +113,7 @@ export function SegText({ segs, count = Infinity, cursorColor = null, paraMargin
           return <RuleRow key={bi} para={block} accent={accent} isActive={isLast && !!cursorColor} showCursor={isLast && cursor} />;
         }
         return (
-          <div key={bi} style={{ margin: `0 0 ${paraMargin}px 0`, textAlign: 'left', width: '100%' }}>
+          <div key={bi} className="text-wrap-pretty" style={{ margin: `0 0 ${paraMargin}px 0`, textAlign: 'left', width: '100%' }}>
             {block.runs.map((r, ri) =>
               r.isBr ? (
                 <br key={ri} />

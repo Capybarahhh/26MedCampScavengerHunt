@@ -34,6 +34,15 @@ html, body { margin: 0; padding: 0; background: var(--bg); overflow: hidden; ove
  * overwriting it, but has no visible effect unless `.magnetic-tilt` is
  * also present. */
 button { font-family: var(--font-ui); }
+/* CJK text wraps at any character boundary by default, so a paragraph can
+ * easily leave just one or two orphaned characters dangling on their own
+ * line. `pretty` avoids that (spreading the wrap points across the whole
+ * block instead of pure greedy-fill) but only Chromium implements it;
+ * `balance` is the fallback for browsers (Safari included) that don't —
+ * an unrecognized VALUE drops only that one declaration, so browsers that
+ * understand `pretty` use it, everyone else keeps `balance`. Same
+ * two-declaration fallback pattern as the dvh/vh rule above. */
+.text-wrap-pretty { text-wrap: balance; text-wrap: pretty; }
 .magnetic-tilt {
   --mx: 0; --my: 0; --lift: 0px; --press: 1;
   transform: perspective(700px) rotateX(calc(var(--my) * -6deg)) rotateY(calc(var(--mx) * 6deg)) translateY(var(--lift)) scale(var(--press));
@@ -112,6 +121,10 @@ button:not(:disabled):active { filter: brightness(0.92); }
 @keyframes glitchShift { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-4px); } 40% { transform: translateX(3px); } 60% { transform: translateX(-2px); } 80% { transform: translateX(2px); } }
 @keyframes successRipple { 0% { transform: scale(0.9); opacity: 0.8; } 100% { transform: scale(1.6); opacity: 0; } }
 @keyframes recBlink { 0%, 60% { opacity: 1; } 61%, 100% { opacity: 0.15; } }
+@keyframes pipeCurrentH { 0% { background-position: -60% 0; } 100% { background-position: 160% 0; } }
+@keyframes pipeCurrentV { 0% { background-position: 0 -60%; } 100% { background-position: 0 160%; } }
+@keyframes neonFlicker { 0%, 19%, 21%, 23%, 80%, 100% { opacity: 1; } 20%, 22%, 24% { opacity: 0.55; } }
+@keyframes filamentFlicker { 0%, 100% { opacity: 1; } 45% { opacity: 0.7; } 50% { opacity: 1; } 78% { opacity: 0.82; } }
 @keyframes inputRise { 0% { opacity: 0; transform: translateY(10px) scale(0.97); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
 @keyframes blankPop { 0% { opacity: 0; transform: scale(0.5); } 60% { opacity: 1; transform: scale(1.08); } 100% { opacity: 1; transform: scale(1); } }
 @keyframes endingFadeIn { from { opacity: 0; } to { opacity: 1; } }

@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { CIPHER_CELLS } from '../../data/cipher.js';
 import { FRAGMENT_KEY_LETTERS } from '../../lib/pieces.js';
-const ALPHANUMERIC_KEYS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 import { useTypewriter } from '../../hooks/useTypewriter.js';
 import { SegText } from '../ui/SegText.jsx';
 import { TerminalPanel } from '../ui/TerminalPanel.jsx';
@@ -28,6 +27,22 @@ function CipherTable() {
   );
 }
 
+// A raised, beveled keycap look for the on-screen keypad — top highlight +
+// bottom shadow curvature plus a thicker bottom edge, so each key reads as
+// a physical cap sitting above the panel rather than a flat colored tile.
+// `.key-frag`'s :active rule (global.css) still overrides background/border
+// on press, composing with the magnetic-tilt press scale from `--press`.
+function keycapStyle(borderColor, { height, fontSize }) {
+  return {
+    height, fontSize, borderRadius: 6, color: 'var(--teal-text)', cursor: 'pointer',
+    background: `linear-gradient(180deg, rgba(255,255,255,0.1), transparent 45%), var(--teal-key-bg)`,
+    border: `1px solid ${mix(borderColor, 33)}`,
+    borderBottom: `3px solid ${mix(borderColor, 45)}`,
+    boxShadow: `0 3px 6px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -2px 3px rgba(0,0,0,0.3)`,
+    '--accent': borderColor,
+  };
+}
+
 // Corner bracket set drawn around the input areas.
 function Brackets({ color, size = 10, weight = 1.5 }) {
   const b = `${weight}px solid ${color}`;
@@ -45,7 +60,7 @@ function Brackets({ color, size = 10, weight = 1.5 }) {
  * A puzzle beat: optional description terminal, optional cipher table, and the
  * answer-input terminal in one of four input modes:
  * - fragment keypad (next non-story beat is a fragment → letter blanks + A–Z keys)
- * - alphanumeric keypad (beat.keypadInput → letter/digit blanks + 0–9A–Z keys)
+ * - letter keypad (beat.keypadInput → letter blanks + A–Z keys, no digits)
  * - hi-tech cells (beat.hiTechInput → per-letter cells over an invisible input)
  * - plain text input
  */
@@ -173,11 +188,7 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
                     key={l}
                     className="key-frag"
                     onClick={() => pressKey(l)}
-                    style={{
-                      ...css("height:40px;background:var(--teal-key-bg);border-radius:6px;color:var(--teal-text);font-size:14px;cursor:pointer;"),
-                      border: `1px solid ${mix(borderColor, 33)}`,
-                      '--accent': borderColor,
-                    }}
+                    style={keycapStyle(borderColor, { height: 40, fontSize: 14 })}
                   >{l}</button>
                 ))}
               </div>
@@ -208,16 +219,12 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
                 </div>
               </div>
               <div style={css('display:grid;grid-template-columns:repeat(6, 1fr);gap:6px;')}>
-                {ALPHANUMERIC_KEYS.map((k) => (
+                {FRAGMENT_KEY_LETTERS.map((k) => (
                   <button
                     key={k}
                     className="key-frag"
                     onClick={() => pressKey(k)}
-                    style={{
-                      ...css("height:36px;background:var(--teal-key-bg);border-radius:6px;color:var(--teal-text);font-size:13px;cursor:pointer;"),
-                      border: `1px solid ${mix(borderColor, 33)}`,
-                      '--accent': borderColor,
-                    }}
+                    style={keycapStyle(borderColor, { height: 36, fontSize: 13 })}
                   >{k}</button>
                 ))}
               </div>
@@ -260,8 +267,25 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
           ) : (
             <div style={css('position:relative;padding:6px;animation:inputRise 0.4s ease both;')}>
               <Brackets color={mix(borderColor, 47)} />
-              <div style={css('position:relative;')}>
+              {/* Corner bolts — same rivet motif as the terminal bezel, so
+                  the input reads as a bolted-in device panel rather than a
+                  plain text box. */}
+              <div style={css('position:absolute;top:2px;left:2px;width:4px;height:4px;border-radius:50%;background:var(--screw);box-shadow:inset 0 1px 1px rgba(0,0,0,0.6);z-index:2;')} />
+              <div style={css('position:absolute;top:2px;right:2px;width:4px;height:4px;border-radius:50%;background:var(--screw);box-shadow:inset 0 1px 1px rgba(0,0,0,0.6);z-index:2;')} />
+              <div style={css('position:absolute;bottom:2px;left:2px;width:4px;height:4px;border-radius:50%;background:var(--screw);box-shadow:inset 0 1px 1px rgba(0,0,0,0.6);z-index:2;')} />
+              <div style={css('position:absolute;bottom:2px;right:2px;width:4px;height:4px;border-radius:50%;background:var(--screw);box-shadow:inset 0 1px 1px rgba(0,0,0,0.6);z-index:2;')} />
+              <div style={{
+                ...css('position:relative;border-radius:10px;padding:3px;'),
+                background: `linear-gradient(155deg, rgba(255,255,255,0.08), transparent 30%, rgba(0,0,0,0.3))`,
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 2px rgba(0,0,0,0.5)',
+              }}>
                 <div style={{ ...css('position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:20px;pointer-events:none;font-weight:700;z-index:2;'), color: borderColor, textShadow: `0 0 8px ${borderColor}` }}>&gt;</div>
+                <span style={{
+                  position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', zIndex: 2,
+                  width: 5, height: 5, borderRadius: '50%', background: borderColor,
+                  boxShadow: `0 0 6px ${borderColor}`, animation: status === 'idle' ? 'recBlink 1.6s step-start infinite' : 'none',
+                  pointerEvents: 'none',
+                }} />
                 <div style={css('position:absolute;left:1px;top:1px;right:1px;height:16px;border-radius:8px 8px 0 0;background:linear-gradient(to bottom, rgba(255,255,255,0.06), transparent);pointer-events:none;')} />
                 <input
                   className="puzzle-input"
@@ -270,9 +294,9 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
                   disabled={inputDisabled}
                   placeholder="輸入解密內容……"
                   style={{
-                    ...css("width:100%;height:60px;background:var(--input-bg);border-radius:8px;color:var(--teal-text-bright);font-family:var(--font-ui);font-size:20px;padding:0 16px 0 40px;letter-spacing:4px;transition:box-shadow 0.2s, border-color 0.2s;"),
+                    ...css("width:100%;height:60px;background:var(--input-bg);border-radius:8px;color:var(--teal-text-bright);font-family:var(--font-ui);font-size:20px;padding:0 34px 0 40px;letter-spacing:4px;transition:box-shadow 0.2s, border-color 0.2s;"),
                     border: `1px solid ${borderColor}`,
-                    boxShadow: `inset 0 2px 8px rgba(0,0,0,0.6), 0 0 14px ${mix(borderColor, 20)}`,
+                    boxShadow: `inset 0 3px 10px rgba(0,0,0,0.7), inset 0 -1px 0 rgba(255,255,255,0.04), 0 0 14px ${mix(borderColor, 20)}`,
                     '--accent-focus': mix(borderColor, 47),
                   }}
                 />
