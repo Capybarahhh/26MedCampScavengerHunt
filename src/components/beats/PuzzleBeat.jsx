@@ -47,7 +47,7 @@ function Brackets({ color, size = 10, weight = 1.5 }) {
  * - hi-tech cells (beat.hiTechInput → per-letter cells over an invisible input)
  * - plain text input
  */
-export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPrev, startDone, onAdvance, onPrev }) {
+export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPrev, startDone, onAdvance, onPrev, onCorrect, onWrong }) {
   const [input, setInput] = useState('');
   const [status, setStatus] = useState('idle'); // idle | wrong | correct
   const wrongTimer = useRef(null);
@@ -81,11 +81,20 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
     track('puzzle_attempt', { stageKey, beatIndex, input: given, correct: match });
     clearTimeout(wrongTimer.current);
     if (match) {
+      onCorrect();
       setStatus('correct');
     } else {
-      setStatus('wrong');
-      setInput('');
-      wrongTimer.current = setTimeout(() => setStatus((s) => (s === 'wrong' ? 'idle' : s)), 1400);
+      // Once the team's overall score is already at the floor, this wrong
+      // attempt gets waved through instead of leaving them stuck forever —
+      // they just don't get this beat's points.
+      const forcePass = onWrong();
+      if (forcePass) {
+        setStatus('correct');
+      } else {
+        setStatus('wrong');
+        setInput('');
+        wrongTimer.current = setTimeout(() => setStatus((s) => (s === 'wrong' ? 'idle' : s)), 1400);
+      }
     }
   };
 

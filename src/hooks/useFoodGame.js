@@ -22,7 +22,7 @@ const initialState = (run = 0) => ({
  * animation chain (success → poweroff → empty → entering → idle).
  * All timers are cleaned up on unmount.
  */
-export function useFoodGame() {
+export function useFoodGame({ onPass, onFail } = {}) {
   const [game, setGame] = useState(() => initialState());
   const stateRef = useRef(game);
   stateRef.current = game;
@@ -36,10 +36,15 @@ export function useFoodGame() {
   };
   useEffect(() => clearAllTimers, []);
 
-  // Report the outcome once per attempt.
+  // Report the outcome once per attempt — scoring only, since analytics
+  // (`track`) already fires here for both outcomes.
   useEffect(() => {
-    if (game.phase === 'passed' || game.phase === 'failed') {
-      track('foodgame_end', { passed: game.phase === 'passed', completed: game.completed, timeLeft: game.timeLeft });
+    if (game.phase === 'passed') {
+      track('foodgame_end', { passed: true, completed: game.completed, timeLeft: game.timeLeft });
+      onPass?.();
+    } else if (game.phase === 'failed') {
+      track('foodgame_end', { passed: false, completed: game.completed, timeLeft: game.timeLeft });
+      onFail?.();
     }
   }, [game.phase]);
 

@@ -25,6 +25,8 @@ const initialGame = {
   stageKey: null,
   beatIndex: 0,
   arrivedBack: false, // current beat reached via 上一頁 → render text fully typed
+  score: 0, // shown on the map's scoreboard
+  scoredBeats: [], // beat keys already awarded points, so re-visiting never double-scores
 };
 
 // The team's next playable stage: STAGE_ORDER stepped forward from their
@@ -72,6 +74,8 @@ export default function App() {
         completedStages: saved.completedStages || [],
         collectedFragments: saved.collectedFragments || [],
         creatorMode: roomCode === CREATOR_CODE,
+        score: saved.score || 0,
+        scoredBeats: saved.scoredBeats || [],
       };
     }
     return initialGame;
@@ -92,6 +96,8 @@ export default function App() {
     startStageKey: g.startStageKey,
     completedStages: g.completedStages,
     collectedFragments: g.collectedFragments,
+    score: g.score,
+    scoredBeats: g.scoredBeats,
   });
 
   const showToast = (msg) => {
@@ -183,6 +189,63 @@ export default function App() {
     g.beatIndex <= 0 ? g : { ...g, beatIndex: g.beatIndex - 1, arrivedBack: true }
   ));
 
+  // Scoring. Each scorable beat (puzzle/colorpick/foodgame) carries its own
+  // `points` in stages.js — awarded once (scoredBeats dedups by a
+  // `stageKey-beatIndex` key so re-entering an already-solved beat, which
+  // normal navigation shouldn't allow anyway, never double-scores). Wrong
+  // answers cost a flat 40 regardless of which beat, floored at 0 overall —
+  // once a team is AT that floor, the beat they're currently stuck on gets
+  // waved through on the next wrong attempt instead of blocking them forever
+  // (they don't get its points, they just aren't stuck).
+  const WRONG_PENALTY = 40;
+
+  const awardCorrect = () => setGame((g) => {
+    const beat = getStageBeats(g.stageKey, swapTasksFor(g.roomCode))[g.beatIndex];
+    const key = `${g.stageKey}-${g.beatIndex}`;
+    if (!beat?.points || g.scoredBeats.includes(key)) return g;
+    const next = { ...g, score: g.score + beat.points, scoredBeats: [...g.scoredBeats, key] };
+    persist(next);
+    return next;
+  });
+
+  // The assembly minigame isn't indexed like a normal beat — by the time it
+  // completes, beatIndex has already moved past the leadsToAssembly beat
+  // that carries its points, so it's looked up by flag instead and scored
+  // under its own dedicated key.
+  const awardAssembly = () => setGame((g) => {
+    const beat = getStageBeats(g.stageKey, swapTasksFor(g.roomCode)).find((b) => b.leadsToAssembly);
+    const key = `${g.stageKey}-assembly`;
+    if (!beat?.points || g.scoredBeats.includes(key)) return g;
+    const next = { ...g, score: g.score + beat.points, scoredBeats: [...g.scoredBeats, key] };
+    persist(next);
+    return next;
+  });
+
+  // Returns whether the score is now at the floor (0) — the caller should
+  // treat this specific wrong attempt as a forced pass-through when true.
+  const recordWrongAnswer = () => {
+    let atFloor = false;
+    setGame((g) => {
+      const score = Math.max(0, g.score - WRONG_PENALTY);
+      atFloor = score === 0;
+      const next = { ...g, score };
+      persist(next);
+      return next;
+    });
+    return atFloor;
+  };
+
+  // Food-court order-price guesses don't cost anything per attempt — only
+  // the whole minigame run failing does, and only that (no -40 stacks on
+  // top of it).
+  const deductFoodGameFail = () => setGame((g) => {
+    const beat = getStageBeats(g.stageKey, swapTasksFor(g.roomCode))[g.beatIndex];
+    const score = Math.max(0, g.score - (beat?.failPenalty || 0));
+    const next = { ...g, score };
+    persist(next);
+    return next;
+  });
+
   const collectFragment = (letter) => {
     track('fragment_collected', { letter });
     setGame((g) => {
@@ -196,12 +259,15 @@ export default function App() {
     advanceBeat();
   };
 
-  const onAssemblyComplete = () => setGame((g) => {
-    if (g.stageKey === 'END') return { ...g, screen: 'stage', arrivedBack: false };
-    const next = { ...g, screen: 'ending' };
-    persist(next);
-    return next;
-  });
+  const onAssemblyComplete = () => {
+    awardAssembly();
+    setGame((g) => {
+      if (g.stageKey === 'END') return { ...g, screen: 'stage', arrivedBack: false };
+      const next = { ...g, screen: 'ending' };
+      persist(next);
+      return next;
+    });
+  };
 
   const chooseEnding = (choice) => {
     track('ending_choice', { choice });
@@ -265,9 +331,9 @@ export default function App() {
             startStageKey={game.startStageKey}
             completedStages={game.completedStages}
             creatorMode={game.creatorMode}
+            score={game.score}
             onNodeClick={onNodeClick}
             onOpenBackpack={() => setGame((g) => ({ ...g, screen: 'backpack' }))}
-            onReset={reset}
             toastMsg={toastMsg}
             unlockBanner={unlockBanner}
           />
@@ -282,6 +348,9 @@ export default function App() {
             onPrev={prevBeat}
             onChooseEnding={chooseEnding}
             onCollectFragment={collectFragment}
+            onCorrect={awardCorrect}
+            onWrong={recordWrongAnswer}
+            onFoodGameFail={deductFoodGameFail}
           />
         )}
         {game.screen === 'backpack' && (

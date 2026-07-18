@@ -34,11 +34,13 @@ const STAGES = {
         inputLabel: '通往館長的密語 / 英數字 11 碼',
         answer: 'MENSTOILET1',
         keypadInput: true,
+        points: 300,
       },
       { type: 'puzzle', taskGroup: 1,
         descSegs: [],
         inputLabel: '從館長口中問出他最喜歡的作者名字',
         answer: '黃山料',
+        points: 50,
       },
       { type: 'story', taskGroup: 1, segs: [
         seg('quote', '「沒想到館長竟然躲在廁所裡。也罷，先不管他待了多少年。」'),
@@ -61,6 +63,7 @@ const STAGES = {
         inputLabel: '遊民說出的密碼 / 英文',
         answer: 'addiction',
         caseInsensitive: true,
+        points: 150,
       },
       { type: 'story', taskGroup: 2, segs: [
         seg('quote', '「嗯，真是個貪吃的傢伙……」'),
@@ -89,6 +92,7 @@ const STAGES = {
         inputLabel: '收集到的記憶碎片 / 兩個字母',
         answer: 'MF',
         caseInsensitive: true,
+        points: 500,
       },
       { type: 'fragment', letter: 'MF', source: '圖書館', emotion: '沈迷' },
       { type: 'story', isLast: true, segs: [
@@ -130,6 +134,7 @@ const STAGES = {
         inputLabel: '用占卜卡顯現出下一條道路的方向 / 英文',
         answer: 'AIRPORTMETRO',
         caseInsensitive: true,
+        points: 500,
       },
       { type: 'story', taskGroup: 1, segs: [
         seg('quote', '「想必這些影子待在舊城區這麼多年，也是在等待著他去找到他們吧。」'),
@@ -154,6 +159,7 @@ const STAGES = {
         inputLabel: '收集到的記憶碎片代碼',
         answer: 'AX',
         caseInsensitive: true,
+        points: 500,
       },
       { type: 'fragment', letter: 'AX', source: '舊城區', emotion: '孤獨' },
       { type: 'story', isLast: true, segs: [
@@ -197,6 +203,7 @@ const STAGES = {
         inputLabel: '密語',
         answer: '失憶',
         caseInsensitive: true,
+        points: 50,
       },
       { type: 'story', segs: [
         seg('narr', '你擠過人群，總算在一根柱子旁邊追上他。他又喃喃了一次'),
@@ -218,6 +225,7 @@ const STAGES = {
         inputLabel: '詩人的真名',
         answer: '流得飛',
         caseInsensitive: true,
+        points: 450,
       },
       { type: 'story', segs: [
         seg('narr', '你在看板之間來回穿梭，把線索一組一組對上，三個字漸漸從看板裡浮現出來。\n\n'),
@@ -251,6 +259,7 @@ const STAGES = {
         inputLabel: '收集到的記憶碎片 / 兩個字母',
         answer: 'JI',
         caseInsensitive: true,
+        points: 500,
       },
       { type: 'fragment', letter: 'JI', source: '傳送港', emotion: '無知' },
       { type: 'story', isLast: true, segs: [
@@ -290,7 +299,7 @@ const STAGES = {
         seg('narr', '\n\n'),
         seg('mission', '前往K區美食街'),
       ]},
-      { type: 'foodgame', taskGroup: 1, gameName: '天下沒有你的午餐', rulesSegs: [
+      { type: 'foodgame', taskGroup: 1, gameName: '天下沒有你的午餐', points: 700, failPenalty: 100, rulesSegs: [
         seg('rule', '目標　'), seg('narr', '玩家必須在 300 秒內完成五張訂單。\n\n'),
         seg('rule', '訂單機制　'), seg('narr', '一次最多同時出現四張訂單，若超過 60 秒未完成，該筆訂單即視為失敗。\n\n'),
         seg('rule', '完成方式　'), seg('narr', '玩家需在美食街中找到訂單對應的食物，並正確輸入該餐點的價錢，才算送餐成功。\n\n'),
@@ -340,6 +349,7 @@ const STAGES = {
         inputLabel: '收集到的記憶碎片 / 兩個字母',
         answer: 'SO',
         caseInsensitive: true,
+        points: 300,
       },
       { type: 'story', taskGroup: 2, segs: [
         seg('quote', '「到底為什麼要對戰啊……」'),
@@ -393,6 +403,7 @@ const STAGES = {
         inputLabel: '通關密語',
         answer: 'AI機器人',
         caseInsensitive: true,
+        points: 200,
       },
 
       // 3) 見面 page 1:機器人開口,說自己什麼都不太記得了
@@ -432,6 +443,7 @@ const STAGES = {
         ],
         // 正確顏色為 colors 陣列中第 1,6,11,12,17 個(1-indexed)
         answerColors: ['#e23c3c', '#8fe23c', '#3c86e2', '#3c4fe2', '#8a8a8a'],
+        points: 400,
       },
 
       // 5b) 零件確認後的通關密語 (中文密語,不用碎片字母鍵盤,用一般文字輸入)
@@ -444,6 +456,7 @@ const STAGES = {
         answer: '挖到寶了',
         caseInsensitive: true,
         fragmentKeypad: false,
+        points: 400,
       },
 
       // 6) 機器人回憶起自己曾是照護型機器人,交出記憶碎片
@@ -497,6 +510,7 @@ const STAGES = {
         inputLabel: '密碼',
         answer: 'senyum',
         caseInsensitive: true,
+        points: 500,
       },
       { type: 'story', segs: [
         seg('narr', '你背對時鐘，順著消失的箭頭走。\n棋盤格漸漸稀疏，人潮也散了，盡頭是一道不起眼的側門，牌子上「南2」兩個字幾乎磨光。\n你推門進去。\n\n'),
@@ -538,6 +552,7 @@ const STAGES = {
         inputLabel: '收集到的記憶碎片 / 兩個字母',
         answer: 'MQ',
         caseInsensitive: true,
+        points: 500,
       },
       { type: 'fragment', letter: 'MQ', source: '市中心', emotion: '失序' },
       { type: 'story', isLast: true, segs: [
@@ -549,7 +564,7 @@ const STAGES = {
     name: '記憶重組 · 主線',
     emotion: '',
     beats: [
-      { type: 'story', nextLabel: '拼合記憶碎片 ▸', leadsToAssembly: true, segs: [
+      { type: 'story', nextLabel: '拼合記憶碎片 ▸', leadsToAssembly: true, points: 500, segs: [
         seg('narr', '六道微光，靜靜懸浮在你的意識邊緣。\n\n沈迷、孤獨、無知、恐懼、偏執、失序——六種你早已模糊、卻又隱約覺得無比熟悉的感受，此刻靜靜地攤在你面前，像六張終於湊齊的舊照片。邊緣參差不齊，卻莫名地，彼此的形狀都對得上。\n\n'),
         seg('quote', '「原來……都是同一件事的碎片啊。」'),
         seg('narr', '\n\n心跳有點加速。不是因為害怕，是因為——你知道，只差最後一步了。\n\n把它們拼回原本的樣子，你就能想起，自己到底是誰。\n\n'),
@@ -591,6 +606,7 @@ const STAGES = {
         inputLabel: '記憶密碼',
         answer: 'NTUHOSPITAL',
         caseInsensitive: true,
+        points: 500,
       },
       { type: 'story', segs: [
         seg('narr', '密碼輸入的瞬間，一道光從掌心炸開，湧進意識深處。\n\n所有的鎖，同時鬆開。\n\n你想起來了——全部。\n\n你終於明白，當初那個決定是對的。\n\n'),

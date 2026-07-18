@@ -156,8 +156,8 @@ function OrderSlot({ slot, idx, onInput, onSubmit, onReshuffle }) {
 }
 
 // The「天下沒有你的午餐」delivery mini-game beat.
-export function FoodGameBeat({ beat, startDone, onContinue }) {
-  const game = useFoodGame();
+export function FoodGameBeat({ beat, startDone, onContinue, onPass, onFail }) {
+  const game = useFoodGame({ onPass, onFail });
   const mm = Math.floor(game.timeLeft / 60);
   const ss = String(game.timeLeft % 60).padStart(2, '0');
 

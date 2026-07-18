@@ -21,7 +21,7 @@ import { css, mix } from '../../lib/css.js';
  *     answerColors: ['#hex', ...5...], // the correct subset of `colors`
  *   }
  */
-export function ColorPickBeat({ stageKey, beat, beatIndex, hasPrev, startDone, onAdvance, onPrev }) {
+export function ColorPickBeat({ stageKey, beat, beatIndex, hasPrev, startDone, onAdvance, onPrev, onCorrect, onWrong }) {
   const [selected, setSelected] = useState([]); // indices into beat.colors
   const [status, setStatus] = useState('idle'); // idle | wrong | correct
   const wrongTimer = useRef(null);
@@ -48,10 +48,16 @@ export function ColorPickBeat({ stageKey, beat, beatIndex, hasPrev, startDone, o
     track('colorpick_attempt', { stageKey, beatIndex, chosen: [...chosen], correct });
     clearTimeout(wrongTimer.current);
     if (correct) {
+      onCorrect();
       setStatus('correct');
     } else {
-      setStatus('wrong');
-      wrongTimer.current = setTimeout(() => setStatus((s) => (s === 'wrong' ? 'idle' : s)), 1400);
+      const forcePass = onWrong();
+      if (forcePass) {
+        setStatus('correct');
+      } else {
+        setStatus('wrong');
+        wrongTimer.current = setTimeout(() => setStatus((s) => (s === 'wrong' ? 'idle' : s)), 1400);
+      }
     }
   };
 
