@@ -7,6 +7,7 @@ import { SegText } from '../ui/SegText.jsx';
 import { TerminalPanel } from '../ui/TerminalPanel.jsx';
 import { AnswerTerminal } from '../ui/AnswerTerminal.jsx';
 import { NavButtons } from '../ui/NavButtons.jsx';
+import { ScorePopup } from '../ui/ScorePopup.jsx';
 import { track } from '../../lib/track.js';
 import { css, mix } from '../../lib/css.js';
 
@@ -50,6 +51,8 @@ function Brackets({ color, size = 10, weight = 1.5 }) {
 export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPrev, startDone, onAdvance, onPrev, onCorrect, onWrong }) {
   const [input, setInput] = useState('');
   const [status, setStatus] = useState('idle'); // idle | wrong | correct
+  const [wrongCount, setWrongCount] = useState(0);
+  const [scoreGain, setScoreGain] = useState(null); // set once, on the correct answer, to pop the ScorePopup
   const wrongTimer = useRef(null);
   useEffect(() => () => clearTimeout(wrongTimer.current), []);
 
@@ -82,12 +85,17 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
     clearTimeout(wrongTimer.current);
     if (match) {
       onCorrect();
+      // What this beat actually nets out to: its full value minus the 40
+      // already docked for each wrong attempt along the way (those already
+      // hit the score in real time) — not just its flat listed points.
+      if (beat.points) setScoreGain(beat.points - 40 * wrongCount);
       setStatus('correct');
     } else {
       // Once the team's overall score is already at the floor, this wrong
       // attempt gets waved through instead of leaving them stuck forever —
       // they just don't get this beat's points.
       const forcePass = onWrong();
+      setWrongCount((c) => c + 1);
       if (forcePass) {
         setStatus('correct');
       } else {
@@ -128,13 +136,18 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
 
         {beat.showCipherTable && <CipherTable />}
 
-        <AnswerTerminal
-          borderColor={borderColor}
-          status={status}
-          label={beat.inputLabel}
-          wrongMsg="答案不對,再試一次"
-          correctMsg="解密成功"
-        >
+        <div style={css('position:relative;')}>
+          {scoreGain != null && <ScorePopup amount={scoreGain} />}
+          <AnswerTerminal
+            borderColor={borderColor}
+            status={status}
+            label={beat.inputLabel}
+            headerRight={wrongCount > 0 ? (
+              <span style={css('color:var(--pink-text);font-size:10px;letter-spacing:1px;')}>✕ 答錯 {wrongCount} 次</span>
+            ) : undefined}
+            wrongMsg="答案不對,再試一次"
+            correctMsg="解密成功"
+          >
           {isFragmentAnswer ? (
             <>
               <div style={css('position:relative;padding:10px 6px;margin-bottom:6px;')}>
@@ -268,6 +281,7 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
             </div>
           )}
         </AnswerTerminal>
+        </div>
       </div>
 
       <NavButtons

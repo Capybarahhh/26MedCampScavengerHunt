@@ -4,6 +4,7 @@ import { SegText } from '../ui/SegText.jsx';
 import { TerminalPanel } from '../ui/TerminalPanel.jsx';
 import { AnswerTerminal } from '../ui/AnswerTerminal.jsx';
 import { NavButtons } from '../ui/NavButtons.jsx';
+import { ScorePopup } from '../ui/ScorePopup.jsx';
 import { track } from '../../lib/track.js';
 import { css, mix } from '../../lib/css.js';
 
@@ -24,6 +25,8 @@ import { css, mix } from '../../lib/css.js';
 export function ColorPickBeat({ stageKey, beat, beatIndex, hasPrev, startDone, onAdvance, onPrev, onCorrect, onWrong }) {
   const [selected, setSelected] = useState([]); // indices into beat.colors
   const [status, setStatus] = useState('idle'); // idle | wrong | correct
+  const [wrongCount, setWrongCount] = useState(0);
+  const [scoreGain, setScoreGain] = useState(null);
   const wrongTimer = useRef(null);
   useEffect(() => () => clearTimeout(wrongTimer.current), []);
 
@@ -49,9 +52,11 @@ export function ColorPickBeat({ stageKey, beat, beatIndex, hasPrev, startDone, o
     clearTimeout(wrongTimer.current);
     if (correct) {
       onCorrect();
+      if (beat.points) setScoreGain(beat.points - 40 * wrongCount);
       setStatus('correct');
     } else {
       const forcePass = onWrong();
+      setWrongCount((c) => c + 1);
       if (forcePass) {
         setStatus('correct');
       } else {
@@ -78,11 +83,20 @@ export function ColorPickBeat({ stageKey, beat, beatIndex, hasPrev, startDone, o
           </TerminalPanel>
         )}
 
+        <div style={css('position:relative;')}>
+        {scoreGain != null && <ScorePopup amount={scoreGain} />}
         <AnswerTerminal
           borderColor={borderColor}
           status={status}
           label={`選出 ${need} 個正確色彩`}
-          headerRight={<span style={{ ...css('font-size:11px;letter-spacing:1px;'), color: mix(borderColor, 80) }}>{selected.length}/{need}</span>}
+          headerRight={
+            <span style={css('display:flex;align-items:center;gap:8px;')}>
+              {wrongCount > 0 && (
+                <span style={css('color:var(--pink-text);font-size:10px;letter-spacing:1px;')}>✕ 答錯 {wrongCount} 次</span>
+              )}
+              <span style={{ ...css('font-size:11px;letter-spacing:1px;'), color: mix(borderColor, 80) }}>{selected.length}/{need}</span>
+            </span>
+          }
           wrongMsg="色彩組合不對,再試一次"
           correctMsg="色彩已校準"
         >
@@ -110,6 +124,7 @@ export function ColorPickBeat({ stageKey, beat, beatIndex, hasPrev, startDone, o
             })}
           </div>
         </AnswerTerminal>
+        </div>
       </div>
 
       <NavButtons
