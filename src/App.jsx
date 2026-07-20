@@ -236,10 +236,11 @@ export default function App() {
   const recordWrongAnswer = () => {
     let forcePass = false;
     setGame((g) => {
+      const beat = getStageBeats(g.stageKey, swapTasksFor(g.roomCode))[g.beatIndex];
       const key = `${g.stageKey}-${g.beatIndex}`;
       const count = (g.wrongCounts[key] || 0) + 1;
       const wrongCounts = { ...g.wrongCounts, [key]: count };
-      const score = Math.max(0, g.score - WRONG_PENALTY);
+      const score = Math.max(0, g.score - (beat?.wrongPenalty ?? WRONG_PENALTY));
       forcePass = count >= FORCE_PASS_WRONG_COUNT;
       const scoredBeats = forcePass && !g.scoredBeats.includes(key) ? [...g.scoredBeats, key] : g.scoredBeats;
       const next = { ...g, score, wrongCounts, scoredBeats };

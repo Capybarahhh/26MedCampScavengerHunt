@@ -68,7 +68,8 @@ function Brackets({ color, size = 10, weight = 1.5 }) {
 export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPrev, startDone, onAdvance, onPrev, onCorrect, onWrong, wrongCount, hintUsed, onUseHint }) {
   const [input, setInput] = useState('');
   const [status, setStatus] = useState('idle'); // idle | wrong | correct
-  const [scoreGain, setScoreGain] = useState(null); // set once, on the correct answer, to pop the ScorePopup
+  const [scoreGain, setScoreGain] = useState(null); // set on correct AND wrong answers, to pop the ScorePopup
+  const [scoreGainKey, setScoreGainKey] = useState(0); // bumped each time, to remount ScorePopup and replay its animation
   const wrongTimer = useRef(null);
   useEffect(() => () => clearTimeout(wrongTimer.current), []);
 
@@ -104,12 +105,19 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
       // What this beat actually nets out to: its full value minus the 40
       // already docked for each wrong attempt along the way (those already
       // hit the score in real time) — not just its flat listed points.
-      if (beat.points) setScoreGain(beat.points - WRONG_PENALTY * wrongCount);
+      if (beat.points) {
+        setScoreGain(beat.points - (beat.wrongPenalty ?? WRONG_PENALTY) * wrongCount);
+        setScoreGainKey((k) => k + 1);
+      }
       setStatus('correct');
     } else {
       // The 10th wrong attempt on THIS beat gets waved through instead of
       // leaving the team stuck forever — they just don't get its points.
       const forcePass = onWrong();
+      if (beat.points) {
+        setScoreGain(-(beat.wrongPenalty ?? WRONG_PENALTY));
+        setScoreGainKey((k) => k + 1);
+      }
       if (forcePass) {
         setStatus('correct');
       } else {
@@ -151,7 +159,7 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
         {beat.showCipherTable && <CipherTable />}
 
         <div style={css('position:relative;')}>
-          {scoreGain != null && <ScorePopup amount={scoreGain} />}
+          {scoreGain != null && <ScorePopup key={scoreGainKey} amount={scoreGain} />}
           {beat.points > 100 && <HintButton hint={beat.hint} used={hintUsed || status === 'correct'} onUse={onUseHint} />}
           <AnswerTerminal
             borderColor={borderColor}

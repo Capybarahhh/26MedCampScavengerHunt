@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { TYPE_CHART_ROWS } from '../../data/typeChart.js';
 import { useTypewriter } from '../../hooks/useTypewriter.js';
 import { SegText } from '../ui/SegText.jsx';
@@ -101,10 +101,19 @@ function EndingChoice({ onChoose }) {
 export function StoryBeat({ beat, hasPrev, startDone, onNext, onPrev, onChooseEnding }) {
   const fullText = useMemo(() => beat.segs.map((s) => s.text).join(''), [beat]);
   const { count, done, skip } = useTypewriter(fullText, { startDone });
+  const [acked, setAcked] = useState(startDone);
   const nextLabel = beat.nextLabel || (beat.isLast ? '回到地圖 ▸' : '繼續 ▸');
   const cursor = done ? null : 'var(--teal)';
   const tapToSkip = () => { if (!done) skip(); };
-  const nav = done && !beat.endingChoice && (
+  const needsAck = !!beat.ackLabel && !acked;
+  const ackButton = done && !beat.endingChoice && needsAck && (
+    <button
+      className="press98"
+      onClick={(e) => { e.stopPropagation(); setAcked(true); }}
+      style={css("flex-shrink:0;margin-top:14px;height:58px;background:var(--gold-deep);border:2px solid var(--gold);color:var(--gold-text);border-radius:8px;font-size:17px;letter-spacing:6px;cursor:pointer;animation:fadeUp 0.4s ease both;")}
+    >{beat.ackLabel}</button>
+  );
+  const nav = done && !beat.endingChoice && !needsAck && (
     <NavButtons
       hasPrev={hasPrev}
       onPrev={(e) => { e.stopPropagation(); onPrev(); }}
@@ -127,6 +136,7 @@ export function StoryBeat({ beat, hasPrev, startDone, onNext, onPrev, onChooseEn
           </TerminalPanel>
           {done && <TypeChart />}
         </div>
+        {ackButton}
         {nav}
       </>
     );
@@ -150,6 +160,7 @@ export function StoryBeat({ beat, hasPrev, startDone, onNext, onPrev, onChooseEn
             </TerminalPanel>
           </div>
         </div>
+        {ackButton}
         {nav}
       </>
     );
@@ -163,6 +174,7 @@ export function StoryBeat({ beat, hasPrev, startDone, onNext, onPrev, onChooseEn
         </div>
       </div>
       {done && beat.endingChoice && <EndingChoice onChoose={onChooseEnding} />}
+      {ackButton}
       {nav}
     </>
   );

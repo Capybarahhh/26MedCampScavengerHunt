@@ -28,6 +28,7 @@ export function ColorPickBeat({ stageKey, beat, beatIndex, hasPrev, startDone, o
   const [selected, setSelected] = useState([]); // indices into beat.colors
   const [status, setStatus] = useState('idle'); // idle | wrong | correct
   const [scoreGain, setScoreGain] = useState(null);
+  const [scoreGainKey, setScoreGainKey] = useState(0);
   const wrongTimer = useRef(null);
   useEffect(() => () => clearTimeout(wrongTimer.current), []);
 
@@ -53,10 +54,17 @@ export function ColorPickBeat({ stageKey, beat, beatIndex, hasPrev, startDone, o
     clearTimeout(wrongTimer.current);
     if (correct) {
       onCorrect();
-      if (beat.points) setScoreGain(beat.points - WRONG_PENALTY * wrongCount);
+      if (beat.points) {
+        setScoreGain(beat.points - (beat.wrongPenalty ?? WRONG_PENALTY) * wrongCount);
+        setScoreGainKey((k) => k + 1);
+      }
       setStatus('correct');
     } else {
       const forcePass = onWrong();
+      if (beat.points) {
+        setScoreGain(-(beat.wrongPenalty ?? WRONG_PENALTY));
+        setScoreGainKey((k) => k + 1);
+      }
       if (forcePass) {
         setStatus('correct');
       } else {
@@ -84,7 +92,7 @@ export function ColorPickBeat({ stageKey, beat, beatIndex, hasPrev, startDone, o
         )}
 
         <div style={css('position:relative;')}>
-        {scoreGain != null && <ScorePopup amount={scoreGain} />}
+        {scoreGain != null && <ScorePopup key={scoreGainKey} amount={scoreGain} />}
         {beat.points > 100 && <HintButton hint={beat.hint} used={hintUsed || status === 'correct'} onUse={onUseHint} />}
         <AnswerTerminal
           borderColor={borderColor}
