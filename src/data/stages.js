@@ -330,13 +330,13 @@ const STAGES = {
         seg('narr', '婦人從口袋裡掏出一大疊筆記紙，'),
         seg('quote', '「這些是我孩子們愛吃的東西，那就麻煩你按照上面的餐點，幫我買回來吧。」'),
         seg('narr', '\n\n'),
-        seg('mission', '前往K區美食街'),
+        seg('mission', '前往K區美食街，並找到Joyful餐廳'),
       ]},
       { type: 'foodgame', taskGroup: 1, gameName: '天下沒有你的午餐', points: 700, failPenalty: 100, rulesSegs: [
         seg('rule', '目標　'), seg('narr', '玩家必須在 300 秒內完成六張訂單。\n\n'),
         seg('rule', '訂單機制　'), seg('narr', '一次最多同時出現四張訂單，若超過 120 秒未完成，該筆訂單即視為失敗。\n\n'),
         seg('rule', '完成方式　'), seg('narr', '玩家需在美食街中找到訂單對應的食物，並正確輸入該餐點的價錢，才算送餐成功。\n\n'),
-        seg('warn', '注意事項　'), seg('narr', '地下市集相當擁擠，請勿奔跑，並小心與他人碰撞。\n\n訂單上的餐廳僅位於單條商店街中，且菜單位置皆位於可視範圍內。'),
+        seg('warn', '注意事項　'), seg('narr', '地下市集相當擁擠，請勿奔跑，並小心與他人碰撞。\n\n訂單上的餐廳僅位於'), seg('key', '單條商店街'), seg('narr', '中，且菜單位置皆位於可視範圍內。'),
       ]},
       { type: 'story', taskGroup: 1, segs: [
         seg('quote', '「結果只是來這裡跑腿。」\n\n'),
@@ -366,7 +366,7 @@ const STAGES = {
         seg('narr', '\n\n'),
         seg('quote', '「啊對了，忘記說了——我叫小智，姓張，你可以叫我小智Chang。我可是寶可夢聯盟的冠軍。」'),
         seg('narr', '\n\n'),
-        seg('mission', '找到位於Y區中央市集的小智Chang'),
+        seg('mission', '找到位於K區美食街銷魂麵舖前的小智Chang'),
       ]},
       { type: 'story', taskGroup: 2, duelRules: true, duelTitle: '寶可夢聯盟', segs: [
         seg('rule', '01　'), seg('narr', '必須要有五隻寶可夢才能參賽，採'), seg('key', '五戰三勝'), seg('narr', '。\n\n'),
