@@ -185,6 +185,7 @@ const STAGES = {
         inputLabel: '收集到的記憶碎片代碼',
         answer: 'AX',
         caseInsensitive: true,
+        fragmentKeypad: true,
         hint: '『斧頭』',
         points: 500,
       },
@@ -247,7 +248,9 @@ const STAGES = {
       { type: 'puzzle',
         descSegs: [
           seg('mission', '在傳送港裡找到詩人的三位朋友，收集線索，尋獲詩人之真名\n\n'),
-          seg('rule', '規則　'), seg('narr', '1. 先找到帶著筆記的人，從他們身上收集到足夠線索。\n2. 線索上目的地的語言在詩牆上好像有出現，登機閘口的數字順序也很重要...失憶詩人的名字是中文的，所以應該用中文包含標點符號來數才找得到...\n3. 如果不知道線索應該怎麼解讀，可以帶著其他詩人的線索回來找失憶詩人，或許他會想起一些事情。\n\n'),
+          seg('rule', '01　'), seg('narr', '先找到帶著筆記的人，從他們身上收集到足夠線索。\n'),
+          seg('rule', '02　'), seg('narr', '線索上目的地的語言在詩牆上好像有出現，登機閘口的數字順序也很重要……失憶詩人的名字是中文的，所以應該用中文包含標點符號來數才找得到……\n'),
+          seg('rule', '03　'), seg('narr', '如果不知道線索應該怎麼解讀，可以帶著其他詩人的線索回來找失憶詩人，或許他會想起一些事情。\n\n'),
           seg('warn', '提醒事項：本關卡答題錯誤不扣分，可以多多嘗試。'),
         ],
         inputLabel: '詩人的真名',
@@ -255,7 +258,7 @@ const STAGES = {
         caseInsensitive: true,
         points: 650,
         wrongPenalty: 0,
-        hint: '1.找到傳送券上目的地所用的語言，對應到詩牆上的該語言翻譯；2.該語言發意的開頭會對應到一個中文字，從這裡開始數登機閘口個中文字（含標點符號）；3.依照頭等艙-商務艙-經濟艙的順序，把三個中文字找出來，就是失憶詩人的名字',
+        hint: '1. 找到傳送券上目的地所用的語言，對應到詩牆上的該語言翻譯\n2. 該語言翻譯的開頭會對應到一個中文字，從這裡開始數登機閘口個中文字（含標點符號）\n3. 依照頭等艙-商務艙-經濟艙的順序，把三個中文字找出來，就是失憶詩人的名字',
       },
       { type: 'story', segs: [
         seg('narr', '你在看板之間來回穿梭，把線索一組一組對上，三個字漸漸從看板裡浮現出來。\n\n'),
@@ -336,6 +339,7 @@ const STAGES = {
         seg('rule', '目標　'), seg('narr', '玩家必須在 300 秒內完成六張訂單。\n\n'),
         seg('rule', '訂單機制　'), seg('narr', '一次最多同時出現四張訂單，若超過 120 秒未完成，該筆訂單即視為失敗。\n\n'),
         seg('rule', '完成方式　'), seg('narr', '玩家需在美食街中找到訂單對應的食物，並正確輸入該餐點的價錢，才算送餐成功。\n\n'),
+        seg('rule', '刷新菜單　'), seg('narr', '使用右上重置按鈕即可更改訂單。\n\n'),
         seg('warn', '注意事項　'), seg('narr', '地下市集相當擁擠，請勿奔跑，並小心與他人碰撞。\n\n訂單上的餐廳僅位於'), seg('key', '單條商店街'), seg('narr', '中，且菜單位置皆位於可視範圍內。'),
       ]},
       { type: 'story', taskGroup: 1, segs: [
@@ -371,9 +375,8 @@ const STAGES = {
       { type: 'story', taskGroup: 2, duelRules: true, duelTitle: '寶可夢聯盟', segs: [
         seg('rule', '01　'), seg('narr', '必須要有五隻寶可夢才能參賽，採'), seg('key', '五戰三勝'), seg('narr', '。\n\n'),
         seg('rule', '02　'), seg('narr', '一個隊伍的戰力值最高為 '), seg('key', '500'), seg('narr', '。\n\n'),
-        seg('rule', '03　'), seg('narr', '面對兩個對手，你必須組成'), seg('key', '兩支'), seg('narr', '隊伍。\n\n'),
-        seg('rule', '04　'), seg('narr', '勝負判定：先比'), seg('key', '屬性克制'), seg('narr', '，再比'), seg('key', '戰力點大小'), seg('narr', '。\n\n'),
-        seg('rule', '05　'), seg('narr', '屬性克制計算：計算某寶可夢的有幾種屬性可被對面克制，較少者即為勝方。'),
+        seg('rule', '03　'), seg('narr', '勝負判定：先比'), seg('key', '屬性克制'), seg('narr', '，再比'), seg('key', '戰力點大小'), seg('narr', '。\n\n'),
+        seg('rule', '04　'), seg('narr', '屬性克制計算：計算某寶可夢的有幾種屬性可被對面克制，較少者即為勝方。'),
       ]},
       { type: 'puzzle', taskGroup: 2,
         descSegs: [
@@ -382,6 +385,7 @@ const STAGES = {
         inputLabel: '收集到的記憶碎片 / 兩個字母',
         answer: 'SO',
         caseInsensitive: true,
+        fragmentKeypad: true,
         hint: '額……不然你抓強一點的寶可夢？',
         points: 300,
       },
@@ -611,7 +615,7 @@ const STAGES = {
     name: '記憶重組 · 主線',
     emotion: '',
     beats: [
-      { type: 'story', nextLabel: '拼合記憶碎片 ▸', leadsToAssembly: true, points: 500, segs: [
+      { type: 'story', nextLabel: '拼合記憶碎片 ▸', leadsToAssembly: true, points: 200, segs: [
         seg('narr', '六道微光，靜靜懸浮在你的意識邊緣。\n\n沈迷、孤獨、無知、恐懼、偏執、失序——六種你早已模糊、卻又隱約覺得無比熟悉的感受，此刻靜靜地攤在你面前，像六張終於湊齊的舊照片。邊緣參差不齊，卻莫名地，彼此的形狀都對得上。\n\n'),
         seg('quote', '「原來……都是同一件事的碎片啊。」'),
         seg('narr', '\n\n心跳有點加速。不是因為害怕，是因為——你知道，只差最後一步了。\n\n把它們拼回原本的樣子，你就能想起，自己到底是誰。\n\n'),
@@ -653,7 +657,8 @@ const STAGES = {
         inputLabel: '記憶密碼',
         answer: 'NTUHOSPITAL',
         caseInsensitive: true,
-        points: 500,
+        hint: '第二把鑰匙為THEPASSWORD，將兩條鑰匙合併即可得到最終答案',
+        points: 800,
       },
       { type: 'story', segs: [
         seg('narr', '密碼輸入的瞬間，一道光從掌心炸開，湧進意識深處。\n\n所有的鎖，同時鬆開。\n\n你想起來了——全部。\n\n你終於明白，當初那個決定是對的。\n\n'),

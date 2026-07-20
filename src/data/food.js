@@ -1,6 +1,6 @@
 // Food-court mini-game orders + confetti generator.
 const FOOD_ORDER_POOL = [
-  { customer: '亮亮', item: '大杯荔荔蜜桃耶果', price: 70 },
+  { customer: '亮亮', item: '大杯荔荔蜜桃椰果', price: 70 },
   { customer: '鮪魚', item: '大杯原鄉冬瓜茶', price: 45 },
   { customer: '嘻嘻鍋', item: '中杯珍珠鮮奶+大杯芋頭鮮奶', price: 170 },
   { customer: '胖熊', item: '大杯桂香輕蕎麥', price: 60 },

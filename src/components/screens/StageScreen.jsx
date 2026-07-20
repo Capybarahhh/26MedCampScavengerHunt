@@ -11,9 +11,18 @@ const GLYPHS = makeStageGlyphs(14);
 
 // A puzzle whose answer is the fragment code gets the letter-blank keypad UI:
 // true when the next non-story beat is a fragment beat. A puzzle can opt out
-// with `fragmentKeypad: false` to use a plain passphrase input instead.
+// with `fragmentKeypad: false` to use a plain passphrase input instead, or
+// opt in explicitly with `fragmentKeypad: true` when adjacency-detection
+// alone isn't reliable — e.g. in Y/M, `getStageBeats` reorders whole
+// taskGroup blocks for swapTasks teams, which can put OTHER beats (from the
+// group swapped into that slot) between a puzzle and its fragment beat,
+// breaking the "walk forward past story beats" heuristic below. Set the
+// flag explicitly on any puzzle inside a taskGroup that leads into a
+// fragment, rather than relying on detection to survive reordering.
 function isFragmentAnswer(beats, beatIndex) {
-  if (beats[beatIndex].fragmentKeypad === false) return false;
+  const beat = beats[beatIndex];
+  if (beat.fragmentKeypad === false) return false;
+  if (beat.fragmentKeypad === true) return true;
   let i = beatIndex + 1;
   while (beats[i] && beats[i].type === 'story') i++;
   return !!(beats[i] && beats[i].type === 'fragment');

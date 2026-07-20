@@ -200,3 +200,24 @@ button:not(:disabled):active { filter: brightness(0.92); }
   80%  { transform: translate(-1px, -0.4px); }
   100% { transform: translate(-1.4px, 0.4px); }
 }
+/* 圖書館: the loose page oscillates right↔left across the spine (scaleX
+ * through ~0 = edge-on) rather than flipping forward through a whole book —
+ * "back and forth", looping seamlessly since it starts/ends at the same
+ * resting (right-side) pose. */
+@keyframes bookPageFlip {
+  0%, 8%   { transform: scaleX(1); opacity: 0.9; }
+  38%      { transform: scaleX(0.03); opacity: 0.5; }
+  42%      { transform: scaleX(-0.03); opacity: 0.5; }
+  50%, 58% { transform: scaleX(-1); opacity: 0.9; }
+  88%      { transform: scaleX(-0.03); opacity: 0.5; }
+  92%      { transform: scaleX(0.03); opacity: 0.5; }
+  100%     { transform: scaleX(1); opacity: 0.9; }
+}
+/* 圖書館: a letter drifts up and away from the book, fading in then out —
+ * per-glyph trajectory via CSS vars, same technique as junkTumble. */
+@keyframes libGlyphFloat {
+  0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  15%  { opacity: 1; }
+  82%  { opacity: 0.7; }
+  100% { transform: translate(var(--dx), var(--dy)) rotate(var(--rot)); opacity: 0; }
+}

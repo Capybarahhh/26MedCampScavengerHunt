@@ -113,13 +113,24 @@ function BulbSlot({ variant, scale = 1, interactive, onClick, title }) {
 // Hint copy may wrap a key phrase in 『...』 to call it out — split on that
 // delimiter and render the wrapped portion emphasized (matching the 「」
 // emphasis already used for key terms in story dialogue), rather than
-// requiring hint text to be authored as a segs array like descSegs.
-function renderHint(hint) {
-  if (!hint) return '（提示尚未設定）';
-  return hint.split(/(『[^『』]*』)/g).map((part, i) => (
+// requiring hint text to be authored as a segs array like descSegs. A plain
+// "\n" in the hint string breaks it into separate paragraph blocks (for
+// multi-step hints), since HTML collapses raw newlines otherwise.
+function renderHintLine(line) {
+  return line.split(/(『[^『』]*』)/g).map((part, i) => (
     part.startsWith('『') && part.endsWith('』')
       ? <span key={i} style={{ color: 'var(--gold-bright)', fontWeight: 700, textShadow: '0 0 8px rgba(var(--gold-rgb),0.55)' }}>{part}</span>
       : <span key={i}>{part}</span>
+  ));
+}
+function renderHint(hint) {
+  if (!hint) return '（提示尚未設定）';
+  const lines = hint.split('\n');
+  if (lines.length === 1) return renderHintLine(lines[0]);
+  return lines.map((line, li) => (
+    <div key={li} style={li < lines.length - 1 ? { marginBottom: 10 } : undefined}>
+      {renderHintLine(line)}
+    </div>
   ));
 }
 
