@@ -12,11 +12,17 @@ export function EntryScreen({ onConfirm, onReset }) {
   const firstEmpty = room.findIndex((c) => c === '');
   const confirmDisabled = firstEmpty !== -1;
 
+  // Functional update — two taps landing before React re-renders (fast
+  // keypad entry) must each see the other's fill, not both race for the
+  // same stale firstEmpty slot and silently drop a digit.
   const pressKey = (ch) => {
-    if (firstEmpty === -1) return;
-    const next = [...room];
-    next[firstEmpty] = ch;
-    setRoom(next);
+    setRoom((prev) => {
+      const idx = prev.findIndex((c) => c === '');
+      if (idx === -1) return prev;
+      const next = [...prev];
+      next[idx] = ch;
+      return next;
+    });
     if (errorShake) setErrorShake(0);
   };
 

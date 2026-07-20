@@ -128,9 +128,12 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
     }
   };
 
+  // Functional updates throughout — two taps landing before React re-renders
+  // (fast on-screen typing) must not let the second tap's stale closure drop
+  // the first keystroke.
   const pressKey = (ch) => {
-    if (status === 'correct' || input.length >= beat.answer.length) return;
-    setInput(input + ch);
+    if (status === 'correct') return;
+    setInput((prev) => (prev.length >= beat.answer.length ? prev : prev + ch));
     setStatus('idle');
   };
 
@@ -203,7 +206,7 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
               </div>
               <button
                 className="press96"
-                onClick={() => status !== 'correct' && setInput(input.slice(0, -1))}
+                onClick={() => status !== 'correct' && setInput((prev) => prev.slice(0, -1))}
                 style={css("width:100%;margin-top:7px;height:38px;background:var(--purple-btn);border:1px solid var(--purple-border);border-radius:6px;color:var(--purple-text);font-size:12px;letter-spacing:2px;cursor:pointer;")}
               >⌫ 清除</button>
             </>
@@ -239,7 +242,7 @@ export function PuzzleBeat({ stageKey, beat, beatIndex, isFragmentAnswer, hasPre
               </div>
               <button
                 className="press96"
-                onClick={() => status !== 'correct' && setInput(input.slice(0, -1))}
+                onClick={() => status !== 'correct' && setInput((prev) => prev.slice(0, -1))}
                 style={css("width:100%;margin-top:7px;height:38px;background:var(--purple-btn);border:1px solid var(--purple-border);border-radius:6px;color:var(--purple-text);font-size:12px;letter-spacing:2px;cursor:pointer;")}
               >⌫ 清除</button>
             </>
