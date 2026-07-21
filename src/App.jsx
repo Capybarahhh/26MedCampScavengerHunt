@@ -297,6 +297,19 @@ export default function App() {
     advanceBeat();
   };
 
+  // Staff-only shortcut for when time runs out mid-event: BackpackScreen's
+  // hidden tap sequence calls this to instantly mark every stage complete
+  // and every fragment collected, so a team that's stuck can still reach
+  // the final assembly/ending instead of being locked out entirely.
+  const unlockAllFragments = () => {
+    track('unlock_all_fragments');
+    setGame((g) => {
+      const next = { ...g, collectedFragments: [...FRAGMENT_ORDER], completedStages: [...STAGE_ORDER] };
+      persist(next);
+      return next;
+    });
+  };
+
   const onAssemblyComplete = () => {
     awardAssembly();
     setGame((g) => {
@@ -407,7 +420,7 @@ export default function App() {
           />
         )}
         {game.screen === 'backpack' && (
-          <BackpackScreen collectedFragments={game.collectedFragments} onClose={() => setGame((g) => ({ ...g, screen: 'map' }))} onReset={reset} />
+          <BackpackScreen collectedFragments={game.collectedFragments} onClose={() => setGame((g) => ({ ...g, screen: 'map' }))} onReset={reset} onUnlockAll={unlockAllFragments} />
         )}
         {game.screen === 'assembly' && (
           <AssemblyScreen letters={assemblyLetters} scale={scale} onComplete={onAssemblyComplete} />

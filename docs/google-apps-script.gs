@@ -31,6 +31,7 @@ const EVENT_LABELS = {
   ending_choice: '選擇結局',
   reset: '重置進度',
   score_update: '分數更新',
+  unlock_all_fragments: '手動解鎖全部碎片',
 };
 
 const STAGE_LABELS = {

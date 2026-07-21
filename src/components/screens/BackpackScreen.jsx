@@ -1,11 +1,52 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { FRAGMENT_COLORS, FRAGMENT_ORDER, makePieceNode } from '../../lib/pieces.js';
 import { FRAGMENT_META } from '../../data/stages.js';
 import { css, mix } from '../../lib/css.js';
 
+// Grid is 3 cols x 2 rows over FRAGMENT_ORDER, so index 1 is the top-middle
+// slot and index 4 is the bottom-middle slot.
+const CHEAT_TOP_SLOT = 1;
+const CHEAT_BOTTOM_SLOT = 4;
+const CHEAT_TAPS_NEEDED = 5;
+const CHEAT_WINDOW_MS = 10000;
+
 // Collected memory fragments, one slot per fragment in canonical order.
-export function BackpackScreen({ collectedFragments, onClose, onReset }) {
+export function BackpackScreen({ collectedFragments, onClose, onReset, onUnlockAll }) {
   const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const [unlockedFlash, setUnlockedFlash] = useState(false);
+  const topTaps = useRef(0);
+  const bottomTaps = useRef(0);
+  const cheatTimer = useRef(null);
+
+  // Hidden staff shortcut: tap the top-middle slot 5x then the bottom-middle
+  // slot 5x, all within 10s, to instantly unlock every fragment + stage.
+  // Any tap out of order, or the window expiring, resets the sequence.
+  const resetCheat = () => {
+    topTaps.current = 0;
+    bottomTaps.current = 0;
+    clearTimeout(cheatTimer.current);
+  };
+  const armCheatTimer = () => {
+    clearTimeout(cheatTimer.current);
+    cheatTimer.current = setTimeout(resetCheat, CHEAT_WINDOW_MS);
+  };
+  const handleSlotTap = (i) => {
+    if (i === CHEAT_TOP_SLOT) {
+      if (bottomTaps.current > 0) { resetCheat(); return; }
+      topTaps.current += 1;
+      armCheatTimer();
+    } else if (i === CHEAT_BOTTOM_SLOT) {
+      if (topTaps.current < CHEAT_TAPS_NEEDED) { resetCheat(); return; }
+      bottomTaps.current += 1;
+      armCheatTimer();
+      if (bottomTaps.current >= CHEAT_TAPS_NEEDED) {
+        resetCheat();
+        onUnlockAll();
+        setUnlockedFlash(true);
+        setTimeout(() => setUnlockedFlash(false), 2400);
+      }
+    }
+  };
 
   return (
     <div style={css('position:absolute;inset:0;z-index:10;padding:26px 24px;display:flex;flex-direction:column;')}>
@@ -20,13 +61,17 @@ export function BackpackScreen({ collectedFragments, onClose, onReset }) {
           const meta = FRAGMENT_META[letter];
           const glow = FRAGMENT_COLORS[letter]?.light || '#e8d080';
           return (
-            <div key={letter} style={{
-              ...css('border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;position:relative;overflow:hidden;'),
-              background: collected ? 'var(--gold-deep)' : 'var(--purple-deep)',
-              border: `2px ${collected ? 'solid' : 'dashed'} ${collected ? 'var(--gold)' : 'var(--purple-locked)'}`,
-              boxShadow: collected ? '0 0 20px rgba(var(--gold-rgb),0.25), inset 0 0 16px rgba(var(--gold-rgb),0.12)' : 'none',
-              animation: collected ? 'none' : 'foodEmptyPulse 2.2s ease-in-out infinite',
-            }}>
+            <div
+              key={letter}
+              onClick={() => handleSlotTap(i)}
+              style={{
+                ...css('border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:160px;position:relative;overflow:hidden;'),
+                background: collected ? 'var(--gold-deep)' : 'var(--purple-deep)',
+                border: `2px ${collected ? 'solid' : 'dashed'} ${collected ? 'var(--gold)' : 'var(--purple-locked)'}`,
+                boxShadow: collected ? '0 0 20px rgba(var(--gold-rgb),0.25), inset 0 0 16px rgba(var(--gold-rgb),0.12)' : 'none',
+                animation: collected ? 'none' : 'foodEmptyPulse 2.2s ease-in-out infinite',
+              }}
+            >
               <div style={css('position:absolute;inset:0;background-image:repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 4px);pointer-events:none;')} />
               {collected ? (
                 <>
@@ -65,6 +110,10 @@ export function BackpackScreen({ collectedFragments, onClose, onReset }) {
         onClick={() => setShowResetConfirm(true)}
         style={css("margin-top:16px;height:44px;background:none;border:1px solid var(--purple-dim);color:var(--purple-text-faint);border-radius:8px;font-size:12px;letter-spacing:2px;cursor:pointer;")}
       >重新開始</button>
+
+      {unlockedFlash && (
+        <div style={css('position:absolute;top:14px;left:50%;transform:translateX(-50%);background:var(--gold-deep);border:2px solid var(--gold);color:var(--gold-text);padding:10px 20px;border-radius:8px;font-size:13px;letter-spacing:2px;white-space:nowrap;animation:toastIn 0.25s ease both;z-index:30;')}>已解鎖所有記憶碎片與終章關卡</div>
+      )}
 
       {showResetConfirm && (
         <div style={css('position:absolute;inset:0;z-index:20;background:rgba(3,4,9,0.8);display:flex;align-items:center;justify-content:center;animation:foodOverlayIn 0.2s ease both;')}>
