@@ -48,7 +48,7 @@ export function StageScreen({ stageKey, beatIndex, arrivedBack, swapTasks, onAdv
       <div style={css('position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:-1;')}>
         {GLYPHS.map((g, i) => <span key={i} style={css(g.style)}>{g.ch}</span>)}
       </div>
-      <div style={css('position:absolute;top:18px;left:24px;color:var(--purple-text-dim);font-size:11px;letter-spacing:3px;z-index:1;')}>{stage.name}</div>
+      <div style={css('position:absolute;top:46px;left:24px;color:var(--purple-text-dim);font-size:11px;letter-spacing:3px;z-index:1;')}>{stage.name}</div>
 
       {beat.type === 'story' && (
         <StoryBeat key={beatKey} beat={beat} hasPrev={hasPrev} startDone={arrivedBack} onNext={onAdvance} onPrev={onPrev} onChooseEnding={onChooseEnding} />

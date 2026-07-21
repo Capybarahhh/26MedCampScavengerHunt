@@ -42,6 +42,14 @@ export function setTrackedRoom(code, name = '') {
   teamName = name;
 }
 
+// Piggybacks the current score onto every event already being sent (rather
+// than firing a dedicated event per score change), so the backend board can
+// keep a "current score" column up to date without extra network traffic.
+let currentScore = null;
+export function setTrackedScore(score) {
+  currentScore = score;
+}
+
 function loadQueue() {
   try { return JSON.parse(localStorage.getItem(QUEUE_KEY) || '[]'); } catch { return []; }
 }
@@ -96,6 +104,7 @@ export function track(event, payload = {}) {
       sessionId: getSessionId(),
       roomCode,
       team: teamName,
+      score: currentScore,
       ts: new Date().toISOString(),
       ...payload,
     });

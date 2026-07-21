@@ -171,6 +171,13 @@ export function StoryBeat({ beat, hasPrev, startDone, onNext, onPrev, onChooseEn
       <div style={css('flex:1;display:flex;flex-direction:column;overflow-y:auto;min-height:0;')} onClick={tapToSkip}>
         <div style={css('margin:auto 0;font-size:19px;line-height:2.1;text-align:left;width:100%;')}>
           <SegText segs={beat.segs} count={count} cursorColor={cursor} paraMargin={20} />
+          {done && beat.image && (
+            <img
+              src={beat.image}
+              alt=""
+              style={css('display:block;width:100%;margin-top:16px;border-radius:8px;border:1px solid var(--bezel);animation:fadeUp 0.4s ease both;')}
+            />
+          )}
         </div>
       </div>
       {done && beat.endingChoice && <EndingChoice onChoose={onChooseEnding} />}

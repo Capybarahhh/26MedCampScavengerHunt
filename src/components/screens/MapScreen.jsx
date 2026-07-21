@@ -20,7 +20,7 @@ function currentStageKey(startStageKey, completedStages) {
 // reads as done (green) or locked (red). Creator mode leaves the same
 // coloring intact (so testing still shows real progress) but makes every
 // node clickable regardless of status.
-export function MapScreen({ startStageKey, completedStages, creatorMode, score, onNodeClick, onOpenBackpack, toastMsg, unlockBanner }) {
+export function MapScreen({ startStageKey, completedStages, creatorMode, onNodeClick, onOpenBackpack, toastMsg, unlockBanner }) {
   const curKey = currentStageKey(startStageKey, completedStages);
   const allDone = completedStages.length >= STAGE_ORDER.length;
 
@@ -66,19 +66,7 @@ export function MapScreen({ startStageKey, completedStages, creatorMode, score, 
       <div style={css('position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 60% 40% at 50% 8%, rgba(var(--teal-rgb),0.1), transparent 60%), radial-gradient(ellipse 50% 40% at 15% 90%, rgba(var(--purple-rgb),0.08), transparent 65%);')} />
       <div style={css('position:absolute;inset:0;pointer-events:none;opacity:0.35;background-image:linear-gradient(rgba(var(--teal-rgb),0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--teal-rgb),0.08) 1px, transparent 1px);background-size:48px 48px;animation:mapGridDrift 14s linear infinite;')} />
 
-      <div style={css('display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px;')}>
-        <span style={css('flex:1;height:1px;background:linear-gradient(to right, transparent, rgba(var(--gold-rgb),0.5));')} />
-        <div style={css('position:relative;display:flex;align-items:center;gap:10px;padding:7px 22px;border-radius:8px;background:linear-gradient(180deg, rgba(var(--gold-rgb),0.14), rgba(var(--gold-rgb),0.04));border:1px solid rgba(var(--gold-rgb),0.5);box-shadow:0 0 20px rgba(var(--gold-rgb),0.18), inset 0 0 12px rgba(var(--gold-rgb),0.08);')}>
-          <span style={css('color:var(--gold-dim);font-size:10px;letter-spacing:4px;')}>SCORE</span>
-          <span style={{
-            ...css('font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:2px;'),
-            color: 'var(--gold-bright)', textShadow: '0 0 12px rgba(var(--gold-rgb),0.7)',
-          }}>{score}</span>
-        </div>
-        <span style={css('flex:1;height:1px;background:linear-gradient(to left, transparent, rgba(var(--gold-rgb),0.5));')} />
-      </div>
-
-      <div style={css('display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;position:relative;')}>
+      <div style={css('display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;position:relative;margin-top:34px;')}>
         <div style={css('display:flex;align-items:center;gap:14px;')}>
           <div>
             <div style={css('display:flex;align-items:center;gap:8px;')}>
