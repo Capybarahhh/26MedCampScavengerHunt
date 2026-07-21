@@ -1,6 +1,7 @@
 // All stage content: story beats, puzzles, answers (extracted verbatim).
 import { seg } from '../lib/text.js';
 import { FRAGMENT_ORDER } from '../lib/pieces.js';
+import foodCourtMap from '../assets/food-court-map.webp';
 
 const STAGES = {
   R: {
@@ -477,7 +478,7 @@ const STAGES = {
       ]},
 
       // 4b) 見面 page 2b:兩個任務的具體規則說明
-      { type: 'story', segs: [
+      { type: 'story', image: foodCourtMap, segs: [
         seg('mission', '本關卡有兩個任務\n\n'),
         seg('rule', 'A　情感核心\n'),
         seg('narr', '1. 請根據手上線索找出哪六個區域有散落的情感核心\n2. 根據找到的區域編號，到該區域找出情感核心的顏色\n3. 選出所有正確的情感核心對應的顏色，幫助機器人恢復情感\n\n'),

@@ -30,6 +30,7 @@ const EVENT_LABELS = {
   assembly_complete: '拼圖完成',
   ending_choice: '選擇結局',
   reset: '重置進度',
+  score_update: '分數更新',
 };
 
 const STAGE_LABELS = {
@@ -92,13 +93,15 @@ function summarize_(d) {
       return d.choice === 'keep' ? '保留所有記憶' : '將記憶封回';
     case 'room_rejected':
       return '輸入了 ' + d.roomCode;
+    case 'score_update':
+      return String(d.score);
     default:
       return '';
   }
 }
 
 // 每個小隊各自一張分頁的表頭（分頁名稱就是隊名，所以列裡不再重複放隊名）
-const EVENT_HEADERS = ['時間', '事件', '關卡', '內容', '房間碼', 'sessionId', '原始JSON'];
+const EVENT_HEADERS = ['時間', '事件', '關卡', '內容', '目前分數', '房間碼', 'sessionId', '原始JSON'];
 
 // 這筆事件該記到哪張分頁：已登入的小隊 → 隊名；其餘（開頁面、登入失敗等
 // 還沒有隊伍身分的）→「未分類」。用隊名而非房間碼，避免有人亂打一堆錯碼就
@@ -119,6 +122,7 @@ function appendEvent_(d) {
     EVENT_LABELS[d.event] || d.event,
     STAGE_LABELS[d.stageKey] || d.stageKey || '',
     summarize_(d),
+    d.score != null ? d.score : '',
     d.roomCode || '',
     d.sessionId || '',
     JSON.stringify(d),
@@ -126,7 +130,7 @@ function appendEvent_(d) {
 }
 
 const BOARD_HEADERS = [
-  '小隊', '房間碼', '最後活動時間', '最新動態',
+  '小隊', '房間碼', '最後活動時間', '最新動態', '目前分數',
   '目前關卡', '已取得碎片', '解謎嘗試', '答錯總計',
   '圖書館錯誤', '舊城區錯誤', '傳送港錯誤', '地下市集錯誤', '垃圾山錯誤', '市中心錯誤', '終章錯誤',
   '外送遊戲', '拼圖', '結局',
@@ -135,7 +139,7 @@ const COL = {}; // 名稱 → 欄位索引(1-based)
 BOARD_HEADERS.forEach((h, i) => { COL[h] = i + 1; });
 
 // 數字欄（計數用）預設 0，其餘欄預設空字串
-const NUMERIC_COLS = new Set(['解謎嘗試', '答錯總計', ...Object.values(STAGE_ERROR_COL)]);
+const NUMERIC_COLS = new Set(['解謎嘗試', '答錯總計', '目前分數', ...Object.values(STAGE_ERROR_COL)]);
 
 function updateBoard_(d) {
   const sh = sheet_(SHEET_BOARD, BOARD_HEADERS);
@@ -156,6 +160,9 @@ function updateBoard_(d) {
   set('最後活動時間', new Date(d.ts || Date.now()));
   set('最新動態', (EVENT_LABELS[d.event] || d.event) + (summarize_(d) ? '：' + summarize_(d) : ''));
   if (d.team) set('小隊', d.team);
+  // 每一筆事件都會夾帶目前分數（見 track.js 的 setTrackedScore），所以這裡
+  // 不特別綁事件類型，只要有帶分數就更新——board 上永遠是最新看到的分數。
+  if (d.score != null) set('目前分數', d.score);
 
   switch (d.event) {
     case 'stage_start':

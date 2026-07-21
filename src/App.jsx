@@ -4,7 +4,7 @@ import { STAGE_META, STAGE_ORDER } from './data/stageMeta.js';
 import { findTeam, CREATOR_CODE } from './data/teams.js';
 import { FRAGMENT_ORDER } from './lib/pieces.js';
 import { loadProgress, saveProgress, clearProgress } from './lib/progress.js';
-import { track, setTrackedRoom } from './lib/track.js';
+import { track, setTrackedRoom, setTrackedScore } from './lib/track.js';
 import { WRONG_PENALTY, HINT_COST, FORCE_PASS_WRONG_COUNT } from './lib/scoring.js';
 import { useScale } from './hooks/useScale.js';
 import { CityBackdrop } from './components/CityBackdrop.jsx';
@@ -15,6 +15,7 @@ import { StageScreen } from './components/screens/StageScreen.jsx';
 import { BackpackScreen } from './components/screens/BackpackScreen.jsx';
 import { AssemblyScreen } from './components/screens/AssemblyScreen.jsx';
 import { EndingScreen, Ending1Screen, Ending2Screen } from './components/screens/EndingScreens.jsx';
+import { ScoreBadge } from './components/ui/ScoreBadge.jsx';
 
 const initialGame = {
   screen: 'entry', // entry | intro | map | stage | backpack | assembly | ending | ending1 | ending2
@@ -93,6 +94,17 @@ export default function App() {
   useEffect(() => {
     setTrackedRoom(game.roomCode, findTeam(game.roomCode)?.name || '');
   }, [game.roomCode]);
+  // Piggybacking the score onto whatever event happens to fire next (below)
+  // means the board can lag a step behind. Sending a dedicated event the
+  // moment the score itself changes keeps it current without waiting for
+  // the next unrelated action. Skipped on mount/reload — that's a restore,
+  // not a change worth a fresh event.
+  const scoreMounted = useRef(false);
+  useEffect(() => {
+    setTrackedScore(game.score);
+    if (!scoreMounted.current) { scoreMounted.current = true; return; }
+    track('score_update', { score: game.score });
+  }, [game.score]);
   useEffect(() => { track('session_start'); }, []);
 
   const persist = (g) => saveProgress({
@@ -351,6 +363,12 @@ export default function App() {
       }}>
         <CityBackdrop variant={backdropVariantFor(game)} />
 
+        {/* Every screen after the opening intro narration gets a consistent
+            top-left score readout, instead of only showing up on the map. */}
+        {game.screen !== 'entry' && game.screen !== 'intro' && game.screen !== 'endingPreview' && (
+          <ScoreBadge score={game.score} />
+        )}
+
         {game.screen === 'entry' && <EntryScreen onConfirm={confirmRoom} onReset={reset} />}
         {game.screen === 'intro' && <IntroScreen onDone={enterMap} />}
         {game.screen === 'endingPreview' && (
@@ -364,7 +382,6 @@ export default function App() {
             startStageKey={game.startStageKey}
             completedStages={game.completedStages}
             creatorMode={game.creatorMode}
-            score={game.score}
             onNodeClick={onNodeClick}
             onOpenBackpack={() => setGame((g) => ({ ...g, screen: 'backpack' }))}
             toastMsg={toastMsg}
